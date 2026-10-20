@@ -1,0 +1,39 @@
+---
+/** Gallery overview: one tile per section, using its first photo as the cover. */
+import { Image } from 'astro:assets';
+import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
+import PageHero from 'astro-theme-popular/components/PageHero.astro';
+import { withBase } from 'astro-theme-popular/url';
+import { GALLERY_SECTIONS, photosFor } from '../../data/gallery';
+
+const sections = GALLERY_SECTIONS.map((s) => ({ ...s, photos: photosFor(s.slug) }));
+---
+
+<BaseLayout title="Gallery" description="Photos from Astronomy Club at UC San Diego events, trips and members' astrophotography.">
+  <PageHero
+    eyebrow="Gallery"
+    title="From campus to dark skies"
+    lead="Photos from our events and trips, plus astrophotography by club members."
+  />
+
+  <section class="g-bg-white g-section">
+    <div class="g-container">
+      <div class="gallery-sections">
+        {sections.map((s) => (
+          <a class="gallery-tile" href={withBase(`/gallery/${s.slug}/`)}>
+            <div class="gallery-tile__media sky">
+              {s.photos[0]
+                ? <Image src={s.photos[0].image} alt="" widths={[400, 800]} sizes="(max-width: 640px) 100vw, 400px" />
+                : <i class={s.icon} aria-hidden="true"></i>}
+            </div>
+            <div class="gallery-tile__body">
+              <span class="gallery-tile__count">{s.photos.length ? `${s.photos.length} photo${s.photos.length === 1 ? '' : 's'}` : 'Coming soon'}</span>
+              <h2>{s.title}</h2>
+              <p>{s.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

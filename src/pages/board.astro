@@ -1,0 +1,59 @@
+---
+/** Meet the Board: one card per file in src/content/board/, plus the link to
+ *  the board's website update form. */
+import { getCollection } from 'astro:content';
+import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
+import PageHero from 'astro-theme-popular/components/PageHero.astro';
+import { withBase } from 'astro-theme-popular/url';
+import { CLUB } from '../../popular.config';
+
+const board = (await getCollection('board')).sort(
+  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
+);
+---
+
+<BaseLayout title="Meet the Board" description="The student officers who run the Astronomy Club at UC San Diego.">
+  <PageHero
+    eyebrow="The team"
+    title="Meet the Board"
+    lead="The student officers who plan the star parties, run the trips and keep the telescopes collimated."
+  />
+
+  <section class="g-bg-white g-section">
+    <div class="g-container">
+      <div class="board-grid">
+        {board.map(({ data: m }) => (
+          <article class="board-card">
+            <img src={withBase(m.photo ?? '/images/board/placeholder.svg')} alt={m.photo ? `Photo of ${m.name}` : ''} loading="lazy" decoding="async" />
+            <div class="board-card__body">
+              <span class="board-card__role">{m.role}</span>
+              <h2 class="board-card__name">{m.name}</h2>
+              {(m.major || m.year) && <span class="board-card__meta">{[m.major, m.year].filter(Boolean).join(' · ')}</span>}
+              {m.bio && <p class="board-card__bio">{m.bio}</p>}
+              {m.favoriteObject && (
+                <div class="board-card__fav"><i class="fa-solid fa-star" aria-hidden="true"></i>Favorite object: {m.favoriteObject}</div>
+              )}
+              {m.social.length > 0 && (
+                <div class="g-persona__socials">
+                  {m.social.map((s) => (
+                    <a href={s.url} aria-label={`${m.name} on ${s.label}`} rel="noopener" target="_blank"><i class={s.icon} aria-hidden="true"></i></a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="update-box">
+        <div>
+          <h2>Board members: need something changed on the site?</h2>
+          <p>Submit new photos, bio edits or page updates through the website update form.</p>
+        </div>
+        <a class="g-btn g-btn--outline" href={CLUB.updateForm} rel="noopener" target="_blank">
+          <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Website update form
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

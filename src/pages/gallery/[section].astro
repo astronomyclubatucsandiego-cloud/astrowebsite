@@ -1,0 +1,97 @@
+---
+/** One gallery section: a masonry grid of photos that open in a lightbox. */
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
+import PageHero from 'astro-theme-popular/components/PageHero.astro';
+import { withBase } from 'astro-theme-popular/url';
+import { GALLERY_SECTIONS, photosFor, type GallerySection } from '../../data/gallery';
+
+export function getStaticPaths() {
+  return GALLERY_SECTIONS.map((section) => ({ params: { section: section.slug }, props: { section } }));
+}
+
+const { section } = Astro.props as { section: GallerySection };
+/* The lightbox shows a large optimized copy rather than the original upload,
+   which for astrophotography can run to tens of megabytes. */
+const photos = await Promise.all(
+  photosFor(section.slug).map(async (p) => ({
+    ...p,
+    full: (await getImage({ src: p.image, width: Math.min(p.image.width, 2400), format: 'webp' })).src,
+  })),
+);
+const here = withBase(`/gallery/${section.slug}/`);
+---
+
+<BaseLayout title={`${section.title} · Gallery`} description={section.description}>
+  <PageHero eyebrow="Gallery" title={section.title} lead={section.description} backHref="/gallery/" backLabel="All galleries" />
+
+  <section class="g-bg-white g-section">
+    <div class="g-container">
+      <nav class="gallery-tabs" aria-label="Gallery sections">
+        {GALLERY_SECTIONS.map((s) => {
+          const href = withBase(`/gallery/${s.slug}/`);
+          return <a href={href} aria-current={href === here ? 'page' : undefined}>{s.title}</a>;
+        })}
+      </nav>
+
+      {photos.length > 0 ? (
+        <div class="photo-grid" data-lightbox>
+          {photos.map((p) => (
+            <a href={p.full} data-caption={p.alt}>
+              <Image src={p.image} alt={p.alt} widths={[400, 800]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 400px" />
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <i class={section.icon} aria-hidden="true"></i>
+          <p>Photos coming soon. Check our Instagram in the meantime!</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <dialog class="lightbox" aria-label="Photo viewer">
+    <img src="" alt="" />
+    <div class="lightbox__caption"></div>
+    <button class="lightbox__btn lightbox__btn--close" type="button" aria-label="Close"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <button class="lightbox__btn lightbox__btn--prev" type="button" aria-label="Previous photo"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+    <button class="lightbox__btn lightbox__btn--next" type="button" aria-label="Next photo"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+  </dialog>
+</BaseLayout>
+
+<script>
+  /* Progressive enhancement: without JS each thumbnail links to its image. */
+  const grid = document.querySelector<HTMLElement>('[data-lightbox]');
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  if (grid && dialog) {
+    const links = [...grid.querySelectorAll<HTMLAnchorElement>('a')];
+    const img = dialog.querySelector('img')!;
+    const caption = dialog.querySelector<HTMLElement>('.lightbox__caption')!;
+    let index = 0;
+
+    const show = (i: number) => {
+      index = (i + links.length) % links.length;
+      const link = links[index];
+      img.src = link.href;
+      img.alt = link.querySelector('img')?.alt ?? '';
+      caption.textContent = link.dataset.caption ?? '';
+    };
+
+    links.forEach((link, i) =>
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        show(i);
+        dialog.showModal();
+      }),
+    );
+    dialog.querySelector('.lightbox__btn--close')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.lightbox__btn--prev')!.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('.lightbox__btn--next')!.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+  }
+</script>

@@ -1,0 +1,98 @@
+---
+/** Home: hero, About Us, Get Involved (Discord, Instagram) and Contact. */
+import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
+import { withBase } from 'astro-theme-popular/url';
+import { CLUB, SITE } from '../../popular.config';
+
+const facts = [
+  { icon: 'fa-solid fa-user-astronaut', title: 'Everyone is welcome', body: 'No experience or equipment needed. Curious about the sky? You belong here.' },
+  { icon: 'fa-solid fa-binoculars', title: 'Telescopes provided', body: 'Learn to use our telescopes and cameras at campus star parties.' },
+  { icon: 'fa-solid fa-mountain', title: 'Dark-sky trips', body: 'Leave the city lights behind on trips to Anza, Palomar and more.' },
+];
+---
+
+<BaseLayout>
+  <section class="sky home-hero">
+    <div class="g-container">
+      <img class="home-hero__logo" src={withBase(SITE.logo)} alt="" width="92" height="92" />
+      <span class="g-eyebrow">UC San Diego</span>
+      <h1>Astronomy Club at <span>UC San Diego</span></h1>
+      <p class="home-hero__lead">
+        Stargazing on campus, astrophotography, and trips to the darkest skies in San Diego County.
+        Come look up with us.
+      </p>
+      <div class="g-row">
+        <a class="g-btn g-btn--lg g-btn--primary" href={CLUB.discord} rel="noopener" target="_blank">
+          <i class="fa-brands fa-discord" aria-hidden="true"></i> Join our Discord
+        </a>
+        <a class="g-btn g-btn--lg g-btn--outline" href={withBase('/gallery/')}>
+          <i class="fa-solid fa-images" aria-hidden="true"></i> See the gallery
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="g-bg-white g-section">
+    <div class="g-container">
+      <div class="g-section-head">
+        <span class="g-eyebrow">About us</span>
+        <h2>Who we are</h2>
+      </div>
+      <div class="about-grid">
+        <div class="g-prose">
+          <p>
+            The Astronomy Club at UC San Diego is a student community for anyone who loves the night sky,
+            whether you have never looked through a telescope or you have been imaging deep-sky objects for years.
+          </p>
+          <p>
+            We host star parties on campus, teach astrophotography, share what is happening in astronomy and
+            space science, and organize trips out to dark-sky sites where the Milky Way is bright enough to cast shadows.
+          </p>
+        </div>
+        <div class="about-facts">
+          {facts.map((f) => (
+            <div class="about-fact">
+              <span class="g-medallion"><i class={f.icon} aria-hidden="true"></i></span>
+              <div><h3>{f.title}</h3><p>{f.body}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="get-involved" class="g-bg-tertiary g-section">
+    <div class="g-container">
+      <div class="g-section-head g-section-head--center">
+        <span class="g-eyebrow">Get involved</span>
+        <h2>Join the club</h2>
+        <p class="g-lead">Event announcements, trip sign-ups and photos all happen here first.</p>
+      </div>
+      <div class="join-grid">
+        <a class="join-card join-card--discord" href={CLUB.discord} rel="noopener" target="_blank">
+          <i class="fa-brands fa-discord join-card__icon" aria-hidden="true"></i>
+          <h3>Discord</h3>
+          <p>Our main hub: event announcements, trip sign-ups, observing reports and astro chat.</p>
+          <span class="join-card__go">Join the server <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+        </a>
+        <a class="join-card join-card--instagram" href={CLUB.instagram} rel="noopener" target="_blank">
+          <i class="fa-brands fa-instagram join-card__icon" aria-hidden="true"></i>
+          <h3>Instagram</h3>
+          <p>Event photos, member astrophotography and reminders before every star party.</p>
+          <span class="join-card__go">Follow {CLUB.instagramHandle} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="sky g-section">
+    <div class="g-container contact">
+      <span class="g-eyebrow">Contact</span>
+      <h2>Questions? Get in touch</h2>
+      <p>Email the board about events, collaborations or anything else. You can also check the <a href={withBase('/faq/')}>FAQ</a>.</p>
+      <a class="contact__email" href={`mailto:${CLUB.email}`}>
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i> {CLUB.email}
+      </a>
+    </div>
+  </section>
+</BaseLayout>
