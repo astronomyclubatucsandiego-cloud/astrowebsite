@@ -68,34 +68,38 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 860px) {
   .topbar__inner { flex-wrap: wrap; padding: .6rem 1rem 0; gap: 0; }
   /* Wrap onto a second line instead of running off the edge, so every item stays visible. */
-  .nav { margin-left: 0; width: 100%; flex-wrap: wrap; gap: 0 1.1rem; }
-  .nav a { padding-block: .55rem .75rem; font-size: .9rem; }
+  /* Two even rows of three on phones (6 items), instead of 4 + 2. */
+  .nav { margin-left: 0; width: 100%; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 0 1rem; }
+  .nav a { padding-block: .55rem .75rem; font-size: .9rem; justify-self: start; }
 }
 
 /* ---------- Photo banner ---------- */
-.banner { position: relative; display: grid; place-items: center; min-height: 320px; padding: 4rem 1rem; color: #fff; text-align: center; overflow: hidden; background: #05080c; }
+.banner { position: relative; display: grid; place-items: center; min-height: clamp(320px, 24vw, 560px); padding: 4rem 1rem; color: #fff; text-align: center; overflow: hidden; background: #05080c; }
 .banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .banner::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
 .banner h1 { position: relative; z-index: 1; margin: 0; font-family: var(--serif-display); font-weight: 700; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
-.banner--short { min-height: 240px; }
+/* Height grows with screen width so the crop looks the same on a laptop and a big monitor. */
+.banner--short { min-height: clamp(240px, 17vw, 420px); }
 
 /* ---------- Bands ---------- */
 .band { padding-block: 3rem; }
 .band--dark { background: var(--charcoal); color: #fff; }
 .band--dark a { color: #cfe2f5; }
-.band--mist { background: var(--mist); }
+.band--tight { padding-bottom: 0; }
 
 /* Section heading: Arvo between two thick grey rules, as on the Google Site. */
 .rule-title { margin: 0 0 2rem; padding-block: 1rem; border-block: 4px solid var(--rule); text-align: center; font-family: var(--slab); font-weight: 700; font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.2; color: var(--steel); }
 .band--dark .rule-title { border-color: var(--rule-dark); color: #fff; }
-.rule-title--left { text-align: left; }
+/* Smaller heading for sub-groups (Resources groups, "Still Have a Question?", page intros),
+   so the big ruled title stays reserved for main sections. */
+.subhead { margin: 0 0 1rem; text-align: center; font-family: var(--slab); font-weight: 700; font-size: clamp(1.4rem, 2.6vw, 1.75rem); line-height: 1.25; color: var(--steel); }
+.page-intro { padding-bottom: 1rem; text-align: center; }
+.page-intro p { margin: 0; font-weight: 700; color: var(--blue); }
 
 .lead { text-align: center; font-size: 1.15rem; max-width: 42rem; margin: 0 auto 2.5rem; }
 .center { text-align: center; }
 
 /* ---------- Home ---------- */
-.jump { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .6rem; }
-.jump a { color: var(--ink); font-size: .95rem; }
 
 .photo-row { display: grid; grid-template-columns: repeat(3, 1fr) 1fr; gap: 1.6rem; align-items: start; margin-top: 2rem; }
 .photo-row img { aspect-ratio: 1; object-fit: cover; width: 100%; }
@@ -113,12 +117,8 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 640px) { .calendar--month { display: none; } .calendar--agenda { display: block; } }
 
 /* "New here?" line at the top of the home page: the one thing a first-time visitor needs. */
-.new-here { margin: 0 0 1.4rem; padding: 1rem 1.2rem; border-left: 4px solid var(--steel); background: #f4f6f8; }
-
-/* "Friends of the club": real groups we've observed with, from past events. */
-.friends { max-width: 42rem; margin: 2.5rem auto 0; padding-top: 1.6rem; border-top: 4px solid var(--rule); text-align: center; }
-.friends h3 { margin: 0 0 .5rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
-.friends p { margin: 0; }
+.new-here { max-width: 42rem; margin: 0 auto 2.5rem; padding: 1rem 1.2rem; border-left: 4px solid var(--steel); background: #f4f6f8; }
+.more-link { margin: 2rem 0 0; text-align: center; }
 
 /* ---------- Tonight from UC San Diego ---------- */
 /* A plain status line under the banner, like an observatory's daily sky report. */
@@ -143,9 +143,6 @@ a:hover { text-decoration-thickness: 2px; }
 .sitefoot p { margin: .2rem 0; }
 
 /* ---------- Board ---------- */
-.team-strip { position: relative; overflow: hidden; color: #fff; background: #0c1116; }
-.team-strip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
-.team-strip h2 { position: relative; margin: 0; padding-block: 1.6rem; font-size: 1.4rem; font-weight: 700; }
 
 .member { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: start; }
 .member__photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
@@ -166,15 +163,36 @@ a:hover { text-decoration-thickness: 2px; }
   .member__photo { order: -1; max-width: 22rem; }
 }
 
+/* Media and Outreach teams: compact cards, two per row. */
+.member-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 2.5rem; }
+/* Photo beside name + role; the bio sits under the name on desktop and goes full width on phones. */
+.member-card { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); grid-template-areas: "photo head" "photo body"; grid-template-rows: auto 1fr; gap: 0 1.2rem; align-items: start; }
+.member-card--no-photo { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "body"; }
+.member-card img { grid-area: photo; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.member-card__head { grid-area: head; }
+.member-card__body { grid-area: body; }
+.member-card h3 { margin: 0; padding-bottom: .3rem; border-bottom: 3px solid var(--rule); font-family: var(--slab); font-size: 1.45rem; line-height: 1.2; color: var(--blue); }
+.member-card__role { margin: .5rem 0 .4rem; font-weight: 700; color: var(--blue); }
+.member-card__bio p { margin: 0 0 .6rem; font-size: .98rem; }
+.member-card__nasa { margin: .3rem 0 0; font-size: .95rem; font-style: italic; }
+@media (max-width: 860px) { .member-grid { grid-template-columns: 1fr; max-width: 40rem; margin-inline: auto; } }
+@media (max-width: 480px) {
+  .member-card { grid-template-columns: 6.5rem minmax(0, 1fr); grid-template-areas: "photo head" "body body"; gap: 0 1rem; }
+  .member-card__head { align-self: center; }
+  .member-card__body { margin-top: .9rem; }
+}
+
 .update-note { margin-top: 0; padding: 1.4rem 1.6rem; border: 2px solid var(--rule); }
 .update-note h2 { margin: 0 0 .3rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
 .update-note p { margin: 0; }
 
 /* ---------- Gallery ---------- */
-/* Centers however many sections have photos (2 today, up to 6). */
-.gallery-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 26rem)); justify-content: center; gap: 2rem 1.6rem; }
+/* Centers however many sections have photos (3 across on desktop, up to 6 sections). */
+.gallery-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 19.5rem)); justify-content: center; gap: 2rem 1.6rem; }
+/* The whole tile is the link; its title is underlined so it reads as one, like every other link. */
 .gallery-index a { color: var(--ink); text-decoration: none; }
-.gallery-index a:hover h2 { text-decoration: underline; }
+.gallery-index h2 { text-decoration: underline; text-underline-offset: .15em; }
+.gallery-index a:hover h2 { text-decoration-thickness: 2px; }
 .gallery-index figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: #1b232b; display: grid; place-items: center; }
 .gallery-index figure img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--slab); font-size: 1.45rem; color: var(--blue); }
@@ -208,13 +226,34 @@ a:hover { text-decoration-thickness: 2px; }
 .equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
 
+/* ---------- Dark Sites ---------- */
+.site { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2.5rem; align-items: start; }
+.site--no-photo { grid-template-columns: minmax(0, 40rem); justify-content: center; }
+.site__photo img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.site__text > p:first-child { margin-top: 0; }
+.site__facts { margin: 1.2rem 0; display: grid; gap: .5rem; }
+.site__facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
+.band--dark .site__facts div { border-color: var(--rule-dark); }
+.site__facts dt { font-family: var(--slab); font-weight: 700; }
+.site__facts dd { margin: 0; }
+.site__links { margin: 0; padding-left: 1.2rem; }
+.site__links li { margin: .25rem 0; }
+@media (max-width: 760px) { .site { grid-template-columns: 1fr; gap: 1.4rem; } .site__facts div { grid-template-columns: 1fr; gap: 0; } }
+
+.trip-guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.trip-guide h3 { margin: 0 0 .6rem; font-family: var(--slab); font-size: 1.3rem; color: var(--blue); }
+.trip-guide ul { margin: 0; padding-left: 1.2rem; }
+.trip-guide li { margin: 0 0 .5rem; }
+@media (max-width: 860px) { .trip-guide { grid-template-columns: 1fr; gap: 1.6rem; max-width: 38rem; margin-inline: auto; } }
+
 /* ---------- Resources ---------- */
 .resources { list-style: none; margin: 0 auto; padding: 0; max-width: 38rem; }
 .resources li { padding-block: 1.1rem; border-top: 1px solid var(--rule); }
 .resources li:first-child { padding-top: 0; border-top: 0; }
 .resources a { font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
 .resources p { margin: .3rem 0 0; }
-.band--dark .resources li { border-color: var(--rule-dark); }
+.resource-group + .resource-group { margin-top: 3rem; }
+.resources-note { max-width: 38rem; margin: 3rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; }
 
 /* ---------- Prose pages ---------- */
 .prose { max-width: 38rem; margin-inline: auto; }

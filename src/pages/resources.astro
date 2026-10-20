@@ -43,25 +43,22 @@ const GROUPS = [
 <Base title="Resources" description="Free tools and places for observing and astrophotography, picked by the Astronomy Club at UC San Diego.">
   <Banner title="Resources" image={banner} position="center 30%" short />
 
-  {GROUPS.map((group, i) => (
-    <section class:list={['band', { 'band--dark': i % 2 === 1 }]}>
-      <div class="wrap">
-        <h2 class="rule-title">{group.title}</h2>
-        <ul class="resources">
-          {group.links.map((l) => (
-            <li>
-              <a href={l.url} rel="noopener">{l.name}</a>
-              <p>{l.note}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  ))}
-
   <section class="band">
-    <div class="wrap prose center">
-      <p>Know a resource that should be here? Share it in our <a href={CLUB.discord}>Discord</a>.</p>
+    <div class="wrap">
+      {GROUPS.map((group) => (
+        <section class="resource-group">
+          <h2 class="subhead">{group.title}</h2>
+          <ul class="resources">
+            {group.links.map((l) => (
+              <li>
+                <a href={l.url} rel="noopener">{l.name}</a>
+                <p>{l.note}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+      <p class="resources-note">Know a resource that should be here? Share it in our <a href={CLUB.discord}>Discord</a>.</p>
     </div>
   </section>
 </Base>

@@ -5,7 +5,6 @@ import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import { CLUB } from '../config';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
-import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 
 const TEAMS = ['Executive Board', 'Media Team', 'Outreach Team'] as const;
 /* Only the term picked in src/config.ts; entry ids look like "2026-27/julia-zhang". */
@@ -23,50 +22,78 @@ const teams = (
     })),
   )
 ).filter((t) => t.members.length > 0);
-/* Rows alternate white / charcoal down the whole page, not per team. */
-let row = 0;
+/* The Executive Board gets full rows that alternate white / charcoal, like the old Google Site.
+   The other teams are compact cards, two per row, so the page doesn't scroll forever. */
+const FULL_ROW_TEAM = 'Executive Board';
 ---
 
 <Base title="Meet the Board" description={`The ${CLUB.boardYear} board of ${CLUB.name}.`}>
-  <Banner title="Meet the Board" image={horsehead} position="center 45%" />
+  <Banner title="Meet the Board" image={horsehead} position="center 52%" short />
 
-  <section class="band">
+  <section class="band page-intro">
     <div class="wrap">
-      <h2 class="rule-title" style="border:0;margin-bottom:.4rem">Current Board Members of {CLUB.boardYear}</h2>
-      <p class="center" style="margin:0;font-weight:700;color:var(--blue)">Learn a little bit more about each of our board members!</p>
+      <h2 class="subhead">Current Board Members of {CLUB.boardYear}</h2>
+      <p>Learn a little bit more about each of our board members!</p>
     </div>
   </section>
 
-  {teams.map(({ team, members }) => (
-    <>
-      <div class="team-strip">
-        <Image src={trunk} alt="" widths={[1200, 2000]} sizes="100vw" />
-        <div class="wrap"><h2>{team}</h2></div>
-      </div>
-      {members.map((m) => (
-        <section class:list={['band', { 'band--dark': row++ % 2 === 1 }]}>
-          <div class:list={['wrap', 'member', { 'member--no-photo': !m.photo }]}>
-            <div class="member__text">
-              <h3>{m.name}</h3>
-              <p class="member__role">{m.role}</p>
-              <div class="member__bio"><m.Bio /></div>
-              {m.favoriteNasa && (
-                <p class="member__nasa">
-                  Favorite NASA image:{' '}
-                  {m.favoriteNasa.url ? <a href={m.favoriteNasa.url}>{m.favoriteNasa.text}</a> : m.favoriteNasa.text}
-                </p>
+  {teams.map(({ team, members }) =>
+    team === FULL_ROW_TEAM ? (
+      <>
+        <section class="band band--tight"><div class="wrap"><h2 class="rule-title">{team}</h2></div></section>
+        {members.map((m, i) => (
+          <section class:list={['band', { 'band--dark': i % 2 === 0 }]}>
+            <div class:list={['wrap', 'member', { 'member--no-photo': !m.photo }]}>
+              <div class="member__text">
+                <h3>{m.name}</h3>
+                <p class="member__role">{m.role}</p>
+                <div class="member__bio"><m.Bio /></div>
+                {m.favoriteNasa && (
+                  <p class="member__nasa">
+                    Favorite NASA image:{' '}
+                    {m.favoriteNasa.url ? <a href={m.favoriteNasa.url}>{m.favoriteNasa.text}</a> : m.favoriteNasa.text}
+                  </p>
+                )}
+              </div>
+              {m.photo && (
+                <div class="member__photo">
+                  <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 400px" />
+                </div>
               )}
             </div>
-            {m.photo && (
-              <div class="member__photo">
-                <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 400px" />
-              </div>
-            )}
+          </section>
+        ))}
+      </>
+    ) : (
+      <section class="band">
+        <div class="wrap">
+          <h2 class="rule-title">{team}</h2>
+          <div class="member-grid">
+            {members.map((m) => (
+              <article class:list={['member-card', { 'member-card--no-photo': !m.photo }]}>
+                {m.photo && (
+                  <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[300, 600]} sizes="(max-width: 520px) 30vw, 180px" />
+                )}
+                <div class="member-card__head">
+                  <h3>{m.name}</h3>
+                  <p class="member-card__role">{m.role}</p>
+                </div>
+                <div class="member-card__body">
+                  <div class="member-card__bio"><m.Bio /></div>
+                  {m.favoriteNasa && (
+                    <p class="member-card__nasa">
+                      Favorite NASA image:{' '}
+                      {m.favoriteNasa.url ? <a href={m.favoriteNasa.url}>{m.favoriteNasa.text}</a> : m.favoriteNasa.text}
+                    </p>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
-        </section>
-      ))}
-    </>
-  ))}
+        </div>
+      </section>
+    ),
+  )}
 
   <section class="band">
     <div class="wrap">

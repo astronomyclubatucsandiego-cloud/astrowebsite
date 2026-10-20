@@ -20,10 +20,11 @@ const photos = await Promise.all(
   })),
 );
 const here = url(`/gallery/${section.slug}/`);
+const banner = ('banner' in section && photos.find((p) => p.file === section.banner)) || photos[0];
 ---
 
 <Base title={`Gallery - ${section.title}`} description={section.description}>
-  <Banner title={section.title} image={photos[0]?.image ?? fallbackBanner} short />
+  <Banner title={section.title} image={banner?.image ?? fallbackBanner} position={'bannerPosition' in section ? section.bannerPosition : undefined} short />
 
   <section class="band">
     <div class="wrap">

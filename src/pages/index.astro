@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import SkyTonight from '../components/SkyTonight.astro';
-import { CLUB } from '../config';
+import { CLUB, url } from '../config';
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
 import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy--connor-sandfer.jpg';
@@ -29,22 +29,13 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
   <Banner title={CLUB.name} image={trunk} position="center 40%" />
   <SkyTonight />
 
-  <section class="band">
+  <section class="band" id="about">
     <div class="wrap">
       <p class="new-here">
         <strong>New here?</strong> Join our <a href={CLUB.discord}>Discord</a> and follow
         {' '}<a href={CLUB.instagram}>{CLUB.instagramHandle}</a> on Instagram. That's where we announce star
         parties, trips and meetings.
       </p>
-      <ul class="jump" aria-label="On this page">
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#calendar">Astronomy Calendar</a></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="band" id="about" style="padding-top:0">
-    <div class="wrap">
       <h2 class="rule-title">About Us</h2>
       <p class="lead">
         The Astronomy Club at UC San Diego aims to promote interest in astronomy and astrophysics among UC San Diego
@@ -64,16 +55,7 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
         <Image src={campus2} alt="Students lining up at the club telescope at an outdoor campus event" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
         <Image src={campus3} alt="A crowd at a campus observing event with telescopes and a live view on a laptop" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
       </div>
-      <p class="center" style="margin-top:2rem"><a href="gallery/">See more in the gallery</a></p>
-
-      <div class="friends">
-        <h3>Friends of the club</h3>
-        <p>
-          We've stargazed with the <a href="https://www.sdaa.org/">San Diego Astronomy Association</a> at their
-          Tierra Del Sol dark site, celebrated Día de las Estrellas Muertas with Latinx Advancing in Math and
-          Physics (LAMP) at UC San Diego, and hiked to Potato Chip Rock with the Hiking Group.
-        </p>
-      </div>
+      <p class="more-link"><a href={url('/gallery/')}>See more in the gallery</a></p>
     </div>
   </section>
 

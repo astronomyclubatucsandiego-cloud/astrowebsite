@@ -23,6 +23,7 @@ export const NAV = [
   { label: 'Home', href: '/' },
   { label: 'Meet the Board', href: '/board/' },
   { label: 'Gallery', href: '/gallery/' },
+  { label: 'Dark Sites', href: '/dark-sites/' },
   { label: 'FAQs', href: '/faq/' },
   { label: 'Resources', href: '/resources/' },
 ];

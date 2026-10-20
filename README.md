@@ -44,7 +44,7 @@ src/
   layouts/Base.astro    Top bar and the "Get involved" footer on every page
   components/Banner.astro  The big photo banner at the top of each page
   components/SkyTonight.astro  The "Tonight from UC San Diego" strip on the home page
-  pages/                One file per page: index (home), board, faq, resources, 404, gallery/
+  pages/                One file per page: index (home), board, dark-sites, faq, resources, 404, gallery/
   content/board/        Board members, one folder per year (2025-26/, 2026-27/)
   lib/gallery.ts        Gallery section names and descriptions, and how photo captions are read from file names
   lib/sky.ts            Sunset, darkness and moon phase math for the "Tonight" strip
@@ -110,7 +110,13 @@ Drop them in `src/assets/gallery/<section>/`. The sections are `general` (Campus
     don't know who took it. Always credit astrophotos when you can.
 - Empty sections stay hidden from the gallery page and its menu. They're listed in a "Coming soon" line
   instead, and show up on their own as soon as you add the first photo.
-- To rename a section or change its description, edit `src/lib/gallery.ts`.
+- Capital letters in the file name are kept, so write names like `Palomar-Visitor-Center` the way they should read.
+- Before adding photos from a camera, shrink them and strip the hidden camera data (it can include location):
+  `ffmpeg -i DSC0001.jpg -vf "scale=w=2400:h=2400:force_original_aspect_ratio=decrease" -q:v 6 -map_metadata -1 01-name.jpg`
+- To rename a section or change its description, edit `src/lib/gallery.ts`. If the page banner crops badly
+  (a group photo with heads cut off), set `banner` to a better photo's file name there, like Palomar does.
+- If a caption needs punctuation a file name can't hold (an apostrophe, "200-inch", capital letters), add it
+  under `captions` for that section in `src/lib/gallery.ts`, like "Elephant's Trunk Nebula".
 
 ### Everything else
 
@@ -119,6 +125,7 @@ Drop them in `src/assets/gallery/<section>/`. The sections are `general` (Campus
 | Discord, Instagram, email, forms, calendar | `CLUB` in `src/config.ts` |
 | Menu | `NAV` in `src/config.ts` |
 | Home page text and photos | `src/pages/index.astro` |
+| Dark Sites (Tierra Del Sol, Anza-Borrego, Palomar, trip tips) | `SITES` at the top of `src/pages/dark-sites.astro` |
 | FAQ | `src/pages/faq.astro` |
 | Resources (the link list) | `GROUPS` at the top of `src/pages/resources.astro`. Check a link works before adding it. |
 | "New here?" line on the home page | `src/pages/index.astro` |
@@ -150,6 +157,7 @@ Plain links break because of the `/astrowebsite/` path. Import it at the top of 
 - [ ] Finish the 2026-27 board. Only 6 form responses so far, and their photos are stuck on Drive behind a sign-in.
 - [ ] Add the Website Update Form link (`updateForm` in `src/config.ts`).
 - [ ] Get Connor's full-size Andromeda photo (the current one is only 200px).
-- [ ] Fill the empty gallery sections (Tierra Del Sol, Anza, Palomar, Merch).
+- [ ] Fill the empty gallery sections (Tierra Del Sol, Anza, Merch).
+- [ ] Add a photographer credit to the Palomar photos once we know who took them (rename to `...--first-last.jpg`).
 - [ ] Have the board look over the Resources links and add their favorites.
 - [ ] Point the old Google Site to this one, or take it down.
