@@ -1,0 +1,52 @@
+---
+/** A faint trail of small stars that follows the mouse over the photo banners and the home
+ *  "Tonight" strip, fading in under a second. Deliberately limited (the owner chose this
+ *  version): only on those dark areas, only with a mouse, never for people who have reduced
+ *  motion turned on, and never more than a couple dozen stars at once. Purely decorative. */
+---
+
+<script>
+  const fineMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (fineMouse && !calm) {
+    const MAX_STARS = 24;
+    const MIN_GAP_MS = 40;
+    const MIN_MOVE_PX = 14;
+    let live = 0;
+    let lastTime = 0;
+    let lastX = -999;
+    let lastY = -999;
+
+    const spawn = (area: HTMLElement, x: number, y: number) => {
+      const star = document.createElement('span');
+      star.className = 'spark';
+      star.setAttribute('aria-hidden', 'true');
+      const size = 5 + Math.random() * 6;
+      star.style.setProperty('--s', `${size.toFixed(1)}px`);
+      star.style.setProperty('--r', `${Math.round(Math.random() * 90)}deg`);
+      star.style.setProperty('--dx', `${Math.round((Math.random() - 0.5) * 24)}px`);
+      star.style.setProperty('--dy', `${Math.round(8 + Math.random() * 16)}px`);
+      star.style.left = `${x}px`;
+      star.style.top = `${y}px`;
+      area.appendChild(star);
+      live += 1;
+      star.addEventListener('animationend', () => {
+        star.remove();
+        live -= 1;
+      }, { once: true });
+    };
+
+    document.querySelectorAll<HTMLElement>('.banner, .tonight--strip').forEach((area) => {
+      area.addEventListener('pointermove', (e) => {
+        if (live >= MAX_STARS || e.timeStamp - lastTime < MIN_GAP_MS) return;
+        if (Math.hypot(e.clientX - lastX, e.clientY - lastY) < MIN_MOVE_PX) return;
+        lastTime = e.timeStamp;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        const box = area.getBoundingClientRect();
+        spawn(area, e.clientX - box.left, e.clientY - box.top);
+      }, { passive: true });
+    });
+  }
+</script>

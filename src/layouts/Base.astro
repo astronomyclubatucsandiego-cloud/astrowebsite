@@ -5,6 +5,7 @@ import { CLUB, NAV, url } from '../config';
 import logo from '../assets/site/logo.png';
 import discord from '../assets/site/discord.png';
 import instagram from '../assets/site/instagram.png';
+import StarTrail from '../components/StarTrail.astro';
 
 interface Props {
   title?: string;
@@ -66,5 +67,6 @@ const isCurrent = (href: string) => {
         <p>© {new Date().getFullYear()} {CLUB.name}</p>
       </div>
     </footer>
+    <StarTrail />
   </body>
 </html>

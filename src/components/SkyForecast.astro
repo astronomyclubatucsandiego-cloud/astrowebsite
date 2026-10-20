@@ -1,0 +1,65 @@
+---
+/** Observing forecast: Astrospheric's official embed (astrospheric.com/embed), the same
+ *  chart SDAA uses for Tierra del Sol. Astrospheric allows ONE control per website, so this
+ *  component must only appear once on the whole site; the location buttons switch it with
+ *  ChangeLocation instead of creating more. Without JavaScript, a link to Astrospheric shows. */
+
+/* Coordinates: UCSD; Tierra del Sol from SDAA's own embed; Palomar from the Hale Telescope's
+   published position; Anza-Borrego is the park's reference point near Borrego Springs. */
+const LOCATIONS = [
+  { id: 'campus', label: 'Campus', lat: 32.8801, lon: -117.234 },
+  { id: 'tierra-del-sol', label: 'Tierra Del Sol', lat: 32.6138889, lon: -116.3327778 },
+  { id: 'anza-borrego', label: 'Anza-Borrego', lat: 33.25917, lon: -116.39917 },
+  { id: 'palomar', label: 'Palomar', lat: 33.35628, lon: -116.86489 },
+];
+const [first] = LOCATIONS;
+---
+
+<div class="forecast" data-forecast data-lat={first.lat} data-lon={first.lon}>
+  <ul class="subnav forecast__places" aria-label="Forecast location">
+    {LOCATIONS.map((l, i) => (
+      <li>
+        <button type="button" data-lat={l.lat} data-lon={l.lon} aria-pressed={i === 0 ? 'true' : 'false'}>{l.label}</button>
+      </li>
+    ))}
+  </ul>
+  <div class="forecast__frame">
+    <div id="astrospheric-embed" class="forecast__embed"></div>
+  </div>
+  <p class="forecast__credit">
+    Forecast by <a href="https://www.astrospheric.com/" rel="noopener">Astrospheric</a>. Updates four times a day.
+  </p>
+  <noscript>
+    <p class="forecast__credit">Turn on JavaScript to see the forecast here, or open it on <a href="https://www.astrospheric.com/">Astrospheric</a>.</p>
+  </noscript>
+</div>
+
+<script is:inline src="https://s-v1-galaxy-direct.astrospheric.com/embed/astrosphericembed.js" defer></script>
+<script>
+  declare const m_AstrosphericEmbed: {
+    Create: (id: string, lat: number, lon: number) => void;
+    ChangeLocation: (lat: number, lon: number) => void;
+  };
+
+  const root = document.querySelector<HTMLElement>('[data-forecast]');
+  if (root) {
+    let created = false;
+    // Astrospheric's script only draws once the page has loaded and the box is on screen.
+    const create = () => {
+      if (created || typeof m_AstrosphericEmbed === 'undefined') return;
+      m_AstrosphericEmbed.Create('astrospheric-embed', Number(root.dataset.lat), Number(root.dataset.lon));
+      created = true;
+    };
+    if (document.readyState === 'complete') create();
+    else window.addEventListener('load', create, { once: true });
+
+    root.querySelectorAll<HTMLButtonElement>('button[data-lat]').forEach((button) => {
+      button.addEventListener('click', () => {
+        root.querySelectorAll('button[data-lat]').forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+        if (typeof m_AstrosphericEmbed !== 'undefined') {
+          m_AstrosphericEmbed.ChangeLocation(Number(button.dataset.lat), Number(button.dataset.lon));
+        }
+      });
+    });
+  }
+</script>

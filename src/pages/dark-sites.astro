@@ -83,13 +83,13 @@ const SITES = [
     <section id={site.id} class:list={['band', { 'band--dark': 'dark' in site && site.dark }]}>
       <div class="wrap">
         <h2 class="rule-title">{site.name}</h2>
-        <div class:list={['site', { 'site--no-photo': !site.picture }]}>
+        <div class:list={['split', { 'split--no-media': !site.picture }]}>
           {site.picture && (
-            <a class="site__photo" href={url(`/gallery/${site.gallery}/`)}>
+            <a class="split__media" href={url(`/gallery/${site.gallery}/`)}>
               <Image src={site.picture.image} alt={site.picture.alt} widths={[500, 1000]} sizes="(max-width: 760px) 90vw, 420px" />
             </a>
           )}
-          <div class="site__text">
+          <div class="split__text">
             <p>{site.intro}</p>
             <dl class="site__facts">
               {site.facts.map(([term, detail]) => (

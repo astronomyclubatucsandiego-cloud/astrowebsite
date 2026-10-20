@@ -1,13 +1,23 @@
 ---
+/** Resources: free tools and places, each group shown as a photo (or the live Tonight panel)
+ *  beside its links, like the image-beside-text rows on the old Google Site. Rows alternate
+ *  sides; Astrophotography is the one dark band. Every link was checked when added. */
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
-import { CLUB } from '../config';
-import banner from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
+import SkyTonight from '../components/SkyTonight.astro';
+import NasaPicture from '../components/NasaPicture.astro';
+import { CLUB, url } from '../config';
+import campus from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
+import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
+import palomar from '../assets/gallery/palomar/02-club-group-photo-on-the-Hale-Telescope-steps.jpg';
 
-/* Free, well-known tools and places. Every link was checked when added; recheck now and then. */
 const GROUPS = [
   {
+    id: 'planning',
     title: 'Planning a Night Out',
+    intro: 'Three things decide a good night: clouds, light pollution and the moon. Here is how to check each one.',
+    media: 'tonight',
     links: [
       { name: 'National Weather Service, San Diego', url: 'https://www.weather.gov/sgx/', note: 'The local forecast. Check cloud cover before you drive anywhere.' },
       { name: 'Light Pollution Map', url: 'https://www.lightpollutionmap.info/', note: 'See how dark the sky is anywhere in the county, and find darker spots near you.' },
@@ -15,7 +25,10 @@ const GROUPS = [
     ],
   },
   {
+    id: 'sky',
     title: 'Finding Your Way Around the Sky',
+    intro: "Not sure what you're looking at? These show what is up tonight and where to point.",
+    media: { src: campus, alt: 'A member imaging with the club Dobsonian telescope on campus', caption: 'A campus observing night.' },
     links: [
       { name: 'Stellarium Web', url: 'https://stellarium-web.org/', note: 'A free planetarium in your browser. Shows exactly what is up from where you are.' },
       { name: "NASA: What's Up", url: 'https://science.nasa.gov/skywatching/whats-up/', note: 'A short monthly video and guide to what to look for each month.' },
@@ -23,7 +36,11 @@ const GROUPS = [
     ],
   },
   {
+    id: 'astrophotography',
     title: 'Astrophotography',
+    intro: 'Want to take pictures like the ones in our gallery? Start here.',
+    dark: true,
+    media: { src: horsehead, alt: 'The Horsehead Nebula', caption: 'The Horsehead Nebula, taken by our former club president Connor Sandfer.', href: '/gallery/astrophotography/' },
     links: [
       { name: 'Siril', url: 'https://siril.org/', note: 'Free software for stacking and processing deep-sky images.' },
       { name: 'AstroBin', url: 'https://www.astrobin.com/', note: 'Where astrophotographers share images along with the gear and settings they used.' },
@@ -31,33 +48,67 @@ const GROUPS = [
     ],
   },
   {
+    id: 'places',
     title: 'Places We Go',
+    intro: 'The dark skies and observatories we visit as a club.',
+    media: { src: palomar, alt: 'The club on the steps of the 200-inch Hale Telescope at Palomar Observatory', caption: 'Our trip to Palomar Observatory.', href: '/dark-sites/' },
     links: [
+      { name: 'Our Dark Sites page', url: '/dark-sites/', note: 'Where we go, what to bring, and how to come with us.' },
       { name: 'Anza-Borrego Desert State Park', url: 'https://www.parks.ca.gov/?page_id=638', note: 'Home of our annual stargazing and camping trip.' },
       { name: 'Palomar Observatory', url: 'https://sites.astro.caltech.edu/palomar/visitor/', note: 'Visitor information for the observatory on Palomar Mountain.' },
     ],
   },
-];
+] as const;
+
+const isInternal = (href: string) => href.startsWith('/');
+/* NASA's picture of the day is shown as its own row right after this group. Rows alternate
+   sides, so groups after it shift by one to keep the zig-zag. */
+const NASA_AFTER = 'astrophotography';
+const nasaIndex = GROUPS.findIndex((g) => g.id === NASA_AFTER);
+const flipped = (i: number) => (i > nasaIndex ? i + 1 : i) % 2 === 1;
 ---
 
 <Base title="Resources" description="Free tools and places for observing and astrophotography, picked by the Astronomy Club at UC San Diego.">
-  <Banner title="Resources" image={banner} position="center 30%" short />
+  <Banner title="Resources" image={horsehead} position="center 30%" short />
 
-  <section class="band">
+  {GROUPS.map((group, i) => (
+    <>
+    <section id={group.id} class:list={['band', { 'band--dark': 'dark' in group && group.dark }]}>
+      <div class="wrap">
+        <h2 class="rule-title">{group.title}</h2>
+        <div class:list={['split', { 'split--flip': flipped(i) }]}>
+          {group.media === 'tonight' ? (
+            <div class="split__media"><SkyTonight variant="panel" /></div>
+          ) : (
+            <figure class="split__media">
+              {'href' in group.media ? (
+                <a href={url(group.media.href)}><Image src={group.media.src} alt={group.media.alt} widths={[500, 1000]} sizes="(max-width: 760px) 90vw, 420px" /></a>
+              ) : (
+                <Image src={group.media.src} alt={group.media.alt} widths={[500, 1000]} sizes="(max-width: 760px) 90vw, 420px" />
+              )}
+              <figcaption>{group.media.caption}</figcaption>
+            </figure>
+          )}
+          <div class="split__text">
+            <p class="resources-intro">{group.intro}</p>
+            <ul class="resources">
+              {group.links.map((l) => (
+                <li>
+                  <a href={isInternal(l.url) ? url(l.url) : l.url} rel={isInternal(l.url) ? undefined : 'noopener'}>{l.name}</a>
+                  <p>{l.note}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    {group.id === NASA_AFTER && <NasaPicture />}
+    </>
+  ))}
+
+  <section class="band band--tight-top">
     <div class="wrap">
-      {GROUPS.map((group) => (
-        <section class="resource-group">
-          <h2 class="subhead">{group.title}</h2>
-          <ul class="resources">
-            {group.links.map((l) => (
-              <li>
-                <a href={l.url} rel="noopener">{l.name}</a>
-                <p>{l.note}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
       <p class="resources-note">Know a resource that should be here? Share it in our <a href={CLUB.discord}>Discord</a>.</p>
     </div>
   </section>

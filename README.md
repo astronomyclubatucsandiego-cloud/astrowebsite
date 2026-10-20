@@ -127,7 +127,7 @@ Drop them in `src/assets/gallery/<section>/`. The sections are `general` (Campus
 | Home page text and photos | `src/pages/index.astro` |
 | Dark Sites (Tierra Del Sol, Anza-Borrego, Palomar, trip tips) | `SITES` at the top of `src/pages/dark-sites.astro` |
 | FAQ | `src/pages/faq.astro` |
-| Resources (the link list) | `GROUPS` at the top of `src/pages/resources.astro`. Check a link works before adding it. |
+| Resources | `GROUPS` at the top of `src/pages/resources.astro`: each group has a title, a one-line intro, a photo (or the live "Tonight" panel), and its links. Check a link works before adding it. |
 | "New here?" line on the home page | `src/pages/index.astro` |
 | Colors and fonts | top of `src/styles/global.css` |
 

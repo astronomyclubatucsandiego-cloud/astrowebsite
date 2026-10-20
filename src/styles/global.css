@@ -77,9 +77,24 @@ a:hover { text-decoration-thickness: 2px; }
 .banner { position: relative; display: grid; place-items: center; min-height: clamp(320px, 24vw, 560px); padding: 4rem 1rem; color: #fff; text-align: center; overflow: hidden; background: #05080c; }
 .banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .banner::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
-.banner h1 { position: relative; z-index: 1; margin: 0; font-family: var(--serif-display); font-weight: 700; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
+.banner h1 { position: relative; z-index: 2; margin: 0; font-family: var(--serif-display); font-weight: 700; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
 /* Height grows with screen width so the crop looks the same on a laptop and a big monitor. */
 .banner--short { min-height: clamp(240px, 17vw, 420px); }
+
+/* Star trail (StarTrail.astro): small four-point stars over banners and the Tonight strip.
+   Moonlight cream, the same color as the drawn moon. Above the banner's dark overlay, below the title. */
+.spark {
+  position: absolute; z-index: 1; width: var(--s); height: var(--s); pointer-events: none;
+  background: #efe8cf;
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  transform: translate(-50%, -50%) rotate(var(--r));
+  animation: spark .8s ease-out forwards;
+}
+@keyframes spark {
+  from { opacity: .95; }
+  to { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(calc(var(--r) + 60deg)) scale(.3); }
+}
+@media (prefers-reduced-motion: reduce) { .spark { display: none; } }
 
 /* ---------- Bands ---------- */
 .band { padding-block: 3rem; }
@@ -124,6 +139,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* A plain status line under the banner, like an observatory's daily sky report. */
 .tonight { background: var(--navy); color: #e8eef2; border-top: 1px solid rgba(255, 255, 255, .08); }
 .tonight[hidden] { display: none; }
+.tonight--strip { position: relative; overflow: hidden; }
 .tonight__inner { display: flex; align-items: center; gap: 1rem; padding-block: .9rem; }
 .tonight__moon { flex: none; }
 .tonight__moon-dark { fill: #26343d; }
@@ -131,6 +147,15 @@ a:hover { text-decoration-thickness: 2px; }
 .tonight__title { margin: 0; font-family: var(--slab); font-size: 1rem; font-weight: 700; color: #fff; }
 .tonight__facts { margin: .15rem 0 0; display: flex; flex-wrap: wrap; gap: .2rem 1.6rem; font-size: .95rem; }
 .tonight__facts strong { color: #fff; }
+.tonight__planets { margin: .3rem 0 0; font-size: .95rem; }
+.tonight__planets strong { color: #fff; }
+.tonight__planets[hidden] { display: none; }
+/* Panel version (Resources): the same data as a box beside the planning links, facts stacked. */
+.tonight--panel { border-top: 0; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.tonight--panel .tonight__inner { align-items: flex-start; gap: 1.2rem; padding: 1.6rem 1.4rem; }
+.tonight--panel .tonight__moon { width: 64px; height: 64px; }
+.tonight--panel .tonight__title { font-size: 1.2rem; }
+.tonight--panel .tonight__facts { flex-direction: column; gap: .35rem; margin-top: .6rem; font-size: 1rem; }
 
 /* ---------- Get involved footer band ---------- */
 .involved { background: var(--mist); padding-block: 1.6rem; }
@@ -203,6 +228,23 @@ a:hover { text-decoration-thickness: 2px; }
 .subnav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; margin: 0 0 2.4rem; padding: 0; list-style: none; }
 .subnav a { color: var(--ink); }
 .subnav a[aria-current="page"] { font-weight: 700; color: var(--blue); text-decoration: none; }
+/* Same look for button choices (forecast locations): underlined like links, chosen one bold. */
+.subnav button { padding: .2rem 0; border: 0; background: none; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: .15em; cursor: pointer; }
+.subnav button[aria-pressed="true"] { font-weight: 700; text-decoration: none; }
+.band--dark .subnav button[aria-pressed="true"] { color: #fff; }
+
+/* ---------- NASA picture of the day (Resources) ---------- */
+.apod[hidden] { display: none; }
+.apod__title { margin: 0; font-family: var(--slab); font-size: 1.5rem; line-height: 1.25; color: var(--blue); }
+.apod__date { margin: .2rem 0 1rem; font-style: italic; }
+
+/* ---------- Observing forecast (Astrospheric embed) ---------- */
+.forecast__places { margin-bottom: 1.4rem; }
+/* Astrospheric's chart is 350 to 924px wide. Center it; on narrow phones let it use the full screen width. */
+.forecast__frame { max-width: 924px; margin-inline: auto; min-height: 500px; overflow-x: auto; }
+.forecast__embed iframe { display: block; margin-inline: auto; }
+.forecast__credit { margin: .8rem 0 0; text-align: center; font-size: .9rem; }
+@media (max-width: 420px) { .forecast__frame { margin-inline: -1rem; } }
 
 .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
 .photos a { display: block; }
@@ -226,11 +268,23 @@ a:hover { text-decoration-thickness: 2px; }
 .equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
 
+/* ---------- Split rows: photo (or panel) beside text ---------- */
+/* Used by Dark Sites and Resources, like the old Google Site's image-beside-text rows.
+   .split--flip puts the media on the right so rows can alternate sides. */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2.5rem; align-items: start; }
+.split--flip { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.split--flip .split__media { order: 2; }
+.split--no-media { grid-template-columns: minmax(0, 40rem); justify-content: center; }
+.split__media { margin: 0; }
+.split__media img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.split__media figcaption { margin-top: .6rem; font-size: .9rem; font-style: italic; }
+.split__text > p:first-child { margin-top: 0; }
+@media (max-width: 760px) {
+  .split, .split--flip { grid-template-columns: 1fr; gap: 1.4rem; }
+  .split--flip .split__media { order: 0; }
+}
+
 /* ---------- Dark Sites ---------- */
-.site { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2.5rem; align-items: start; }
-.site--no-photo { grid-template-columns: minmax(0, 40rem); justify-content: center; }
-.site__photo img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
-.site__text > p:first-child { margin-top: 0; }
 .site__facts { margin: 1.2rem 0; display: grid; gap: .5rem; }
 .site__facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
 .band--dark .site__facts div { border-color: var(--rule-dark); }
@@ -238,7 +292,7 @@ a:hover { text-decoration-thickness: 2px; }
 .site__facts dd { margin: 0; }
 .site__links { margin: 0; padding-left: 1.2rem; }
 .site__links li { margin: .25rem 0; }
-@media (max-width: 760px) { .site { grid-template-columns: 1fr; gap: 1.4rem; } .site__facts div { grid-template-columns: 1fr; gap: 0; } }
+@media (max-width: 760px) { .site__facts div { grid-template-columns: 1fr; gap: 0; } }
 
 .trip-guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
 .trip-guide h3 { margin: 0 0 .6rem; font-family: var(--slab); font-size: 1.3rem; color: var(--blue); }
@@ -247,13 +301,15 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 860px) { .trip-guide { grid-template-columns: 1fr; gap: 1.6rem; max-width: 38rem; margin-inline: auto; } }
 
 /* ---------- Resources ---------- */
-.resources { list-style: none; margin: 0 auto; padding: 0; max-width: 38rem; }
-.resources li { padding-block: 1.1rem; border-top: 1px solid var(--rule); }
-.resources li:first-child { padding-top: 0; border-top: 0; }
+.resources-intro { margin: 0 0 1.2rem; font-size: 1.1rem; }
+.resources { list-style: none; margin: 0; padding: 0; }
+.resources li { padding-block: 1rem; border-top: 1px solid var(--rule); }
+.resources li:first-child { border-top: 3px solid var(--rule); }
+.band--dark .resources li { border-color: var(--rule-dark); }
 .resources a { font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
 .resources p { margin: .3rem 0 0; }
-.resource-group + .resource-group { margin-top: 3rem; }
-.resources-note { max-width: 38rem; margin: 3rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; }
+.resources-note { max-width: 38rem; margin: 0 auto; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; }
+.band--tight-top { padding-top: 0; }
 
 /* ---------- Prose pages ---------- */
 .prose { max-width: 38rem; margin-inline: auto; }

@@ -1,0 +1,83 @@
+---
+/** Today's NASA Astronomy Picture of the Day (apod.nasa.gov), loaded in the browser from NASA's
+ *  public API. Uses the shared DEMO_KEY, which allows a handful of requests per visitor per
+ *  hour, so the result is cached for the day in localStorage. Hidden until it loads, and stays
+ *  hidden if NASA's API is down or the day's entry has no image. */
+---
+
+<section class="band apod" id="nasa-picture" aria-labelledby="apod-title" hidden>
+  <div class="wrap">
+    <h2 class="rule-title" id="apod-title">Today from NASA</h2>
+    <div class="split split--flip">
+      <figure class="split__media">
+        <a data-apod-link href="https://apod.nasa.gov/apod/astropix.html"><img data-apod-img alt="" loading="lazy" decoding="async" /></a>
+        <figcaption data-apod-credit></figcaption>
+      </figure>
+      <div class="split__text">
+        <h3 class="apod__title" data-apod-title></h3>
+        <p class="apod__date" data-apod-date></p>
+        <p data-apod-text></p>
+        <p><a data-apod-more href="https://apod.nasa.gov/apod/astropix.html">Read the full explanation on NASA's site</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  interface Apod {
+    date: string;
+    title: string;
+    explanation: string;
+    media_type: string;
+    url?: string;
+    thumbnail_url?: string;
+    copyright?: string;
+  }
+
+  const section = document.getElementById('nasa-picture');
+  if (section) {
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+    const KEY = 'apod-cache';
+
+    const show = (a: Apod) => {
+      const src = a.media_type === 'image' ? a.url : a.thumbnail_url;
+      if (!src) return;
+      const page = `https://apod.nasa.gov/apod/ap${a.date.slice(2).replaceAll('-', '')}.html`;
+      const q = <T extends Element>(sel: string) => section.querySelector<T>(sel)!;
+      q<HTMLImageElement>('[data-apod-img]').src = src;
+      q<HTMLImageElement>('[data-apod-img]').alt = a.title;
+      q<HTMLAnchorElement>('[data-apod-link]').href = page;
+      q<HTMLAnchorElement>('[data-apod-more]').href = page;
+      q('[data-apod-title]').textContent = a.title;
+      q('[data-apod-date]').textContent = new Date(`${a.date}T12:00:00`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      // The first two sentences; the rest is one click away on NASA's page.
+      const sentences = a.explanation.match(/[^.!?]+[.!?]+/g) ?? [a.explanation];
+      q('[data-apod-text]').textContent = sentences.slice(0, 2).join('').trim();
+      q('[data-apod-credit]').textContent = a.copyright
+        ? `Image: ${a.copyright.replace(/\s+/g, ' ').trim()}. Via NASA APOD.`
+        : 'Image via NASA Astronomy Picture of the Day.';
+      section.hidden = false;
+    };
+
+    let cached: Apod | null = null;
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) cached = JSON.parse(raw);
+    } catch {}
+
+    if (cached && cached.date === today) {
+      show(cached);
+    } else {
+      fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&thumbs=true')
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((a: Apod) => {
+          try { localStorage.setItem(KEY, JSON.stringify(a)); } catch {}
+          show(a);
+        })
+        .catch(() => {
+          // NASA unavailable: show yesterday's cached picture if we have one, otherwise stay hidden.
+          if (cached) show(cached);
+        });
+    }
+  }
+</script>

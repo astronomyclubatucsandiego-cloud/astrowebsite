@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import SkyTonight from '../components/SkyTonight.astro';
+import SkyForecast from '../components/SkyForecast.astro';
 import { CLUB, url } from '../config';
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
@@ -56,6 +57,17 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
         <Image src={campus3} alt="A crowd at a campus observing event with telescopes and a live view on a laptop" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
       </div>
       <p class="more-link"><a href={url('/gallery/')}>See more in the gallery</a></p>
+    </div>
+  </section>
+
+  <section class="band band--dark" id="forecast">
+    <div class="wrap">
+      <h2 class="rule-title">Observing Forecast</h2>
+      <p class="lead">
+        The next few nights from Astrospheric: cloud cover, transparency (how clear the air is) and seeing
+        (how steady it is). Pick a place we go.
+      </p>
+      <SkyForecast />
     </div>
   </section>
 
