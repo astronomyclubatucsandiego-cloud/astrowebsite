@@ -1,23 +1,32 @@
-// The theme package owns the prose-page model; the board collection is ours.
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { collections as theme } from 'astro-theme-popular/schemas';
 
-/** Board members: one Markdown file each in src/content/board/. */
+/** Board members: one Markdown file each in src/content/board/. The body is the bio. */
 const board = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/board' }),
-  schema: z.object({
-    name: z.string(),
-    role: z.string(),
-    /** Display order on the Meet the Board page, lowest first. */
-    order: z.number().default(100),
-    photo: z.string().optional(),
-    major: z.string().optional(),
-    year: z.string().optional(),
-    bio: z.string().optional(),
-    favoriteObject: z.string().optional(),
-    social: z.array(z.object({ label: z.string(), icon: z.string(), url: z.string() })).default([]),
-  }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/board' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      role: z.string(),
+      team: z.enum(['Executive Board', 'Media Team', 'Outreach Team']),
+      /** Order within the team, lowest first. */
+      order: z.number(),
+      photo: image().optional(),
+    }),
 });
 
-export const collections = { pages: theme.pages, board };
+/** Events: one Markdown file each in src/content/events/. The body is the description. */
+const events = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      /** Human-readable date as it should appear, e.g. "January 23, 2026". */
+      date: z.string().optional(),
+      /** Page order, lowest first (newest events first). */
+      order: z.number(),
+      flyers: z.array(z.object({ src: image(), alt: z.string() })).default([]),
+    }),
+});
+
+export const collections = { board, events };

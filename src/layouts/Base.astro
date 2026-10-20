@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import { CLUB, NAV, url } from '../config';
+import logo from '../assets/site/logo.png';
+import discord from '../assets/site/discord.png';
+import instagram from '../assets/site/instagram.png';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = `${CLUB.name}: stargazing, astrophotography, talks and dark-sky trips for UC San Diego students.` } = Astro.props;
+const pageTitle = title ? `${CLUB.shortName} - ${title}` : CLUB.shortName;
+const here = Astro.url.pathname;
+const isCurrent = (href: string) => {
+  const full = url(href);
+  return href === '/' ? here === full : here.startsWith(full);
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/png" href={logo.src} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand" href={url('/')}>
+          <Image src={logo} alt="" width={68} height={68} />
+          {CLUB.shortName}
+        </a>
+        <nav class="nav" aria-label="Main">
+          {NAV.map((item) => (
+            <a href={url(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer>
+      <section class="involved" aria-labelledby="involved-label">
+        <div class="wrap involved__inner">
+          <span class="involved__label" id="involved-label">Get involved:</span>
+          <div class="involved__icons">
+            <a href={CLUB.discord} rel="noopener"><Image src={discord} alt="Join our Discord" width={120} /></a>
+            <a href={CLUB.instagram} rel="noopener"><Image src={instagram} alt={`Follow ${CLUB.instagramHandle} on Instagram`} width={120} /></a>
+          </div>
+          <a class="involved__email" href={`mailto:${CLUB.email}`}>{CLUB.email}</a>
+        </div>
+      </section>
+      <div class="sitefoot">
+        <p>© {new Date().getFullYear()} {CLUB.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>

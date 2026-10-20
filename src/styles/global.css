@@ -1,0 +1,205 @@
+/* The Astronomy Club at UC San Diego.
+   Look carried over from the club's Google Site: a navy top bar, photo
+   banners with a Playfair Display title, Arvo headings between grey rules,
+   Lato body text, and alternating white / charcoal bands. */
+
+@import '@fontsource/arvo/400.css';
+@import '@fontsource/arvo/700.css';
+@import '@fontsource/lato/400.css';
+@import '@fontsource/lato/400-italic.css';
+@import '@fontsource/lato/700.css';
+@import '@fontsource/playfair-display/700.css';
+
+:root {
+  --navy: #0b1a21;        /* top bar */
+  --ink: #212121;         /* body text */
+  --steel: #4e6e8e;       /* section headings on white */
+  --blue: #1f4e87;        /* names and subheadings on white */
+  --ice: #b7cde2;         /* names and subheadings on charcoal */
+  --charcoal: #3d3d3d;    /* dark bands */
+  --rule: #e6e6e6;        /* heading rules on white */
+  --rule-dark: #2e2e2e;   /* heading rules on charcoal */
+  --mist: #eeeeee;        /* footer band */
+  --link: #1a5fa6;
+
+  --serif-display: 'Playfair Display', Georgia, serif;
+  --slab: 'Arvo', Rockwell, Georgia, serif;
+  --sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+  --page: 62rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: #fff;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--link); }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid #f2b705; outline-offset: 2px; }
+
+.wrap { width: min(var(--page), 100% - 2rem); margin-inline: auto; }
+.skip { position: absolute; left: -999px; top: 0; z-index: 100; background: #fff; color: var(--ink); padding: .5rem 1rem; }
+.skip:focus { left: .5rem; top: .5rem; }
+
+/* ---------- Top bar ---------- */
+.topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); color: #fff; }
+.topbar__inner { display: flex; align-items: center; gap: 1rem; min-height: 56px; padding-inline: 1.5rem; }
+.brand { display: flex; align-items: center; gap: .75rem; color: #fff; text-decoration: none; font-family: var(--slab); font-size: 1.25rem; white-space: nowrap; }
+.brand img { width: 34px; height: 34px; border-radius: 50%; background: #fff; }
+.nav { margin-left: auto; display: flex; gap: 1.4rem; }
+.nav a { position: relative; color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; padding-block: 1rem; white-space: nowrap; }
+.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: transparent; }
+.nav a:hover::after { background: rgba(255, 255, 255, .35); }
+.nav a[aria-current="page"]::after { background: #fff; }
+
+@media (max-width: 860px) {
+  .topbar__inner { flex-wrap: wrap; padding: .6rem 1rem 0; gap: 0; }
+  .nav { margin-left: 0; width: 100%; overflow-x: auto; gap: 1.1rem; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { padding-block: .6rem .8rem; font-size: .9rem; }
+}
+
+/* ---------- Photo banner ---------- */
+.banner { position: relative; display: grid; place-items: center; min-height: 320px; padding: 4rem 1rem; color: #fff; text-align: center; overflow: hidden; background: #05080c; }
+.banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
+.banner h1 { position: relative; z-index: 1; margin: 0; font-family: var(--serif-display); font-weight: 700; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
+.banner--short { min-height: 240px; }
+
+/* ---------- Bands ---------- */
+.band { padding-block: 3rem; }
+.band--dark { background: var(--charcoal); color: #fff; }
+.band--dark a { color: #cfe2f5; }
+.band--mist { background: var(--mist); }
+
+/* Section heading: Arvo between two thick grey rules, as on the Google Site. */
+.rule-title { margin: 0 0 2rem; padding-block: 1rem; border-block: 4px solid var(--rule); text-align: center; font-family: var(--slab); font-weight: 700; font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.2; color: var(--steel); }
+.band--dark .rule-title { border-color: var(--rule-dark); color: #fff; }
+.rule-title--left { text-align: left; }
+
+.lead { text-align: center; font-size: 1.15rem; max-width: 52rem; margin: 0 auto 2.5rem; }
+.center { text-align: center; }
+
+/* ---------- Home ---------- */
+.jump { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .6rem; }
+.jump a { color: var(--ink); font-size: .95rem; }
+
+.photo-row { display: grid; grid-template-columns: repeat(3, 1fr) 1fr; gap: 1.6rem; align-items: start; margin-top: 2rem; }
+.photo-row img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.photo-row p { margin: 0; }
+.photo-row--caption-first { grid-template-columns: 1fr repeat(3, 1fr); }
+@media (max-width: 760px) {
+  .photo-row, .photo-row--caption-first { grid-template-columns: 1fr 1fr; }
+  .photo-row p { grid-column: 1 / -1; order: -1; }
+}
+
+.feature { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
+.feature__media img { width: 100%; max-width: 22rem; margin-inline: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
+.feature h3 { margin: 0 0 1rem; padding-block: .6rem; border-block: 4px solid var(--rule-dark); font-family: var(--slab); font-size: 2.2rem; line-height: 1.2; }
+.feature .date { font-style: italic; margin: -.4rem 0 1rem; }
+@media (max-width: 760px) { .feature { grid-template-columns: 1fr; gap: 2rem; } }
+
+.calendars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+.calendars h3 { margin: 0 0 .8rem; text-align: center; font-family: 'Arvo', Georgia, serif; font-size: 2rem; color: var(--steel); }
+.calendars iframe { width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
+@media (max-width: 760px) { .calendars { grid-template-columns: 1fr; } }
+
+/* ---------- Get involved footer band ---------- */
+.involved { background: var(--mist); padding-block: 1.6rem; }
+.involved__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.6rem 2.2rem; }
+.involved__label { font-weight: 700; font-size: 1.25rem; }
+.involved__icons { display: flex; gap: 1.6rem; }
+.involved__icons img { width: 60px; height: 60px; object-fit: contain; }
+.involved__email { font-size: 1rem; }
+.sitefoot { padding-block: 1.2rem 1.6rem; font-size: .85rem; color: #5f6368; text-align: center; background: var(--mist); border-top: 1px solid #dcdcdc; }
+.sitefoot p { margin: .2rem 0; }
+
+/* ---------- Board ---------- */
+.team-strip { position: relative; overflow: hidden; color: #fff; background: #0c1116; }
+.team-strip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.team-strip h2 { position: relative; margin: 0; padding-block: 1.6rem; font-size: 1.4rem; font-weight: 700; }
+
+.member { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: start; }
+.member__photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.member h3 { margin: 0; padding-block: .5rem; border-block: 4px solid var(--rule); font-family: var(--slab); font-size: clamp(1.9rem, 3.5vw, 2.5rem); line-height: 1.2; color: var(--blue); }
+.member__role { margin: 1.2rem 0 .6rem; font-size: 1.45rem; font-weight: 700; color: var(--blue); }
+.member__bio p { margin: 0 0 .9rem; }
+.band--dark .member h3 { color: var(--ice); border-color: var(--rule-dark); }
+.band--dark .member__role { color: var(--ice); }
+/* Dark rows put the photo first, like the Google Site. */
+.band--dark .member { grid-template-columns: 1fr 1.4fr; }
+.band--dark .member__photo { order: -1; }
+@media (max-width: 760px) {
+  .member, .band--dark .member { grid-template-columns: 1fr; gap: 1.4rem; }
+  .member__photo { order: -1; max-width: 22rem; }
+}
+
+.update-note { margin-top: 0; padding: 1.4rem 1.6rem; border: 2px solid var(--rule); }
+.update-note h2 { margin: 0 0 .3rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
+.update-note p { margin: 0; }
+
+/* ---------- Events ---------- */
+.event .feature { grid-template-columns: 1fr 1.3fr; }
+.event h2.rule-title { margin-bottom: .6rem; }
+.event .date { text-align: center; font-style: italic; font-size: 1.1rem; margin: 0 0 2rem; }
+.event__body p:first-child { margin-top: 0; }
+.flyers { display: grid; gap: 1.6rem; }
+.flyers--row { grid-template-columns: repeat(auto-fit, minmax(13rem, 18rem)); justify-content: center; margin-top: 2rem; }
+.flyers img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.flyers a { display: block; }
+
+/* ---------- Gallery ---------- */
+.gallery-index { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 1.6rem; }
+.gallery-index a { color: var(--ink); text-decoration: none; }
+.gallery-index a:hover h2 { text-decoration: underline; }
+.gallery-index figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: #1b232b; display: grid; place-items: center; }
+.gallery-index figure img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-index figure span { color: #9aa7b3; font-style: italic; }
+.gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--slab); font-size: 1.45rem; color: var(--blue); }
+.gallery-index p { margin: 0; font-size: .95rem; color: #555; }
+@media (max-width: 860px) { .gallery-index { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .gallery-index { grid-template-columns: 1fr; } }
+
+.subnav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; margin: 0 0 2.4rem; padding: 0; list-style: none; }
+.subnav a { color: var(--ink); }
+.subnav a[aria-current="page"] { font-weight: 700; color: var(--blue); text-decoration: none; }
+
+.photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.photos a { display: block; }
+.photos img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.photos figure { margin: 0; }
+.photos figcaption { margin-top: .4rem; font-size: .9rem; color: #555; }
+@media (max-width: 760px) { .photos { grid-template-columns: 1fr 1fr; } }
+.credit { text-align: center; font-style: italic; color: #555; margin: -1.2rem 0 2rem; }
+.empty { text-align: center; padding: 3rem 1rem; border: 2px dashed var(--rule); color: #555; }
+
+/* ---------- FAQ ---------- */
+.faq { max-width: 50rem; margin-inline: auto; }
+.faq h2 { margin: 2.2rem 0 .5rem; font-family: var(--slab); font-size: 1.5rem; color: var(--blue); }
+.faq h2:first-child { margin-top: 0; }
+.faq p { margin: 0; }
+.equipment { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.equipment figure { margin: 0; }
+.equipment img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
+@media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
+
+/* ---------- Prose pages ---------- */
+.prose { max-width: 46rem; margin-inline: auto; }
+.prose h2 { font-family: var(--slab); color: var(--blue); }
+
+/* ---------- Lightbox ---------- */
+.lightbox { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 94vh; overflow: visible; }
+.lightbox::backdrop { background: rgba(0, 0, 0, .9); }
+.lightbox img { max-width: 92vw; max-height: 84vh; width: auto; margin-inline: auto; }
+.lightbox p { margin: .6rem 0 0; text-align: center; color: #ddd; font-size: .95rem; }
+.lightbox button { position: fixed; background: none; border: 0; color: #fff; font: 700 2.4rem/1 var(--sans); cursor: pointer; padding: .6rem 1rem; }
+.lightbox .lb-close { top: .6rem; right: .6rem; font-size: 2rem; }
+.lightbox .lb-prev { left: .4rem; top: 50%; transform: translateY(-50%); }
+.lightbox .lb-next { right: .4rem; top: 50%; transform: translateY(-50%); }

@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import { CLUB } from '../config';
+import banner from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
+import dobsonian from '../assets/equipment/skywatcher-dobsonian.jpg';
+import camera from '../assets/equipment/player-one-uranus-c.jpg';
+---
+
+<Base title="FAQs" description="How to join the Astronomy Club at UC San Diego, who can join, and what equipment we use.">
+  <Banner title="Frequently Asked Questions" image={banner} position="center 60%" short />
+
+  <section class="band">
+    <div class="wrap faq">
+      <h2>How do I get involved?</h2>
+      <p>
+        Simply join our <a href={CLUB.instagram}>Instagram</a> and find the Linktree in our bio. There you will find the
+        Google Form to join as an official member as well as the link to our <a href={CLUB.discord}>Discord server</a>.
+        Please join the Discord, as it is our primary form of communication about events and happenings.
+      </p>
+
+      <h2>Is there anything special I have to do to be a part of the club?</h2>
+      <p>
+        As long as you are a part of the Astronomy Club Discord server, you are part of the club, but if you would like
+        to take part in the off-campus events, you must fill out <a href={CLUB.offCampusForm}>this Google Form</a>.
+      </p>
+
+      <h2>Do I need to be an undergraduate student to join?</h2>
+      <p>
+        No! The Astronomy Club at UC San Diego is open to all student space enthusiasts. All you need is a UC San Diego
+        email to be able to participate in our off-campus events.
+      </p>
+
+      <h2>What equipment do we use?</h2>
+      <p>
+        We have 2 club telescopes, a telescope-mountable camera for imaging, and several sizes of eyepieces and other
+        dingles and dongles.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--dark">
+    <div class="wrap">
+      <h2 class="rule-title">Our Equipment</h2>
+      <div class="equipment">
+        <figure>
+          <Image src={dobsonian} alt="The club's 8 inch Skywatcher Dobsonian telescope set up on grass" widths={[500, 1000]} sizes="(max-width: 640px) 90vw, 480px" />
+          <figcaption>8" Computerized Skywatcher Dobsonian</figcaption>
+        </figure>
+        <figure>
+          <Image src={camera} alt="The Player One Uranus-C astronomy camera" widths={[500, 700]} sizes="(max-width: 640px) 90vw, 480px" />
+          <figcaption>Player-One Uranus-C</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+</Base>

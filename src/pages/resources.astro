@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import { CLUB } from '../config';
+import banner from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
+---
+
+<Base title="Resources" description="Observing and astrophotography resources from the Astronomy Club at UC San Diego.">
+  <Banner title="Resources" image={banner} position="center 30%" short />
+
+  <section class="band">
+    <div class="wrap prose">
+      <h2 class="rule-title">Coming Soon</h2>
+      <p>
+        We're putting together a list of guides, apps and links for observing and astrophotography. Check back soon, and
+        if there's a resource you love, share it with us on <a href={CLUB.discord}>Discord</a>.
+      </p>
+    </div>
+  </section>
+</Base>

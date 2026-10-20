@@ -1,98 +1,104 @@
 ---
-/** Home: hero, About Us, Get Involved (Discord, Instagram) and Contact. */
-import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
-import { withBase } from 'astro-theme-popular/url';
-import { CLUB, SITE } from '../../popular.config';
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import { CLUB } from '../config';
+import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
+import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
+import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy.jpg';
+import campus1 from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
+import campus2 from '../assets/gallery/general/02-students-at-the-club-telescope-on-campus.jpg';
+import campus3 from '../assets/gallery/general/03-observing-event-on-campus.jpg';
 
-const facts = [
-  { icon: 'fa-solid fa-user-astronaut', title: 'Everyone is welcome', body: 'No experience or equipment needed. Curious about the sky? You belong here.' },
-  { icon: 'fa-solid fa-binoculars', title: 'Telescopes provided', body: 'Learn to use our telescopes and cameras at campus star parties.' },
-  { icon: 'fa-solid fa-mountain', title: 'Dark-sky trips', body: 'Leave the city lights behind on trips to Anza, Palomar and more.' },
-];
+/* The "Upcoming Event!" band shows this event. Change the id to feature another. */
+const FEATURED_EVENT = 'anza-borrego';
+const featured = await getEntry('events', FEATURED_EVENT);
+const { Content: FeaturedBody } = featured ? await render(featured) : { Content: null };
+
+const calendar = (src: string, color: string) =>
+  `https://calendar.google.com/calendar/embed?${new URLSearchParams({
+    src,
+    color,
+    ctz: 'America/Los_Angeles',
+    mode: 'MONTH',
+    showPrint: '0',
+    showTabs: '0',
+    showTz: '0',
+  })}`;
 ---
 
-<BaseLayout>
-  <section class="sky home-hero">
-    <div class="g-container">
-      <img class="home-hero__logo" src={withBase(SITE.logo)} alt="" width="92" height="92" />
-      <span class="g-eyebrow">UC San Diego</span>
-      <h1>Astronomy Club at <span>UC San Diego</span></h1>
-      <p class="home-hero__lead">
-        Stargazing on campus, astrophotography, and trips to the darkest skies in San Diego County.
-        Come look up with us.
+<Base>
+  <Banner title={CLUB.name} image={trunk} position="center 40%" />
+
+  <section class="band">
+    <div class="wrap">
+      <ul class="jump" aria-label="On this page">
+        <li><a href="#about">About Us</a></li>
+        {featured && <li><a href="#upcoming">Upcoming Event!</a></li>}
+        <li><a href="#calendars">Calendars</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="about" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="rule-title">About Us</h2>
+      <p class="lead">
+        The Astronomy Club at UC San Diego aims to promote interest in astronomy and astrophysics among UC San Diego
+        undergraduates. Our organization focuses on the exploration of the universe and our night sky. We hope to help
+        students interested in astronomy get to know each other and facilitate their access to professional faculty.
       </p>
-      <div class="g-row">
-        <a class="g-btn g-btn--lg g-btn--primary" href={CLUB.discord} rel="noopener" target="_blank">
-          <i class="fa-brands fa-discord" aria-hidden="true"></i> Join our Discord
-        </a>
-        <a class="g-btn g-btn--lg g-btn--outline" href={withBase('/gallery/')}>
-          <i class="fa-solid fa-images" aria-hidden="true"></i> See the gallery
-        </a>
+
+      <div class="photo-row">
+        <Image src={trunk} alt="The Elephant's Trunk Nebula" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+        <Image src={horsehead} alt="The Horsehead Nebula" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+        <Image src={andromeda} alt="The Andromeda Galaxy" sizes="(max-width: 760px) 50vw, 240px" />
+        <p>Images taken by our former club president Connor Sandfer</p>
       </div>
+      <div class="photo-row photo-row--caption-first">
+        <p>Pictures of some observing events conducted on campus</p>
+        <Image src={campus1} alt="A member imaging with the club Dobsonian telescope on campus" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+        <Image src={campus2} alt="Students lining up at the club telescope at an outdoor campus event" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+        <Image src={campus3} alt="A crowd at a campus observing event with telescopes and a live view on a laptop" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+      </div>
+      <p class="center" style="margin-top:2rem"><a href="gallery/">See more in the gallery</a></p>
     </div>
   </section>
 
-  <section id="about" class="g-bg-white g-section">
-    <div class="g-container">
-      <div class="g-section-head">
-        <span class="g-eyebrow">About us</span>
-        <h2>Who we are</h2>
-      </div>
-      <div class="about-grid">
-        <div class="g-prose">
-          <p>
-            The Astronomy Club at UC San Diego is a student community for anyone who loves the night sky,
-            whether you have never looked through a telescope or you have been imaging deep-sky objects for years.
-          </p>
-          <p>
-            We host star parties on campus, teach astrophotography, share what is happening in astronomy and
-            space science, and organize trips out to dark-sky sites where the Milky Way is bright enough to cast shadows.
-          </p>
-        </div>
-        <div class="about-facts">
-          {facts.map((f) => (
-            <div class="about-fact">
-              <span class="g-medallion"><i class={f.icon} aria-hidden="true"></i></span>
-              <div><h3>{f.title}</h3><p>{f.body}</p></div>
-            </div>
-          ))}
+  {featured && (
+    <section class="band band--dark" id="upcoming">
+      <div class="wrap">
+        <h2 class="rule-title">Upcoming Event!</h2>
+        <div class="feature">
+          <div class="feature__media">
+            {featured.data.flyers[0] && (
+              <Image src={featured.data.flyers[0].src} alt={featured.data.flyers[0].alt} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 352px" />
+            )}
+          </div>
+          <div>
+            <h3>{featured.data.title.replace(/ Stargazing and Camping Trip$/, '')}</h3>
+            {featured.data.date && <p class="date">{featured.data.date}</p>}
+            {FeaturedBody && <FeaturedBody />}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <section id="get-involved" class="g-bg-tertiary g-section">
-    <div class="g-container">
-      <div class="g-section-head g-section-head--center">
-        <span class="g-eyebrow">Get involved</span>
-        <h2>Join the club</h2>
-        <p class="g-lead">Event announcements, trip sign-ups and photos all happen here first.</p>
-      </div>
-      <div class="join-grid">
-        <a class="join-card join-card--discord" href={CLUB.discord} rel="noopener" target="_blank">
-          <i class="fa-brands fa-discord join-card__icon" aria-hidden="true"></i>
-          <h3>Discord</h3>
-          <p>Our main hub: event announcements, trip sign-ups, observing reports and astro chat.</p>
-          <span class="join-card__go">Join the server <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
-        </a>
-        <a class="join-card join-card--instagram" href={CLUB.instagram} rel="noopener" target="_blank">
-          <i class="fa-brands fa-instagram join-card__icon" aria-hidden="true"></i>
-          <h3>Instagram</h3>
-          <p>Event photos, member astrophotography and reminders before every star party.</p>
-          <span class="join-card__go">Follow {CLUB.instagramHandle} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
-        </a>
+  <section class="band" id="calendars">
+    <div class="wrap">
+      <h2 class="rule-title">Calendars</h2>
+      <div class="calendars">
+        <div>
+          <h3>Our Events</h3>
+          <iframe title="Astronomy Club events calendar" src={calendar(CLUB.calendars.club, '#9fe1e7')} loading="lazy"></iframe>
+        </div>
+        <div>
+          <h3>Astronomy Events</h3>
+          <iframe title="Moon phases and astronomy events calendar" src={calendar(CLUB.calendars.astronomy, '#b99aff')} loading="lazy"></iframe>
+        </div>
       </div>
     </div>
   </section>
-
-  <section id="contact" class="sky g-section">
-    <div class="g-container contact">
-      <span class="g-eyebrow">Contact</span>
-      <h2>Questions? Get in touch</h2>
-      <p>Email the board about events, collaborations or anything else. You can also check the <a href={withBase('/faq/')}>FAQ</a>.</p>
-      <a class="contact__email" href={`mailto:${CLUB.email}`}>
-        <i class="fa-solid fa-envelope" aria-hidden="true"></i> {CLUB.email}
-      </a>
-    </div>
-  </section>
-</BaseLayout>
+</Base>

@@ -1,59 +1,72 @@
 ---
-/** Meet the Board: one card per file in src/content/board/, plus the link to
- *  the board's website update form. */
-import { getCollection } from 'astro:content';
-import BaseLayout from 'astro-theme-popular/layouts/BaseLayout.astro';
-import PageHero from 'astro-theme-popular/components/PageHero.astro';
-import { withBase } from 'astro-theme-popular/url';
-import { CLUB } from '../../popular.config';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import { CLUB } from '../config';
+import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
+import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
 
-const board = (await getCollection('board')).sort(
-  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
+const TEAMS = ['Executive Board', 'Media Team', 'Outreach Team'] as const;
+const all = await getCollection('board');
+const teams = await Promise.all(
+  TEAMS.map(async (team) => ({
+    team,
+    members: await Promise.all(
+      all
+        .filter((m) => m.data.team === team)
+        .sort((a, b) => a.data.order - b.data.order)
+        .map(async (m) => ({ ...m.data, Bio: (await render(m)).Content })),
+    ),
+  })),
 );
+/* Rows alternate white / charcoal down the whole page, not per team. */
+let row = 0;
 ---
 
-<BaseLayout title="Meet the Board" description="The student officers who run the Astronomy Club at UC San Diego.">
-  <PageHero
-    eyebrow="The team"
-    title="Meet the Board"
-    lead="The student officers who plan the star parties, run the trips and keep the telescopes collimated."
-  />
+<Base title="Meet the Board" description={`The ${CLUB.boardYear} board of ${CLUB.name}.`}>
+  <Banner title="Meet the Board" image={horsehead} position="center 45%" />
 
-  <section class="g-bg-white g-section">
-    <div class="g-container">
-      <div class="board-grid">
-        {board.map(({ data: m }) => (
-          <article class="board-card">
-            <img src={withBase(m.photo ?? '/images/board/placeholder.svg')} alt={m.photo ? `Photo of ${m.name}` : ''} loading="lazy" decoding="async" />
-            <div class="board-card__body">
-              <span class="board-card__role">{m.role}</span>
-              <h2 class="board-card__name">{m.name}</h2>
-              {(m.major || m.year) && <span class="board-card__meta">{[m.major, m.year].filter(Boolean).join(' · ')}</span>}
-              {m.bio && <p class="board-card__bio">{m.bio}</p>}
-              {m.favoriteObject && (
-                <div class="board-card__fav"><i class="fa-solid fa-star" aria-hidden="true"></i>Favorite object: {m.favoriteObject}</div>
-              )}
-              {m.social.length > 0 && (
-                <div class="g-persona__socials">
-                  {m.social.map((s) => (
-                    <a href={s.url} aria-label={`${m.name} on ${s.label}`} rel="noopener" target="_blank"><i class={s.icon} aria-hidden="true"></i></a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </article>
-        ))}
+  <section class="band">
+    <div class="wrap">
+      <h2 class="rule-title" style="border:0;margin-bottom:.4rem">Current Board Members of {CLUB.boardYear}</h2>
+      <p class="center" style="margin:0;font-weight:700;color:var(--blue)">Learn a little bit more about each of our board members!</p>
+    </div>
+  </section>
+
+  {teams.map(({ team, members }) => (
+    <>
+      <div class="team-strip">
+        <Image src={trunk} alt="" widths={[1200, 2000]} sizes="100vw" />
+        <div class="wrap"><h2>{team}</h2></div>
       </div>
+      {members.map((m) => (
+        <section class:list={['band', { 'band--dark': row++ % 2 === 1 }]}>
+          <div class="wrap member">
+            <div class="member__text">
+              <h3>{m.name}</h3>
+              <p class="member__role">{m.role}</p>
+              <div class="member__bio"><m.Bio /></div>
+            </div>
+            {m.photo && (
+              <div class="member__photo">
+                <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 400px" />
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
+    </>
+  ))}
 
-      <div class="update-box">
-        <div>
-          <h2>Board members: need something changed on the site?</h2>
-          <p>Submit new photos, bio edits or page updates through the website update form.</p>
-        </div>
-        <a class="g-btn g-btn--outline" href={CLUB.updateForm} rel="noopener" target="_blank">
-          <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Website update form
-        </a>
+  <section class="band">
+    <div class="wrap">
+      <div class="update-note">
+        <h2>Website Update Form</h2>
+        {CLUB.updateForm
+          ? <p>Board members: to change your photo or bio, or to request any other update to the site, fill out the <a href={CLUB.updateForm}>website update form</a>.</p>
+          : <p>Board members: to change your photo or bio, or to request any other update to the site, contact our Website Coordinator.</p>}
       </div>
     </div>
   </section>
-</BaseLayout>
+</Base>
