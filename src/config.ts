@@ -23,7 +23,6 @@ export const CLUB = {
 export const NAV = [
   { label: 'Home', href: '/' },
   { label: 'Meet the Board', href: '/board/' },
-  { label: 'Events', href: '/events/' },
   { label: 'Gallery', href: '/gallery/' },
   { label: 'FAQs', href: '/faq/' },
   { label: 'Resources', href: '/resources/' },

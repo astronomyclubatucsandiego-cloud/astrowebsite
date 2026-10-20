@@ -18,22 +18,4 @@ const board = defineCollection({
     }),
 });
 
-/** Events: one Markdown file each in src/content/events/. The body is the description. */
-const events = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      /** Human-readable date as it should appear, e.g. "January 23, 2026". */
-      date: z.string().optional(),
-      /** Tie-breaker for events with the same (or no) endsOn date, lowest first. */
-      order: z.number().default(100),
-      /** Last day of the event, YYYY-MM-DD. Decides upcoming vs. past; see src/lib/events.ts. */
-      endsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'endsOn must be YYYY-MM-DD').optional(),
-      /** Ongoing series (e.g. on-campus observing): never upcoming or past. */
-      recurring: z.boolean().default(false),
-      flyers: z.array(z.object({ src: image(), alt: z.string() })).default([]),
-    }),
-});
-
-export const collections = { board, events };
+export const collections = { board };

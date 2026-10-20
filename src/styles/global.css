@@ -99,12 +99,6 @@ a:hover { text-decoration-thickness: 2px; }
   .photo-row p { grid-column: 1 / -1; order: -1; }
 }
 
-.feature { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
-.feature__media img { width: 100%; max-width: 22rem; margin-inline: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
-.feature h3 { margin: 0 0 1rem; padding-block: .6rem; border-block: 4px solid var(--rule-dark); font-family: var(--slab); font-size: 2.2rem; line-height: 1.2; }
-.feature .date { font-style: italic; margin: -.4rem 0 1rem; }
-@media (max-width: 760px) { .feature { grid-template-columns: 1fr; gap: 2rem; } }
-
 .calendars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
 .calendars h3 { margin: 0 0 .8rem; text-align: center; font-family: 'Arvo', Georgia, serif; font-size: 2rem; color: var(--steel); }
 .calendars iframe { width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
@@ -147,16 +141,6 @@ a:hover { text-decoration-thickness: 2px; }
 .update-note { margin-top: 0; padding: 1.4rem 1.6rem; border: 2px solid var(--rule); }
 .update-note h2 { margin: 0 0 .3rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
 .update-note p { margin: 0; }
-
-/* ---------- Events ---------- */
-.event .feature { grid-template-columns: 1fr 1.3fr; }
-.event h2.rule-title { margin-bottom: .6rem; }
-.event .date { text-align: center; font-style: italic; font-size: 1.1rem; margin: 0 0 2rem; }
-.event__body p:first-child { margin-top: 0; }
-.flyers { display: grid; gap: 1.6rem; }
-.flyers--row { grid-template-columns: repeat(auto-fit, minmax(13rem, 18rem)); justify-content: center; margin-top: 2rem; }
-.flyers img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
-.flyers a { display: block; }
 
 /* ---------- Gallery ---------- */
 .gallery-index { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 1.6rem; }
