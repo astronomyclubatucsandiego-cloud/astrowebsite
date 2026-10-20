@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import { url } from '../config';
+import banner from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
+---
+
+<Base title="Page not found">
+  <Banner title="Page not found" image={banner} short />
+
+  <section class="band">
+    <div class="wrap prose center">
+      <p>We couldn't find that page. It may have moved when the club switched from Google Sites.</p>
+      <p>
+        Try the <a href={url('/')}>home page</a>, see our <a href={url('/events/')}>events</a>, or
+        <a href={url('/faq/')}>read the FAQs</a>.
+      </p>
+    </div>
+  </section>
+</Base>

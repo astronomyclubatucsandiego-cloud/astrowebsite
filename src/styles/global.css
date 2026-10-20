@@ -83,7 +83,7 @@ a:hover { text-decoration-thickness: 2px; }
 .band--dark .rule-title { border-color: var(--rule-dark); color: #fff; }
 .rule-title--left { text-align: left; }
 
-.lead { text-align: center; font-size: 1.15rem; max-width: 52rem; margin: 0 auto 2.5rem; }
+.lead { text-align: center; font-size: 1.15rem; max-width: 42rem; margin: 0 auto 2.5rem; }
 .center { text-align: center; }
 
 /* ---------- Home ---------- */
@@ -180,7 +180,7 @@ a:hover { text-decoration-thickness: 2px; }
 .empty { text-align: center; padding: 3rem 1rem; border: 2px dashed var(--rule); color: #555; }
 
 /* ---------- FAQ ---------- */
-.faq { max-width: 50rem; margin-inline: auto; }
+.faq { max-width: 38rem; margin-inline: auto; }
 .faq h2 { margin: 2.2rem 0 .5rem; font-family: var(--slab); font-size: 1.5rem; color: var(--blue); }
 .faq h2:first-child { margin-top: 0; }
 .faq p { margin: 0; }
@@ -191,7 +191,7 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
 
 /* ---------- Prose pages ---------- */
-.prose { max-width: 46rem; margin-inline: auto; }
+.prose { max-width: 38rem; margin-inline: auto; }
 .prose h2 { font-family: var(--slab); color: var(--blue); }
 
 /* ---------- Lightbox ---------- */
