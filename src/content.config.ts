@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-/** Board members: one Markdown file each in src/content/board/. The body is the bio. */
+/** Board members: one Markdown file each in src/content/board/<term>/ (e.g. 2026-27/).
+ *  The body is the bio. CLUB.boardTerm in src/config.ts picks which term is shown. */
 const board = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/board' }),
   schema: ({ image }) =>
@@ -12,6 +13,8 @@ const board = defineCollection({
       /** Order within the team, lowest first. */
       order: z.number(),
       photo: image().optional(),
+      /** Their favorite NASA image, from the board form. */
+      favoriteNasa: z.object({ text: z.string(), url: z.string().url().optional() }).optional(),
     }),
 });
 
@@ -23,8 +26,12 @@ const events = defineCollection({
       title: z.string(),
       /** Human-readable date as it should appear, e.g. "January 23, 2026". */
       date: z.string().optional(),
-      /** Page order, lowest first (newest events first). */
-      order: z.number(),
+      /** Tie-breaker for events with the same (or no) endsOn date, lowest first. */
+      order: z.number().default(100),
+      /** Last day of the event, YYYY-MM-DD. Decides upcoming vs. past; see src/lib/events.ts. */
+      endsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'endsOn must be YYYY-MM-DD').optional(),
+      /** Ongoing series (e.g. on-campus observing): never upcoming or past. */
+      recurring: z.boolean().default(false),
       flyers: z.array(z.object({ src: image(), alt: z.string() })).default([]),
     }),
 });

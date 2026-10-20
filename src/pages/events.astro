@@ -1,55 +1,55 @@
 ---
-import { getCollection, render } from 'astro:content';
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
+import EventBlock from '../components/EventBlock.astro';
+import { CLUB } from '../config';
+import { eventsByStatus } from '../lib/events';
 import banner from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
+import strip from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
 
-const events = await Promise.all(
-  (await getCollection('events'))
-    .sort((a, b) => a.data.order - b.data.order)
-    .map(async (e) => ({
-      ...e.data,
-      id: e.id,
-      Body: (await render(e)).Content,
-      hasBody: e.body?.trim().length > 0,
-      /* Each flyer links to a large copy for reading the fine print. */
-      flyers: await Promise.all(
-        e.data.flyers.map(async (f) => ({ ...f, full: (await getImage({ src: f.src, width: 1600, format: 'webp' })).src })),
-      ),
-    })),
-);
+const { upcoming, regular, past } = await eventsByStatus();
+/* Rows alternate charcoal / white down the whole page. */
+let row = 0;
 ---
 
-<Base title="Events" description="Star parties, dark-sky trips, talks and socials from the Astronomy Club at UC San Diego.">
+<Base title="Events" description="Upcoming and past star parties, dark-sky trips, talks and socials from the Astronomy Club at UC San Diego.">
   <Banner title="Events" image={banner} position="center 70%" />
 
-  {events.map((e, i) => (
-    <section id={e.id} class:list={['band', 'event', { 'band--dark': i % 2 === 0 }]}>
-      <div class="wrap">
-        <h2 class="rule-title">{e.title}</h2>
-        {e.date && <p class="date">{e.date}</p>}
-
-        {e.flyers.length === 1 && e.hasBody ? (
-          <div class="feature">
-            <div class="feature__media flyers">
-              <a href={e.flyers[0].full}><Image src={e.flyers[0].src} alt={e.flyers[0].alt} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 352px" /></a>
-            </div>
-            <div class="event__body"><e.Body /></div>
-          </div>
-        ) : (
-          <>
-            {e.hasBody && <div class="event__body prose"><e.Body /></div>}
-            {e.flyers.length > 0 && (
-              <div class="flyers flyers--row">
-                {e.flyers.map((f) => (
-                  <a href={f.full}><Image src={f.src} alt={f.alt} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 300px" /></a>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+  <div class="team-strip" id="upcoming">
+    <Image src={strip} alt="" widths={[1200, 2000]} sizes="100vw" />
+    <div class="wrap"><h2>Upcoming Events</h2></div>
+  </div>
+  {upcoming.length > 0 ? (
+    upcoming.map((e) => <EventBlock event={e} dark={row++ % 2 === 0} />)
+  ) : (
+    <section class="band">
+      <div class="wrap prose center">
+        <p>
+          No upcoming events are posted right now. New events are announced first on our{' '}
+          <a href={CLUB.discord}>Discord</a> and <a href={CLUB.instagram}>Instagram</a>.
+        </p>
       </div>
     </section>
-  ))}
+  )}
+
+  {regular.length > 0 && (
+    <>
+      <div class="team-strip" id="regular">
+        <Image src={strip} alt="" widths={[1200, 2000]} sizes="100vw" />
+        <div class="wrap"><h2>Regular Events</h2></div>
+      </div>
+      {regular.map((e) => <EventBlock event={e} dark={row++ % 2 === 0} />)}
+    </>
+  )}
+
+  {past.length > 0 && (
+    <>
+      <div class="team-strip" id="past">
+        <Image src={strip} alt="" widths={[1200, 2000]} sizes="100vw" />
+        <div class="wrap"><h2>Past Events</h2></div>
+      </div>
+      {past.map((e) => <EventBlock event={e} dark={row++ % 2 === 0} past />)}
+    </>
+  )}
 </Base>

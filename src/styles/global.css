@@ -130,6 +130,10 @@ a:hover { text-decoration-thickness: 2px; }
 .member h3 { margin: 0; padding-block: .5rem; border-block: 4px solid var(--rule); font-family: var(--slab); font-size: clamp(1.9rem, 3.5vw, 2.5rem); line-height: 1.2; color: var(--blue); }
 .member__role { margin: 1.2rem 0 .6rem; font-size: 1.45rem; font-weight: 700; color: var(--blue); }
 .member__bio p { margin: 0 0 .9rem; }
+.member__nasa { margin: .4rem 0 0; padding-top: .8rem; border-top: 1px solid var(--rule); font-style: italic; }
+.band--dark .member__nasa { border-color: var(--rule-dark); }
+/* No photo yet: the text takes the row, kept to a readable width. */
+.member.member--no-photo, .band--dark .member.member--no-photo { grid-template-columns: minmax(0, 38rem); }
 .band--dark .member h3 { color: var(--ice); border-color: var(--rule-dark); }
 .band--dark .member__role { color: var(--ice); }
 /* Dark rows put the photo first, like the Google Site. */

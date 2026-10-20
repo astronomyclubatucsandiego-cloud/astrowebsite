@@ -3,7 +3,7 @@ name: "Myra Khandelwal"
 role: "Strategic Advisor"
 team: "Executive Board"
 order: 6
-photo: ../../assets/board/myra-khandelwal.jpg
+photo: ../../../assets/board/myra-khandelwal.jpg
 ---
 
 Hi, I'm Myra! I'm in my senior year—barely surviving, thriving in chaos. Currently double-majoring in physics & math with a specialization in astrophysics (and side-hustling CS because apparently, I enjoy missing that one ';' ). Obsessed with dark matter—so particle physics at astronomical scales: the usual oxymoronic thought after the first ray of light—and generally hyperfixated on any research that lets me nerd out some symbols--that others would think are scribbles--aggressively on whiteboards.

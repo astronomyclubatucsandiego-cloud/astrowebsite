@@ -2,6 +2,7 @@
 title: "Día de las Estrellas Muertas"
 date: "November 3, 2025"
 order: 3
+endsOn: "2025-11-03"
 flyers:
   - src: ../../assets/events/dia-de-las-estrellas-muertas.jpg
     alt: "Flyer: Día de las Estrellas Muertas, Monday November 3rd, 5–6 PM in SERF 329 and 6–8 PM on Matthews Quad."

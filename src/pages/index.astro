@@ -1,9 +1,10 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
-import { CLUB } from '../config';
+import { CLUB, url } from '../config';
+import { eventsByStatus } from '../lib/events';
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
 import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy.jpg';
@@ -11,9 +12,8 @@ import campus1 from '../assets/gallery/general/01-member-imaging-with-the-club-d
 import campus2 from '../assets/gallery/general/02-students-at-the-club-telescope-on-campus.jpg';
 import campus3 from '../assets/gallery/general/03-observing-event-on-campus.jpg';
 
-/* The "Upcoming Event!" band shows this event. Change the id to feature another. */
-const FEATURED_EVENT = 'anza-borrego';
-const featured = await getEntry('events', FEATURED_EVENT);
+/* "Upcoming Event!" shows the soonest upcoming event (by endsOn), or a note when none is posted. */
+const featured = (await eventsByStatus()).upcoming[0];
 const { Content: FeaturedBody } = featured ? await render(featured) : { Content: null };
 
 const calendar = (src: string, color: string) =>
@@ -35,7 +35,7 @@ const calendar = (src: string, color: string) =>
     <div class="wrap">
       <ul class="jump" aria-label="On this page">
         <li><a href="#about">About Us</a></li>
-        {featured && <li><a href="#upcoming">Upcoming Event!</a></li>}
+        <li><a href="#upcoming">Upcoming Event!</a></li>
         <li><a href="#calendars">Calendars</a></li>
       </ul>
     </div>
@@ -66,10 +66,10 @@ const calendar = (src: string, color: string) =>
     </div>
   </section>
 
-  {featured && (
-    <section class="band band--dark" id="upcoming">
-      <div class="wrap">
-        <h2 class="rule-title">Upcoming Event!</h2>
+  <section class="band band--dark" id="upcoming">
+    <div class="wrap">
+      <h2 class="rule-title">Upcoming Event!</h2>
+      {featured ? (
         <div class="feature">
           <div class="feature__media">
             {featured.data.flyers[0] && (
@@ -77,14 +77,23 @@ const calendar = (src: string, color: string) =>
             )}
           </div>
           <div>
-            <h3>{featured.data.title.replace(/ Stargazing and Camping Trip$/, '')}</h3>
+            <h3>{featured.data.title}</h3>
             {featured.data.date && <p class="date">{featured.data.date}</p>}
             {FeaturedBody && <FeaturedBody />}
           </div>
         </div>
-      </div>
-    </section>
-  )}
+      ) : (
+        <div class="prose center">
+          <p>
+            No upcoming events are posted right now. We announce new events first on our{' '}
+            <a href={CLUB.discord}>Discord</a> and <a href={CLUB.instagram}>Instagram</a>, and they show up in the
+            calendars below.
+          </p>
+          <p><a href={url('/events/#past')}>See what we've done before</a></p>
+        </div>
+      )}
+    </div>
+  </section>
 
   <section class="band" id="calendars">
     <div class="wrap">

@@ -1,6 +1,7 @@
 ---
 title: "On-Campus Observing"
 order: 6
+recurring: true
 flyers:
   - src: ../../assets/events/observing-night.jpg
     alt: "Flyer: Observing Night, Tuesday and Wednesday, October 28–29, 2025, 7:00 P.M. at Matthews Quad."

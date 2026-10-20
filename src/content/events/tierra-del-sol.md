@@ -2,6 +2,7 @@
 title: "Tierra Del Sol Darksite Stargazing Night Viewing"
 date: "October 25, 2025"
 order: 4
+endsOn: "2025-10-25"
 flyers:
   - src: ../../assets/events/tierra-del-sol.jpg
     alt: "Flyer: Stargazing Night, October 25, 2025, 7:00 P.M. to 11:00 P.M. at the Tierra Del Sol Darksite of the San Diego Astronomy Association."

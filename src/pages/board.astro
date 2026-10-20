@@ -8,18 +8,21 @@ import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula.jp
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
 
 const TEAMS = ['Executive Board', 'Media Team', 'Outreach Team'] as const;
-const all = await getCollection('board');
-const teams = await Promise.all(
-  TEAMS.map(async (team) => ({
-    team,
-    members: await Promise.all(
-      all
-        .filter((m) => m.data.team === team)
-        .sort((a, b) => a.data.order - b.data.order)
-        .map(async (m) => ({ ...m.data, Bio: (await render(m)).Content })),
-    ),
-  })),
-);
+/* Only the term picked in src/config.ts; entry ids look like "2026-27/julia-zhang". */
+const all = (await getCollection('board')).filter((m) => m.id.startsWith(`${CLUB.boardTerm}/`));
+const teams = (
+  await Promise.all(
+    TEAMS.map(async (team) => ({
+      team,
+      members: await Promise.all(
+        all
+          .filter((m) => m.data.team === team)
+          .sort((a, b) => a.data.order - b.data.order)
+          .map(async (m) => ({ ...m.data, Bio: (await render(m)).Content })),
+      ),
+    })),
+  )
+).filter((t) => t.members.length > 0);
 /* Rows alternate white / charcoal down the whole page, not per team. */
 let row = 0;
 ---
@@ -42,11 +45,17 @@ let row = 0;
       </div>
       {members.map((m) => (
         <section class:list={['band', { 'band--dark': row++ % 2 === 1 }]}>
-          <div class="wrap member">
+          <div class:list={['wrap', 'member', { 'member--no-photo': !m.photo }]}>
             <div class="member__text">
               <h3>{m.name}</h3>
               <p class="member__role">{m.role}</p>
               <div class="member__bio"><m.Bio /></div>
+              {m.favoriteNasa && (
+                <p class="member__nasa">
+                  Favorite NASA image:{' '}
+                  {m.favoriteNasa.url ? <a href={m.favoriteNasa.url}>{m.favoriteNasa.text}</a> : m.favoriteNasa.text}
+                </p>
+              )}
             </div>
             {m.photo && (
               <div class="member__photo">

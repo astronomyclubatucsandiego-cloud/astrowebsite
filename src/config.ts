@@ -15,6 +15,8 @@ export const CLUB = {
     club: 'astronomyclubatucsandiego@gmail.com',
     astronomy: 'sraeglclan8q6m551jc1gn6nlt61fk3a@import.calendar.google.com',
   },
+  /** Which board is shown: the folder name in src/content/board/. Switch to '2026-27' when that board is complete. */
+  boardTerm: '2025-26',
   boardYear: '2025-2026',
 };
 
