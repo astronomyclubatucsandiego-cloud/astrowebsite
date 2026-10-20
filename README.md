@@ -39,13 +39,15 @@ GitHub Pages is already turned on (Settings, Pages, Source: GitHub Actions). Onl
 
 ```
 src/
-  config.ts             Club links (Discord, Instagram, email, forms, calendars), menu, which board year shows
+  config.ts             Club links (Discord, Instagram, email, forms, calendar), menu, which board year shows
   styles/global.css     All the styling. Colors and fonts are at the top.
   layouts/Base.astro    Top bar and the "Get involved" footer on every page
   components/Banner.astro  The big photo banner at the top of each page
+  components/SkyTonight.astro  The "Tonight from UC San Diego" strip on the home page
   pages/                One file per page: index (home), board, faq, resources, 404, gallery/
   content/board/        Board members, one folder per year (2025-26/, 2026-27/)
-  lib/gallery.ts        Gallery section names and descriptions
+  lib/gallery.ts        Gallery section names and descriptions, and how photo captions are read from file names
+  lib/sky.ts            Sunset, darkness and moon phase math for the "Tonight" strip
   assets/               Images: board/, gallery/, equipment/, site/ (logo and icons)
 .github/workflows/deploy.yml   The build and publish setup
 ```
@@ -53,8 +55,15 @@ src/
 ## Updating stuff
 
 ### Events
-The website doesn't do event announcements. Those go on **Discord and Instagram**, and on the club
-Google Calendar, which shows up on the home page by itself. After an event, post the photos in the gallery.
+The website doesn't do event announcements. Those go on **Discord and Instagram**. After an event, post the
+photos in the gallery.
+
+The home page has two things that keep themselves up to date:
+- **Tonight from UC San Diego** (under the banner): tonight's sunset, when it gets fully dark, and the moon
+  phase. It's calculated in the visitor's browser every time the page loads, so there's nothing to edit.
+  The math is in `src/lib/sky.ts`.
+- **Astronomy Calendar**: the public "Moon/Astro" Google Calendar (moon phases, meteor showers, eclipses).
+  To swap it for another calendar, change `calendars.astronomy` in `src/config.ts`.
 
 ### Board members
 Each person is one file in that year's folder, like `src/content/board/2026-27/caleb-patton.md`:
@@ -93,20 +102,26 @@ Old years stay in their folders, so nothing gets lost.
 ### Gallery photos
 Drop them in `src/assets/gallery/<section>/`. The sections are `general` (Campus Events),
 `astrophotography`, `tds` (Tierra Del Sol), `anza`, `palomar` and `merch`.
-- Name them like `04-orion-from-anza.jpg`. The number sets the order, and the rest becomes the photo's
-  description for screen readers ("Orion from anza"). So name them like you're describing the photo.
-- An empty section just says "no photos yet" until you add some.
+- Name them like `04-orion-from-anza--jane-doe.jpg`:
+  - `04` sets the order.
+  - `orion-from-anza` becomes the caption and the description for screen readers ("Orion from anza"), so
+    describe the photo.
+  - `--jane-doe` (two dashes, then the photographer) adds "Photo: Jane Doe" under it. Leave it off if you
+    don't know who took it. Always credit astrophotos when you can.
+- Empty sections stay hidden from the gallery page and its menu. They're listed in a "Coming soon" line
+  instead, and show up on their own as soon as you add the first photo.
 - To rename a section or change its description, edit `src/lib/gallery.ts`.
 
 ### Everything else
 
 | What | Where |
 |---|---|
-| Discord, Instagram, email, forms, calendars | `CLUB` in `src/config.ts` |
+| Discord, Instagram, email, forms, calendar | `CLUB` in `src/config.ts` |
 | Menu | `NAV` in `src/config.ts` |
 | Home page text and photos | `src/pages/index.astro` |
 | FAQ | `src/pages/faq.astro` |
-| Resources | `src/pages/resources.astro` |
+| Resources (the link list) | `GROUPS` at the top of `src/pages/resources.astro`. Check a link works before adding it. |
+| "New here?" line on the home page | `src/pages/index.astro` |
 | Colors and fonts | top of `src/styles/global.css` |
 
 Linking between pages? Use the `url()` helper: `href={url('/board/')}`, not a plain `href="/board/"`.
@@ -132,11 +147,9 @@ Plain links break because of the `/astrowebsite/` path. Import it at the top of 
 
 ## To do
 
-- [ ] Make the club Google Calendar public. It shows a sign-in box right now. Fix it in Google Calendar settings
-      for astronomyclubatucsandiego@gmail.com, "Make available to public".
 - [ ] Finish the 2026-27 board. Only 6 form responses so far, and their photos are stuck on Drive behind a sign-in.
 - [ ] Add the Website Update Form link (`updateForm` in `src/config.ts`).
 - [ ] Get Connor's full-size Andromeda photo (the current one is only 200px).
 - [ ] Fill the empty gallery sections (Tierra Del Sol, Anza, Palomar, Merch).
-- [ ] Write the Resources page.
+- [ ] Have the board look over the Resources links and add their favorites.
 - [ ] Point the old Google Site to this one, or take it down.

@@ -1,0 +1,45 @@
+---
+/** "Tonight from UC San Diego": sunset, full dark and the moon, filled in by the
+ *  visitor's browser for today (src/lib/sky.ts). Hidden without JavaScript, so a
+ *  stale or empty strip is never shown. */
+---
+
+<section class="tonight" aria-labelledby="tonight-title" hidden>
+  <div class="wrap tonight__inner">
+    <svg class="tonight__moon" viewBox="-12 -12 24 24" width="44" height="44" aria-hidden="true">
+      <circle r="10" class="tonight__moon-dark" />
+      <path class="tonight__moon-lit" d="" />
+    </svg>
+    <div>
+      <h2 id="tonight-title" class="tonight__title">Tonight from UC San Diego</h2>
+      <p class="tonight__facts">
+        <span>Sunset <strong data-sunset></strong></span>
+        <span>Fully dark <strong data-dark></strong></span>
+        <span>Moon <strong data-moon></strong></span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { UCSD, localDate, sunsetUtc, moonPhase, phaseName, moonLitPath } from '../lib/sky';
+
+  const strip = document.querySelector<HTMLElement>('.tonight');
+  if (strip) {
+    const time = (d: Date | null) =>
+      d ? d.toLocaleTimeString('en-US', { timeZone: UCSD.timeZone, hour: 'numeric', minute: '2-digit' }) : 'n/a';
+    const today = localDate(new Date());
+    const sunset = sunsetUtc(today, 90.833);
+    const dark = sunsetUtc(today, 108);
+    // The moon as it looks around 9 PM, when people are actually out observing.
+    const moon = moonPhase(new Date((sunset ?? new Date()).getTime() + 2.5 * 3600000));
+
+    strip.querySelector('[data-sunset]')!.textContent = time(sunset);
+    strip.querySelector('[data-dark]')!.textContent = time(dark);
+    strip.querySelector('[data-moon]')!.textContent = `${phaseName(moon)}, ${Math.round(moon.fraction * 100)}% lit`;
+    const lit = strip.querySelector<SVGPathElement>('.tonight__moon-lit')!;
+    lit.setAttribute('d', moonLitPath(moon.fraction, 10));
+    if (!moon.waxing) lit.setAttribute('transform', 'scale(-1 1)');
+    strip.hidden = false;
+  }
+</script>

@@ -29,15 +29,22 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* Jump links (#about) land below the sticky top bar instead of under it. */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+/* Footer sits at the bottom of the window even on short pages (no white gap under it). */
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.6;
   color: var(--ink);
   background: #fff;
 }
+main { flex: 1; }
+footer { background: var(--mist); }
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--link); }
 a:hover { text-decoration-thickness: 2px; }
@@ -60,9 +67,9 @@ a:hover { text-decoration-thickness: 2px; }
 
 @media (max-width: 860px) {
   .topbar__inner { flex-wrap: wrap; padding: .6rem 1rem 0; gap: 0; }
-  .nav { margin-left: 0; width: 100%; overflow-x: auto; gap: 1.1rem; scrollbar-width: none; }
-  .nav::-webkit-scrollbar { display: none; }
-  .nav a { padding-block: .6rem .8rem; font-size: .9rem; }
+  /* Wrap onto a second line instead of running off the edge, so every item stays visible. */
+  .nav { margin-left: 0; width: 100%; flex-wrap: wrap; gap: 0 1.1rem; }
+  .nav a { padding-block: .55rem .75rem; font-size: .9rem; }
 }
 
 /* ---------- Photo banner ---------- */
@@ -99,10 +106,31 @@ a:hover { text-decoration-thickness: 2px; }
   .photo-row p { grid-column: 1 / -1; order: -1; }
 }
 
-.calendars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
-.calendars h3 { margin: 0 0 .8rem; text-align: center; font-family: 'Arvo', Georgia, serif; font-size: 2rem; color: var(--steel); }
-.calendars iframe { width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
-@media (max-width: 760px) { .calendars { grid-template-columns: 1fr; } }
+/* One calendar, the full content width, same 520px height as before. */
+.calendar { display: block; width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
+/* Only one loads: a display:none lazy iframe is never fetched. */
+.calendar--agenda { display: none; }
+@media (max-width: 640px) { .calendar--month { display: none; } .calendar--agenda { display: block; } }
+
+/* "New here?" line at the top of the home page: the one thing a first-time visitor needs. */
+.new-here { margin: 0 0 1.4rem; padding: 1rem 1.2rem; border-left: 4px solid var(--steel); background: #f4f6f8; }
+
+/* "Friends of the club": real groups we've observed with, from past events. */
+.friends { max-width: 42rem; margin: 2.5rem auto 0; padding-top: 1.6rem; border-top: 4px solid var(--rule); text-align: center; }
+.friends h3 { margin: 0 0 .5rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
+.friends p { margin: 0; }
+
+/* ---------- Tonight from UC San Diego ---------- */
+/* A plain status line under the banner, like an observatory's daily sky report. */
+.tonight { background: var(--navy); color: #e8eef2; border-top: 1px solid rgba(255, 255, 255, .08); }
+.tonight[hidden] { display: none; }
+.tonight__inner { display: flex; align-items: center; gap: 1rem; padding-block: .9rem; }
+.tonight__moon { flex: none; }
+.tonight__moon-dark { fill: #26343d; }
+.tonight__moon-lit { fill: #efe8cf; }
+.tonight__title { margin: 0; font-family: var(--slab); font-size: 1rem; font-weight: 700; color: #fff; }
+.tonight__facts { margin: .15rem 0 0; display: flex; flex-wrap: wrap; gap: .2rem 1.6rem; font-size: .95rem; }
+.tonight__facts strong { color: #fff; }
 
 /* ---------- Get involved footer band ---------- */
 .involved { background: var(--mist); padding-block: 1.6rem; }
@@ -143,16 +171,16 @@ a:hover { text-decoration-thickness: 2px; }
 .update-note p { margin: 0; }
 
 /* ---------- Gallery ---------- */
-.gallery-index { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 1.6rem; }
+/* Centers however many sections have photos (2 today, up to 6). */
+.gallery-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 26rem)); justify-content: center; gap: 2rem 1.6rem; }
 .gallery-index a { color: var(--ink); text-decoration: none; }
 .gallery-index a:hover h2 { text-decoration: underline; }
 .gallery-index figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: #1b232b; display: grid; place-items: center; }
 .gallery-index figure img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-index figure span { color: #9aa7b3; font-style: italic; }
 .gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--slab); font-size: 1.45rem; color: var(--blue); }
 .gallery-index p { margin: 0; font-size: .95rem; color: #555; }
-@media (max-width: 860px) { .gallery-index { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .gallery-index { grid-template-columns: 1fr; } }
+.gallery-index__count { display: block; margin-top: .2rem; font-size: .85rem; font-style: italic; }
+.coming-soon { max-width: 38rem; margin: 2.5rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; color: #555; }
 
 .subnav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; margin: 0 0 2.4rem; padding: 0; list-style: none; }
 .subnav a { color: var(--ink); }
@@ -162,21 +190,31 @@ a:hover { text-decoration-thickness: 2px; }
 .photos a { display: block; }
 .photos img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 .photos figure { margin: 0; }
-.photos figcaption { margin-top: .4rem; font-size: .9rem; color: #555; }
+.photos figcaption { margin-top: .5rem; font-size: .95rem; color: var(--ink); }
+.photo-credit { display: block; font-size: .85rem; font-style: italic; color: #555; }
 @media (max-width: 760px) { .photos { grid-template-columns: 1fr 1fr; } }
-.credit { text-align: center; font-style: italic; color: #555; margin: -1.2rem 0 2rem; }
 .empty { text-align: center; padding: 3rem 1rem; border: 2px dashed var(--rule); color: #555; }
 
 /* ---------- FAQ ---------- */
+/* Questions in a centered reading column, separated by thin rules. */
 .faq { max-width: 38rem; margin-inline: auto; }
-.faq h2 { margin: 2.2rem 0 .5rem; font-family: var(--slab); font-size: 1.5rem; color: var(--blue); }
-.faq h2:first-child { margin-top: 0; }
-.faq p { margin: 0; }
+.faq__item { padding-block: 1.4rem; border-top: 1px solid var(--rule); }
+.faq__item:first-child { padding-top: 0; border-top: 0; }
+.faq__item h3 { margin: 0 0 .5rem; font-family: var(--slab); font-size: 1.35rem; line-height: 1.3; color: var(--blue); }
+.faq__item p { margin: 0; }
 .equipment { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .equipment figure { margin: 0; }
 .equipment img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
 .equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
+
+/* ---------- Resources ---------- */
+.resources { list-style: none; margin: 0 auto; padding: 0; max-width: 38rem; }
+.resources li { padding-block: 1.1rem; border-top: 1px solid var(--rule); }
+.resources li:first-child { padding-top: 0; border-top: 0; }
+.resources a { font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
+.resources p { margin: .3rem 0 0; }
+.band--dark .resources li { border-color: var(--rule-dark); }
 
 /* ---------- Prose pages ---------- */
 .prose { max-width: 38rem; margin-inline: auto; }

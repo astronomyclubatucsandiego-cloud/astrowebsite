@@ -10,9 +10,8 @@ export const CLUB = {
   offCampusForm: 'https://forms.gle/w1VfiPrjYYpbZkT99',
   /** Where board members request website changes. TODO: add the real form link. */
   updateForm: '',
-  /** Google Calendars shown on the home page. */
+  /** Google Calendar shown on the home page: moon phases and astronomy events ("Moon/Astro"). */
   calendars: {
-    club: 'astronomyclubatucsandiego@gmail.com',
     astronomy: 'sraeglclan8q6m551jc1gn6nlt61fk3a@import.calendar.google.com',
   },
   /** Which board is shown: the folder name in src/content/board/. Switch to '2026-27' when that board is complete. */

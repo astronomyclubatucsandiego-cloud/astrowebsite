@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Banner from '../../components/Banner.astro';
 import { CLUB, url } from '../../config';
 import { GALLERY_SECTIONS, photosFor, type GallerySection } from '../../lib/gallery';
-import fallbackBanner from '../../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
+import fallbackBanner from '../../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 
 export function getStaticPaths() {
   return GALLERY_SECTIONS.map((section) => ({ params: { section: section.slug }, props: { section } }));
@@ -29,22 +29,30 @@ const here = url(`/gallery/${section.slug}/`);
     <div class="wrap">
       <ul class="subnav" aria-label="Gallery sections">
         <li><a href={url('/gallery/')}>All galleries</a></li>
-        {GALLERY_SECTIONS.map((s) => {
+        {GALLERY_SECTIONS.filter((s) => s.slug === section.slug || photosFor(s.slug).length > 0).map((s) => {
           const href = url(`/gallery/${s.slug}/`);
           return <li><a href={href} aria-current={href === here ? 'page' : undefined}>{s.title}</a></li>;
         })}
       </ul>
 
       <p class="lead">{section.description}</p>
-      {'credit' in section && <p class="credit">{section.credit}</p>}
 
       {photos.length > 0 ? (
         <div class="photos" data-lightbox>
-          {photos.map((p) => (
-            <a href={p.full} data-caption={p.alt}>
-              <Image src={p.image} alt={p.alt} widths={[400, 800]} sizes="(max-width: 760px) 50vw, 320px" />
-            </a>
-          ))}
+          {photos.map((p) => {
+            const caption = p.credit ? `${p.alt}. Photo: ${p.credit}` : p.alt;
+            return (
+              <figure>
+                <a href={p.full} data-caption={caption}>
+                  <Image src={p.image} alt={p.alt} widths={[400, 800]} sizes="(max-width: 760px) 50vw, 320px" />
+                </a>
+                <figcaption>
+                  {p.alt}
+                  {p.credit && <span class="photo-credit">Photo: {p.credit}</span>}
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
       ) : (
         <p class="empty">

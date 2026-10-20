@@ -2,19 +2,66 @@
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import { CLUB } from '../config';
-import banner from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
+import banner from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
+
+/* Free, well-known tools and places. Every link was checked when added; recheck now and then. */
+const GROUPS = [
+  {
+    title: 'Planning a Night Out',
+    links: [
+      { name: 'National Weather Service, San Diego', url: 'https://www.weather.gov/sgx/', note: 'The local forecast. Check cloud cover before you drive anywhere.' },
+      { name: 'Light Pollution Map', url: 'https://www.lightpollutionmap.info/', note: 'See how dark the sky is anywhere in the county, and find darker spots near you.' },
+      { name: 'San Diego Astronomy Association', url: 'https://www.sdaa.org/', note: "San Diego's big amateur astronomy club. Runs the Tierra del Sol dark site and posts its observing conditions." },
+    ],
+  },
+  {
+    title: 'Finding Your Way Around the Sky',
+    links: [
+      { name: 'Stellarium Web', url: 'https://stellarium-web.org/', note: 'A free planetarium in your browser. Shows exactly what is up from where you are.' },
+      { name: "NASA: What's Up", url: 'https://science.nasa.gov/skywatching/whats-up/', note: 'A short monthly video and guide to what to look for each month.' },
+      { name: 'Heavens-Above', url: 'https://www.heavens-above.com/', note: 'When to see the International Space Station and other satellites pass over.' },
+    ],
+  },
+  {
+    title: 'Astrophotography',
+    links: [
+      { name: 'Siril', url: 'https://siril.org/', note: 'Free software for stacking and processing deep-sky images.' },
+      { name: 'AstroBin', url: 'https://www.astrobin.com/', note: 'Where astrophotographers share images along with the gear and settings they used.' },
+      { name: 'NASA Astronomy Picture of the Day', url: 'https://apod.nasa.gov/apod/', note: 'A new image every day with a short explanation from a professional astronomer.' },
+    ],
+  },
+  {
+    title: 'Places We Go',
+    links: [
+      { name: 'Anza-Borrego Desert State Park', url: 'https://www.parks.ca.gov/?page_id=638', note: 'Home of our annual stargazing and camping trip.' },
+      { name: 'Palomar Observatory', url: 'https://sites.astro.caltech.edu/palomar/visitor/', note: 'Visitor information for the observatory on Palomar Mountain.' },
+    ],
+  },
+];
 ---
 
-<Base title="Resources" description="Observing and astrophotography resources from the Astronomy Club at UC San Diego.">
+<Base title="Resources" description="Free tools and places for observing and astrophotography, picked by the Astronomy Club at UC San Diego.">
   <Banner title="Resources" image={banner} position="center 30%" short />
 
+  {GROUPS.map((group, i) => (
+    <section class:list={['band', { 'band--dark': i % 2 === 1 }]}>
+      <div class="wrap">
+        <h2 class="rule-title">{group.title}</h2>
+        <ul class="resources">
+          {group.links.map((l) => (
+            <li>
+              <a href={l.url} rel="noopener">{l.name}</a>
+              <p>{l.note}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
   <section class="band">
-    <div class="wrap prose">
-      <h2 class="rule-title">Coming Soon</h2>
-      <p>
-        We're putting together a list of guides, apps and links for observing and astrophotography. Check back soon, and
-        if there's a resource you love, share it with us on <a href={CLUB.discord}>Discord</a>.
-      </p>
+    <div class="wrap prose center">
+      <p>Know a resource that should be here? Share it in our <a href={CLUB.discord}>Discord</a>.</p>
     </div>
   </section>
 </Base>

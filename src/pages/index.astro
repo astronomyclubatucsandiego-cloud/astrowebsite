@@ -2,20 +2,23 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
+import SkyTonight from '../components/SkyTonight.astro';
 import { CLUB } from '../config';
-import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula.jpg';
-import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula.jpg';
-import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy.jpg';
+import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
+import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
+import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy--connor-sandfer.jpg';
 import campus1 from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
 import campus2 from '../assets/gallery/general/02-students-at-the-club-telescope-on-campus.jpg';
 import campus3 from '../assets/gallery/general/03-observing-event-on-campus.jpg';
 
-const calendar = (src: string, color: string) =>
+/* The public moon and astronomy events calendar (moon phases, meteor showers, eclipses).
+   Month grid on wide screens; a readable list (agenda) on phones, where the grid is too cramped. */
+const calendar = (mode: 'MONTH' | 'AGENDA') =>
   `https://calendar.google.com/calendar/embed?${new URLSearchParams({
-    src,
-    color,
+    src: CLUB.calendars.astronomy,
+    color: '#b99aff',
     ctz: 'America/Los_Angeles',
-    mode: 'MONTH',
+    mode,
     showPrint: '0',
     showTabs: '0',
     showTz: '0',
@@ -24,12 +27,18 @@ const calendar = (src: string, color: string) =>
 
 <Base>
   <Banner title={CLUB.name} image={trunk} position="center 40%" />
+  <SkyTonight />
 
   <section class="band">
     <div class="wrap">
+      <p class="new-here">
+        <strong>New here?</strong> Join our <a href={CLUB.discord}>Discord</a> and follow
+        {' '}<a href={CLUB.instagram}>{CLUB.instagramHandle}</a> on Instagram. That's where we announce star
+        parties, trips and meetings.
+      </p>
       <ul class="jump" aria-label="On this page">
         <li><a href="#about">About Us</a></li>
-        <li><a href="#calendars">Calendars</a></li>
+        <li><a href="#calendar">Astronomy Calendar</a></li>
       </ul>
     </div>
   </section>
@@ -56,22 +65,24 @@ const calendar = (src: string, color: string) =>
         <Image src={campus3} alt="A crowd at a campus observing event with telescopes and a live view on a laptop" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
       </div>
       <p class="center" style="margin-top:2rem"><a href="gallery/">See more in the gallery</a></p>
+
+      <div class="friends">
+        <h3>Friends of the club</h3>
+        <p>
+          We've stargazed with the <a href="https://www.sdaa.org/">San Diego Astronomy Association</a> at their
+          Tierra Del Sol dark site, celebrated Día de las Estrellas Muertas with Latinx Advancing in Math and
+          Physics (LAMP) at UC San Diego, and hiked to Potato Chip Rock with the Hiking Group.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="band" id="calendars">
+  <section class="band" id="calendar">
     <div class="wrap">
-      <h2 class="rule-title">Calendars</h2>
-      <div class="calendars">
-        <div>
-          <h3>Our Events</h3>
-          <iframe title="Astronomy Club events calendar" src={calendar(CLUB.calendars.club, '#9fe1e7')} loading="lazy"></iframe>
-        </div>
-        <div>
-          <h3>Astronomy Events</h3>
-          <iframe title="Moon phases and astronomy events calendar" src={calendar(CLUB.calendars.astronomy, '#b99aff')} loading="lazy"></iframe>
-        </div>
-      </div>
+      <h2 class="rule-title">Astronomy Calendar</h2>
+      <p class="lead">Moon phases, meteor showers, eclipses and other things worth looking up for.</p>
+      <iframe class="calendar calendar--month" title="Moon phases and astronomy events calendar" src={calendar('MONTH')} loading="lazy"></iframe>
+      <iframe class="calendar calendar--agenda" title="Moon phases and astronomy events, as a list" src={calendar('AGENDA')} loading="lazy"></iframe>
     </div>
   </section>
 </Base>
