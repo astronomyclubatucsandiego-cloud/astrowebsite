@@ -22,10 +22,10 @@ const SITES = [
       ['Run by', 'The San Diego Astronomy Association (SDAA)'],
       ['Good for', 'Overnight stargazing through telescopes, far from city light'],
     ],
-    links: [
-      { label: 'About the site (SDAA)', href: 'https://sdaa.org/tierra-del-sol-dark-sky-observing-site/' },
-      { label: 'Tierra del Sol weather conditions', href: 'https://sdaa.org/tierra-del-sol-weather-conditions/' },
-    ],
+    /* SDAA's two pages (the site, its weather) were removed on Oct 25, 2026 because sdaa.org was hacked
+       (hidden spam links injected on every page). Put them back once it's fixed:
+       https://sdaa.org/tierra-del-sol-dark-sky-observing-site/ and https://sdaa.org/tierra-del-sol-weather-conditions/ */
+    links: [] as { label: string; href: string }[],
   },
   {
     id: 'anza-borrego',
@@ -96,12 +96,14 @@ const SITES = [
                 <div><dt>{term}</dt><dd>{detail}</dd></div>
               ))}
             </dl>
-            <ul class="site__links">
-              {site.links.map((l) => <li><a href={l.href} rel="noopener">{l.label}</a></li>)}
-              {site.photos.length > 0 && (
-                <li><a href={url(`/gallery/${site.gallery}/`)}>Our photos from {site.name} ({site.photos.length})</a></li>
-              )}
-            </ul>
+            {(site.links.length > 0 || site.photos.length > 0) && (
+              <ul class="site__links">
+                {site.links.map((l) => <li><a href={l.href} rel="noopener">{l.label}</a></li>)}
+                {site.photos.length > 0 && (
+                  <li><a href={url(`/gallery/${site.gallery}/`)}>Our photos from {site.name} ({site.photos.length})</a></li>
+                )}
+              </ul>
+            )}
           </div>
         </div>
       </div>

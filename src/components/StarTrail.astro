@@ -1,8 +1,14 @@
 ---
-/** A faint trail of small stars that follows the mouse over the photo banners and the home
- *  "Tonight" strip, fading in under a second. Deliberately limited (the owner chose this
- *  version): only on those dark areas, only with a mouse, never for people who have reduced
- *  motion turned on, and never more than a couple dozen stars at once. Purely decorative. */
+/** A star trail that follows the mouse over the photo banners and the home "Tonight" strip,
+ *  drawn to look like a long-exposure photo: a thin streak of light that fades from its tail,
+ *  with point-like stars left along it. The owner chose to keep a trail; this version is
+ *  meant to read as real starlight, not sparkles:
+ *  - stars are round points with a soft glow, never spiky shapes, and never fall or spin;
+ *  - colors are blackbody star colors (Mitchell Charity, "What color are the stars?"),
+ *    weighted toward white and blue-white, with yellow and orange stars rarer;
+ *  - brightness is lopsided like the real sky: mostly faint stars, a few bright ones.
+ *  Limits: only on those dark areas, only with a mouse, never with reduced motion turned on.
+ *  One canvas per area, and the animation loop stops as soon as everything has faded. */
 ---
 
 <script>
@@ -10,43 +16,156 @@
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (fineMouse && !calm) {
-    const MAX_STARS = 24;
-    const MIN_GAP_MS = 40;
-    const MIN_MOVE_PX = 14;
-    let live = 0;
-    let lastTime = 0;
-    let lastX = -999;
-    let lastY = -999;
+    const TRAIL_MS = 650; // how long the streak lingers
+    // Gap between stars along the path, random so they clump like real stars instead of a dotted line.
+    const nextGap = () => 8 + Math.random() * 26;
+    const MAX_STARS = 70;
 
-    const spawn = (area: HTMLElement, x: number, y: number) => {
-      const star = document.createElement('span');
-      star.className = 'spark';
-      star.setAttribute('aria-hidden', 'true');
-      const size = 5 + Math.random() * 6;
-      star.style.setProperty('--s', `${size.toFixed(1)}px`);
-      star.style.setProperty('--r', `${Math.round(Math.random() * 90)}deg`);
-      star.style.setProperty('--dx', `${Math.round((Math.random() - 0.5) * 24)}px`);
-      star.style.setProperty('--dy', `${Math.round(8 + Math.random() * 16)}px`);
-      star.style.left = `${x}px`;
-      star.style.top = `${y}px`;
-      area.appendChild(star);
-      live += 1;
-      star.addEventListener('animationend', () => {
-        star.remove();
-        live -= 1;
-      }, { once: true });
+    // Spectral class colors (Charity's blackbody table) with rough naked-eye proportions.
+    const COLORS: [string, number][] = [
+      ['170, 191, 255', 0.15], // B, blue-white
+      ['202, 215, 255', 0.25], // A, white with a blue tint
+      ['248, 247, 255', 0.3], // F, white
+      ['255, 244, 234', 0.15], // G, pale yellow (like the Sun)
+      ['255, 210, 161', 0.1], // K, light orange
+      ['255, 204, 111', 0.05], // M, orange
+    ];
+    const pickColor = () => {
+      let roll = Math.random();
+      for (const [rgb, weight] of COLORS) if ((roll -= weight) < 0) return rgb;
+      return COLORS[2][0];
+    };
+    // Core radius in px: about 80% faint, 15% medium, 5% bright.
+    const pickRadius = () => {
+      const roll = Math.random();
+      if (roll < 0.8) return 0.6 + Math.random() * 0.5;
+      if (roll < 0.95) return 1.1 + Math.random() * 0.5;
+      return 1.7 + Math.random() * 0.6;
     };
 
-    document.querySelectorAll<HTMLElement>('.banner, .tonight--strip').forEach((area) => {
+    type Point = { x: number; y: number; t: number; gap: boolean };
+    type Star = { x: number; y: number; t: number; life: number; r: number; rgb: string };
+
+    const setUp = (area: HTMLElement) => {
+      const canvas = document.createElement('canvas');
+      canvas.className = 'startrail';
+      canvas.setAttribute('aria-hidden', 'true');
+      area.appendChild(canvas);
+      const ctx = canvas.getContext('2d')!;
+      const points: Point[] = [];
+      const stars: Star[] = [];
+      let running = false;
+      let travelled = 0;
+      let gap = nextGap();
+      let gapNext = true;
+
+      const fit = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const { width, height } = area.getBoundingClientRect();
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const addStar = (x: number, y: number, now: number) => {
+        if (stars.length >= MAX_STARS) stars.shift();
+        // A little scatter either side of the path, like stars near (not on) a trail.
+        stars.push({
+          x: x + (Math.random() - 0.5) * 18,
+          y: y + (Math.random() - 0.5) * 18,
+          t: now,
+          life: 1100 + Math.random() * 900,
+          r: pickRadius(),
+          rgb: pickColor(),
+        });
+      };
+
+      const drawStar = (s: Star, now: number) => {
+        const age = (now - s.t) / s.life;
+        // Quick fade in (no popping), then a slow ease out.
+        const alpha = age < 0.06 ? age / 0.06 : 1 - ((age - 0.06) / 0.94) ** 1.6;
+        const glow = s.r * (s.r > 1.6 ? 6 : 4);
+        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glow);
+        g.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+        g.addColorStop(s.r / glow, `rgba(${s.rgb}, ${alpha * 0.9})`);
+        g.addColorStop(Math.min(1, (s.r * 2) / glow), `rgba(${s.rgb}, ${alpha * 0.25})`);
+        g.addColorStop(1, `rgba(${s.rgb}, 0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, glow, 0, Math.PI * 2);
+        ctx.fill();
+      };
+
+      const drawTrail = (now: number) => {
+        ctx.lineCap = 'round';
+        for (let i = 1; i < points.length; i++) {
+          const a = points[i - 1];
+          const b = points[i];
+          if (b.gap) continue;
+          const fade = 1 - (now - b.t) / TRAIL_MS; // 1 at the head, 0 at the tail
+          if (fade <= 0) continue;
+          // Soft halo, then a thin bright core that tapers toward the tail.
+          ctx.strokeStyle = `rgba(202, 215, 255, ${0.12 * fade})`;
+          ctx.lineWidth = 5 * fade + 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+          ctx.strokeStyle = `rgba(248, 247, 255, ${0.75 * fade})`;
+          ctx.lineWidth = 1.4 * fade + 0.3;
+          ctx.stroke();
+        }
+      };
+
+      const frame = (now: number) => {
+        while (points.length && now - points[0].t > TRAIL_MS) points.shift();
+        for (let i = stars.length - 1; i >= 0; i--) if (now - stars[i].t > stars[i].life) stars.splice(i, 1);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = 'lighter'; // light adds up, like on a sensor
+        drawTrail(now);
+        for (const s of stars) drawStar(s, now);
+        ctx.globalCompositeOperation = 'source-over';
+        if (points.length || stars.length) requestAnimationFrame(frame);
+        else running = false;
+      };
+
+      area.addEventListener('pointerenter', () => {
+        fit();
+        gapNext = true;
+        travelled = 0;
+      });
+      area.addEventListener('pointerleave', () => {
+        gapNext = true;
+      });
       area.addEventListener('pointermove', (e) => {
-        if (live >= MAX_STARS || e.timeStamp - lastTime < MIN_GAP_MS) return;
-        if (Math.hypot(e.clientX - lastX, e.clientY - lastY) < MIN_MOVE_PX) return;
-        lastTime = e.timeStamp;
-        lastX = e.clientX;
-        lastY = e.clientY;
         const box = area.getBoundingClientRect();
-        spawn(area, e.clientX - box.left, e.clientY - box.top);
+        const now = performance.now();
+        // Coalesced events give the in-between positions of a fast flick, so the streak stays smooth.
+        const coalesced = e.getCoalescedEvents?.();
+        for (const ev of coalesced?.length ? coalesced : [e]) {
+          const x = ev.clientX - box.left;
+          const y = ev.clientY - box.top;
+          const last = points[points.length - 1];
+          if (last && !gapNext) {
+            const step = Math.hypot(x - last.x, y - last.y);
+            travelled += step;
+            while (travelled >= gap) {
+              travelled -= gap;
+              gap = nextGap();
+              const k = step ? 1 - travelled / step : 1;
+              addStar(last.x + (x - last.x) * k, last.y + (y - last.y) * k, now);
+            }
+          }
+          points.push({ x, y, t: now, gap: gapNext });
+          gapNext = false;
+        }
+        if (!running) {
+          running = true;
+          requestAnimationFrame(frame);
+        }
       }, { passive: true });
-    });
+    };
+
+    document.querySelectorAll<HTMLElement>('.banner, .tonight--strip').forEach(setUp);
   }
 </script>

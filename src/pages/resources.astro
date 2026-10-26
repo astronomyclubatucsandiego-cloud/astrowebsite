@@ -1,7 +1,8 @@
 ---
 /** Resources: free tools and places, each group shown as a photo (or the live Tonight panel)
  *  beside its links, like the image-beside-text rows on the old Google Site. Rows alternate
- *  sides; Astrophotography is the one dark band. Every link was checked when added. */
+ *  sides; Astrophotography is the one dark band. Every link was opened in a browser and its
+ *  description checked against the site (October 2026). */
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
@@ -10,7 +11,7 @@ import NasaPicture from '../components/NasaPicture.astro';
 import { CLUB, url } from '../config';
 import campus from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
-import palomar from '../assets/gallery/palomar/02-club-group-photo-on-the-Hale-Telescope-steps.jpg';
+import outreach from '../assets/gallery/general/03-observing-event-on-campus.jpg';
 
 const GROUPS = [
   {
@@ -19,9 +20,9 @@ const GROUPS = [
     intro: 'Three things decide a good night: clouds, light pollution and the moon. Here is how to check each one.',
     media: 'tonight',
     links: [
-      { name: 'National Weather Service, San Diego', url: 'https://www.weather.gov/sgx/', note: 'The local forecast. Check cloud cover before you drive anywhere.' },
+      { name: 'Clear Outside', url: 'https://clearoutside.com/forecast/32.88/-117.24', note: 'An hour-by-hour forecast for astronomers: low, medium and high cloud, fog and the moon. This link opens the forecast for campus.' },
+      { name: 'Astrospheric', url: 'https://www.astrospheric.com/', note: 'Cloud cover, transparency and seeing forecasts. The forecast on our home page comes from here.' },
       { name: 'Light Pollution Map', url: 'https://www.lightpollutionmap.info/', note: 'See how dark the sky is anywhere in the county, and find darker spots near you.' },
-      { name: 'San Diego Astronomy Association', url: 'https://www.sdaa.org/', note: "San Diego's big amateur astronomy club. Runs the Tierra del Sol dark site and posts its observing conditions." },
     ],
   },
   {
@@ -31,6 +32,7 @@ const GROUPS = [
     media: { src: campus, alt: 'A member imaging with the club Dobsonian telescope on campus', caption: 'A campus observing night.' },
     links: [
       { name: 'Stellarium Web', url: 'https://stellarium-web.org/', note: 'A free planetarium in your browser. Shows exactly what is up from where you are.' },
+      { name: 'Stellarium Mobile', url: 'https://stellarium-labs.com/', note: 'The phone app from the makers of Stellarium, for iOS and Android. Handy at a dark site.' },
       { name: "NASA: What's Up", url: 'https://science.nasa.gov/skywatching/whats-up/', note: 'A short monthly video and guide to what to look for each month.' },
       { name: 'Heavens-Above', url: 'https://www.heavens-above.com/', note: 'When to see the International Space Station and other satellites pass over.' },
     ],
@@ -42,20 +44,20 @@ const GROUPS = [
     dark: true,
     media: { src: horsehead, alt: 'The Horsehead Nebula', caption: 'The Horsehead Nebula, taken by our former club president Connor Sandfer.', href: '/gallery/astrophotography/' },
     links: [
-      { name: 'Siril', url: 'https://siril.org/', note: 'Free software for stacking and processing deep-sky images.' },
+      { name: 'Siril', url: 'https://siril.org/', note: 'Free software for stacking and processing deep-sky images, for Windows, Mac and Linux.' },
+      { name: 'Telescopius', url: 'https://telescopius.com/', note: 'Find targets that are well placed for your night and location, and build lists for an imaging session.' },
       { name: 'AstroBin', url: 'https://www.astrobin.com/', note: 'Where astrophotographers share images along with the gear and settings they used.' },
-      { name: 'NASA Astronomy Picture of the Day', url: 'https://apod.nasa.gov/apod/', note: 'A new image every day with a short explanation from a professional astronomer.' },
     ],
   },
   {
-    id: 'places',
-    title: 'Places We Go',
-    intro: 'The dark skies and observatories we visit as a club.',
-    media: { src: palomar, alt: 'The club on the steps of the 200-inch Hale Telescope at Palomar Observatory', caption: 'Our trip to Palomar Observatory.', href: '/dark-sites/' },
+    id: 'community',
+    title: 'Going Further',
+    intro: 'Forums, observing goals and projects for when you want more between club nights.',
+    media: { src: outreach, alt: 'Students and telescopes at an observing event on campus', caption: 'An observing event on campus.' },
     links: [
-      { name: 'Our Dark Sites page', url: '/dark-sites/', note: 'Where we go, what to bring, and how to come with us.' },
-      { name: 'Anza-Borrego Desert State Park', url: 'https://www.parks.ca.gov/?page_id=638', note: 'Home of our annual stargazing and camping trip.' },
-      { name: 'Palomar Observatory', url: 'https://sites.astro.caltech.edu/palomar/visitor/', note: 'Visitor information for the observatory on Palomar Mountain.' },
+      { name: 'Cloudy Nights', url: 'https://www.cloudynights.com/', note: 'Amateur astronomy forums, gear reviews by members, and classifieds for buying used equipment.' },
+      { name: 'Messier Observing Program', url: 'https://www.astroleague.org/messier-observing-program/', note: 'A classic goal: find all 110 Messier objects. The Astronomical League gives a certificate when you have observed most or all of them.' },
+      { name: 'Globe at Night', url: 'https://globeatnight.org/', note: 'Citizen science: count the stars you can see and add your night to a worldwide record of light pollution.' },
     ],
   },
 ] as const;

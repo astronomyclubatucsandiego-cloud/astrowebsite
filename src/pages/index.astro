@@ -6,6 +6,15 @@ import SkyTonight from '../components/SkyTonight.astro';
 import SkyForecast from '../components/SkyForecast.astro';
 import { CLUB, url } from '../config';
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
+import { existsSync } from 'node:fs';
+
+/* Banner video: W. M. Keck Observatory's "Up Above the World So High", used with Keck's permission
+   (October 2026) as a placeholder until members film a night-sky time-lapse. It turns on only when
+   public/video/keck-banner-960.mp4 and -1920.mp4 exist; until then the banner is the photo. */
+const KECK = 'video/keck-banner';
+const bannerVideo = ['960', '1920'].every((w) => existsSync(`${process.cwd()}/public/${KECK}-${w}.mp4`))
+  ? { base: KECK, credit: 'W. M. Keck Observatory', creditUrl: 'https://www.youtube.com/watch?v=FpK6_C8gkhA' }
+  : undefined;
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
 import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy--connor-sandfer.jpg';
 import campus1 from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
@@ -27,7 +36,7 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
 ---
 
 <Base>
-  <Banner title={CLUB.name} image={trunk} position="center 40%" />
+  <Banner title={CLUB.name} image={trunk} position="center 40%" video={bannerVideo} />
   <SkyTonight />
 
   <section class="band" id="about">
