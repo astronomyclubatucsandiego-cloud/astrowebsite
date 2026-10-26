@@ -74,6 +74,14 @@ a:hover { text-decoration-thickness: 2px; }
   .nav a { padding-block: .55rem .75rem; font-size: .9rem; }
 }
 
+/* ---------- Home: first screen ---------- */
+/* Banner + video credit + Tonight fill the window below the sticky top bar, on any screen size: the banner
+   stretches to take up whatever is left, so the first screen never ends in a white strip (owner, Oct 2026).
+   On phones the content is already taller than the screen, so nothing changes there. */
+.landing { --topbar-h: 56px; display: flex; flex-direction: column; min-height: calc(100vh - var(--topbar-h)); min-height: calc(100svh - var(--topbar-h)); }
+.landing > .banner { flex: 1 0 auto; }
+@media (max-width: 860px) { .landing { --topbar-h: 87px; } } /* the top bar wraps to two lines */
+
 /* ---------- Photo banner ---------- */
 /* Every page's banner is the same height as the home video banner (owner, Oct 2026). Height grows with
    screen width so the crop looks the same on a laptop and a big monitor. */

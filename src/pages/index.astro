@@ -53,8 +53,11 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
 ---
 
 <Base starTrail={false}>
-  <Banner title={CLUB.name} image={trunk} position="center 40%" video={bannerVideo} />
-  <SkyTonight />
+  {/* The first screen: banner + Tonight always reach the bottom of the window (no white strip). */}
+  <div class="landing">
+    <Banner title={CLUB.name} image={trunk} position="center 40%" video={bannerVideo} />
+    <SkyTonight />
+  </div>
 
   <section class="band" id="about">
     <div class="wrap">
@@ -127,7 +130,7 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
         ))}
       </ul>
       <p class="supporters__ask">
-        Interested in supporting the club with telescopes, equipment or funding? Email us at
+        Organizations interested in supporting the club with telescopes, equipment or funding are invited to contact us at
         {' '}<a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
       </p>
     </div>
