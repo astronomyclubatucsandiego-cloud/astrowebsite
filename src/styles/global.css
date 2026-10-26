@@ -1,7 +1,8 @@
 /* The Astronomy Club at UC San Diego.
    Look carried over from the club's Google Site: a navy top bar, photo
    banners with a Playfair Display title, Arvo headings between grey rules,
-   Lato body text, and alternating white / charcoal bands. */
+   Lato body text, and white bands with one dark highlight band per page.
+   Colors are UC San Diego's brand navy, blue and yellow (brand.ucsd.edu). */
 
 @import '@fontsource/arvo/400.css';
 @import '@fontsource/arvo/700.css';
@@ -11,16 +12,15 @@
 @import '@fontsource/playfair-display/700.css';
 
 :root {
-  --navy: #0b1a21;        /* top bar */
+  --navy: #182b49;        /* top bar, Tonight strip, dark bands (UC San Diego Navy) */
   --ink: #212121;         /* body text */
-  --steel: #4e6e8e;       /* section headings on white */
-  --blue: #1f4e87;        /* names and subheadings on white */
-  --ice: #b7cde2;         /* names and subheadings on charcoal */
-  --charcoal: #3d3d3d;    /* dark bands */
+  --steel: #00629b;       /* section headings on white (UC San Diego Blue) */
+  --blue: #182b49;        /* names and subheadings on white (UC San Diego Navy) */
   --rule: #e6e6e6;        /* heading rules on white */
-  --rule-dark: #2e2e2e;   /* heading rules on charcoal */
+  --rule-dark: #101c2f;   /* heading rules on dark bands (navy, 35% darker) */
   --mist: #eeeeee;        /* footer band */
-  --link: #1a5fa6;
+  --link: #00629b;        /* UC San Diego Blue */
+  --yellow: #ffcd00;      /* UC San Diego Yellow: active nav underline only */
 
   --serif-display: 'Playfair Display', Georgia, serif;
   --slab: 'Arvo', Rockwell, Georgia, serif;
@@ -48,7 +48,8 @@ footer { background: var(--mist); }
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--link); }
 a:hover { text-decoration-thickness: 2px; }
-:focus-visible { outline: 3px solid #f2b705; outline-offset: 2px; }
+/* Navy inner ring shows on white, yellow outer ring shows on navy. */
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; box-shadow: 0 0 0 2px var(--navy); }
 
 .wrap { width: min(var(--page), 100% - 2rem); margin-inline: auto; }
 .skip { position: absolute; left: -999px; top: 0; z-index: 100; background: #fff; color: var(--ink); padding: .5rem 1rem; }
@@ -63,7 +64,7 @@ a:hover { text-decoration-thickness: 2px; }
 .nav a { position: relative; color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; padding-block: 1rem; white-space: nowrap; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: transparent; }
 .nav a:hover::after { background: rgba(255, 255, 255, .35); }
-.nav a[aria-current="page"]::after { background: #fff; }
+.nav a[aria-current="page"]::after { background: var(--yellow); }
 
 @media (max-width: 860px) {
   .topbar__inner { flex-wrap: wrap; padding: .6rem 1rem 0; gap: 0; }
@@ -98,7 +99,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- Bands ---------- */
 .band { padding-block: 3rem; }
-.band--dark { background: var(--charcoal); color: #fff; }
+.band--dark { background: var(--navy); color: #fff; }
 .band--dark a { color: #cfe2f5; }
 .band--tight { padding-bottom: 0; }
 
@@ -142,7 +143,7 @@ a:hover { text-decoration-thickness: 2px; }
 .tonight--strip { position: relative; overflow: hidden; }
 .tonight__inner { display: flex; align-items: center; gap: 1rem; padding-block: .9rem; }
 .tonight__moon { flex: none; }
-.tonight__moon-dark { fill: #26343d; }
+.tonight__moon-dark { fill: #3b4b64; }
 .tonight__moon-lit { fill: #efe8cf; }
 .tonight__title { margin: 0; font-family: var(--slab); font-size: 1rem; font-weight: 700; color: #fff; }
 .tonight__facts { margin: .15rem 0 0; display: flex; flex-wrap: wrap; gap: .2rem 1.6rem; font-size: .95rem; }
@@ -169,42 +170,25 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- Board ---------- */
 
-.member { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: start; }
-.member__photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-.member h3 { margin: 0; padding-block: .5rem; border-block: 4px solid var(--rule); font-family: var(--slab); font-size: clamp(1.9rem, 3.5vw, 2.5rem); line-height: 1.2; color: var(--blue); }
-.member__role { margin: 1.2rem 0 .6rem; font-size: 1.45rem; font-weight: 700; color: var(--blue); }
-.member__bio p { margin: 0 0 .9rem; }
-.member__nasa { margin: .4rem 0 0; padding-top: .8rem; border-top: 1px solid var(--rule); font-style: italic; }
-.band--dark .member__nasa { border-color: var(--rule-dark); }
-/* No photo yet: the text takes the row, kept to a readable width. */
-.member.member--no-photo, .band--dark .member.member--no-photo { grid-template-columns: minmax(0, 38rem); }
-.band--dark .member h3 { color: var(--ice); border-color: var(--rule-dark); }
-.band--dark .member__role { color: var(--ice); }
-/* Dark rows put the photo first, like the Google Site. */
-.band--dark .member { grid-template-columns: 1fr 1.4fr; }
-.band--dark .member__photo { order: -1; }
-@media (max-width: 760px) {
-  .member, .band--dark .member { grid-template-columns: 1fr; gap: 1.4rem; }
-  .member__photo { order: -1; max-width: 22rem; }
-}
-
-/* Media and Outreach teams: compact cards, two per row. */
-.member-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 2.5rem; }
-/* Photo beside name + role; the bio sits under the name on desktop and goes full width on phones. */
-.member-card { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); grid-template-areas: "photo head" "photo body"; grid-template-rows: auto 1fr; gap: 0 1.2rem; align-items: start; }
-.member-card--no-photo { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "body"; }
-.member-card img { grid-area: photo; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-.member-card__head { grid-area: head; }
-.member-card__body { grid-area: body; }
-.member-card h3 { margin: 0; padding-bottom: .3rem; border-bottom: 3px solid var(--rule); font-family: var(--slab); font-size: 1.45rem; line-height: 1.2; color: var(--blue); }
-.member-card__role { margin: .5rem 0 .4rem; font-weight: 700; color: var(--blue); }
-.member-card__bio p { margin: 0 0 .6rem; font-size: .98rem; }
-.member-card__nasa { margin: .3rem 0 0; font-size: .95rem; font-style: italic; }
-@media (max-width: 860px) { .member-grid { grid-template-columns: 1fr; max-width: 40rem; margin-inline: auto; } }
-@media (max-width: 480px) {
-  .member-card { grid-template-columns: 6.5rem minmax(0, 1fr); grid-template-areas: "photo head" "body body"; gap: 0 1rem; }
-  .member-card__head { align-self: center; }
-  .member-card__body { margin-top: .9rem; }
+/* Every team uses the same row: photo left, role + name beside it, bio below the name.
+   Rows are separated by thin rules, all on white, so the roster scans top to bottom. */
+.member-list { max-width: 51rem; margin-inline: auto; }
+.member { display: grid; grid-template-columns: 11rem minmax(0, 1fr); grid-template-areas: "photo head" "photo body"; grid-template-rows: auto 1fr; gap: 0 1.8rem; align-items: start; padding-block: 1.8rem; border-top: 1px solid var(--rule); }
+.member:first-child { border-top: 0; padding-top: .4rem; }
+.member--no-photo { grid-template-columns: minmax(0, 38rem); grid-template-areas: "head" "body"; }
+.member img { grid-area: photo; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.member__head { grid-area: head; }
+.member__body { grid-area: body; max-width: 38rem; }
+.member h3 { margin: 0; font-family: var(--slab); font-size: 1.35rem; line-height: 1.25; color: var(--blue); }
+.member__name { margin: .2rem 0 .7rem; font-weight: 700; }
+.member__bio p { margin: 0 0 .7rem; }
+.member__nasa { margin: .3rem 0 0; font-style: italic; }
+/* Phones: small photo beside role + name, bio full width underneath. */
+@media (max-width: 520px) {
+  .member { grid-template-columns: 6.5rem minmax(0, 1fr); grid-template-areas: "photo head" "body body"; gap: 0 1rem; }
+  .member__head { align-self: center; }
+  .member__name { margin-bottom: 0; }
+  .member__body { margin-top: .9rem; }
 }
 
 .update-note { margin-top: 0; padding: 1.4rem 1.6rem; border: 2px solid var(--rule); }

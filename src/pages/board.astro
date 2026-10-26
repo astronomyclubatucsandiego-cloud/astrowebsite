@@ -22,9 +22,6 @@ const teams = (
     })),
   )
 ).filter((t) => t.members.length > 0);
-/* The Executive Board gets full rows that alternate white / charcoal, like the old Google Site.
-   The other teams are compact cards, two per row, so the page doesn't scroll forever. */
-const FULL_ROW_TEAM = 'Executive Board';
 ---
 
 <Base title="Meet the Board" description={`The ${CLUB.boardYear} board of ${CLUB.name}.`}>
@@ -37,16 +34,23 @@ const FULL_ROW_TEAM = 'Executive Board';
     </div>
   </section>
 
-  {teams.map(({ team, members }) =>
-    team === FULL_ROW_TEAM ? (
-      <>
-        <section class="band band--tight"><div class="wrap"><h2 class="rule-title">{team}</h2></div></section>
-        {members.map((m, i) => (
-          <section class:list={['band', { 'band--dark': i % 2 === 0 }]}>
-            <div class:list={['wrap', 'member', { 'member--no-photo': !m.photo }]}>
-              <div class="member__text">
-                <h3>{m.name}</h3>
-                <p class="member__role">{m.role}</p>
+  {/* One row per person, the same for every team, like Yale's YASSS board page:
+       photo left, role first (what visitors look for), then name and the bio. */}
+  {teams.map(({ team, members }) => (
+    <section class="band">
+      <div class="wrap">
+        <h2 class="rule-title">{team}</h2>
+        <div class="member-list">
+          {members.map((m) => (
+            <article class:list={['member', { 'member--no-photo': !m.photo }]}>
+              {m.photo && (
+                <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[300, 600]} sizes="(max-width: 520px) 30vw, 176px" />
+              )}
+              <div class="member__head">
+                <h3>{m.role}</h3>
+                <p class="member__name">{m.name}</p>
+              </div>
+              <div class="member__body">
                 <div class="member__bio"><m.Bio /></div>
                 {m.favoriteNasa && (
                   <p class="member__nasa">
@@ -55,45 +59,12 @@ const FULL_ROW_TEAM = 'Executive Board';
                   </p>
                 )}
               </div>
-              {m.photo && (
-                <div class="member__photo">
-                  <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[400, 800]} sizes="(max-width: 760px) 90vw, 400px" />
-                </div>
-              )}
-            </div>
-          </section>
-        ))}
-      </>
-    ) : (
-      <section class="band">
-        <div class="wrap">
-          <h2 class="rule-title">{team}</h2>
-          <div class="member-grid">
-            {members.map((m) => (
-              <article class:list={['member-card', { 'member-card--no-photo': !m.photo }]}>
-                {m.photo && (
-                  <Image src={m.photo} alt={`${m.name}, ${m.role}`} widths={[300, 600]} sizes="(max-width: 520px) 30vw, 180px" />
-                )}
-                <div class="member-card__head">
-                  <h3>{m.name}</h3>
-                  <p class="member-card__role">{m.role}</p>
-                </div>
-                <div class="member-card__body">
-                  <div class="member-card__bio"><m.Bio /></div>
-                  {m.favoriteNasa && (
-                    <p class="member-card__nasa">
-                      Favorite NASA image:{' '}
-                      {m.favoriteNasa.url ? <a href={m.favoriteNasa.url}>{m.favoriteNasa.text}</a> : m.favoriteNasa.text}
-                    </p>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
-      </section>
-    ),
-  )}
+      </div>
+    </section>
+  ))}
 
   <section class="band">
     <div class="wrap">
