@@ -61,6 +61,10 @@ const GROUPS = [
   },
 ] as const;
 
+/* White and navy alternate down the page (owner, Oct 2026). The NASA row stays white because it
+   only shows when NASA's API answers; the page alternates either way. */
+const DARK = ['sky', 'community'];
+
 const isInternal = (href: string) => href.startsWith('/');
 /* NASA's picture of the day is shown as its own row right after this group. Rows alternate
    sides, so groups after it shift by one to keep the zig-zag. */
@@ -74,7 +78,7 @@ const flipped = (i: number) => (i > nasaIndex ? i + 1 : i) % 2 === 1;
 
   {GROUPS.map((group, i) => (
     <>
-    <section id={group.id} class="band">
+    <section id={group.id} class:list={['band', { 'band--dark': DARK.includes(group.id) }]}>
       <div class="wrap">
         <h2 class="rule-title">{group.title}</h2>
         <div class:list={['split', { 'split--flip': flipped(i) }]}>
@@ -108,7 +112,7 @@ const flipped = (i: number) => (i > nasaIndex ? i + 1 : i) % 2 === 1;
     </>
   ))}
 
-  <section class="band band--tight-top">
+  <section class="band">
     <div class="wrap">
       <p class="resources-note">Know a resource that should be here? Share it in our <a href={CLUB.discord}>Discord</a>.</p>
     </div>
