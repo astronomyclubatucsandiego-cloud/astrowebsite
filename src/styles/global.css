@@ -68,9 +68,10 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 860px) {
   .topbar__inner { flex-wrap: wrap; padding: .6rem 1rem 0; gap: 0; }
   /* Wrap onto a second line instead of running off the edge, so every item stays visible. */
-  /* Two even rows of three on phones (6 items), instead of 4 + 2. */
-  .nav { margin-left: 0; width: 100%; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 0 1rem; }
-  .nav a { padding-block: .55rem .75rem; font-size: .9rem; justify-self: start; }
+  /* All five items in one row under the brand, spread edge to edge. Fits from 360px wide;
+     narrower phones wrap to a second line rather than cutting off "Resources". */
+  .nav { margin-left: 0; width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 .6rem; }
+  .nav a { padding-block: .55rem .75rem; font-size: .9rem; }
 }
 
 /* ---------- Photo banner ---------- */
@@ -139,26 +140,46 @@ a:hover { text-decoration-thickness: 2px; }
 .more-link { margin: 2rem 0 0; text-align: center; }
 
 /* ---------- Tonight from UC San Diego ---------- */
-/* A plain status line under the banner, like an observatory's daily sky report. */
+/* An observatory-style sky report under the banner: the Moon as it looks tonight, the basic times,
+   then planets and events. Plain rows on navy, no cards. */
 .tonight { background: var(--navy); color: #e8eef2; border-top: 1px solid rgba(255, 255, 255, .08); }
-.tonight[hidden] { display: none; }
+.tonight[hidden], .tonight [hidden] { display: none; }
 .tonight--strip { position: relative; overflow: hidden; }
-.tonight__inner { display: flex; align-items: center; gap: 1rem; padding-block: .9rem; }
-.tonight__moon { flex: none; }
-.tonight__moon-dark { fill: #3b4b64; }
-.tonight__moon-lit { fill: #efe8cf; }
-.tonight__title { margin: 0; font-family: var(--heading); font-size: 1rem; font-weight: 700; color: #fff; }
-.tonight__facts { margin: .15rem 0 0; display: flex; flex-wrap: wrap; gap: .2rem 1.6rem; font-size: .95rem; }
-.tonight__facts strong { color: #fff; }
-.tonight__planets { margin: .3rem 0 0; font-size: .95rem; }
-.tonight__planets strong { color: #fff; }
-.tonight__planets[hidden] { display: none; }
-/* Panel version (Resources): the same data as a box beside the planning links, facts stacked. */
+.tonight__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.8rem; align-items: start; padding-block: 1.6rem; }
+.tonight__moon { margin: 0; width: 8.5rem; text-align: center; }
+.tonight__disc { position: relative; aspect-ratio: 1; }
+.tonight__disc img, .tonight__disc svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tonight__shadow { fill: rgba(16, 28, 47, .92); } /* --rule-dark: the night side, a touch of earthshine shows through */
+.tonight__moon figcaption { margin-top: .6rem; font-size: .9rem; line-height: 1.35; }
+.tonight__title { margin: 0; font-family: var(--heading); font-size: 1.3rem; font-weight: 700; color: #fff; }
+.tonight__date { display: block; margin-top: .1rem; font-family: var(--sans); font-size: .95rem; font-weight: 400; color: #e8eef2; }
+.tonight__facts { display: flex; flex-wrap: wrap; gap: .35rem 1.8rem; margin: .8rem 0 0; }
+.tonight__facts div { display: flex; gap: .45rem; }
+.tonight__facts dd { margin: 0; font-weight: 700; color: #fff; }
+.tonight__group { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid rgba(255, 255, 255, .14); }
+.tonight__sub { margin: 0 0 .55rem; font-family: var(--heading); font-size: 1.05rem; color: #fff; }
+.tonight__planets { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .7rem 2rem; }
+.tonight__planets li { display: flex; align-items: center; gap: .65rem; }
+.tonight__planets strong, .tonight__events strong { color: #fff; }
+/* Same-width slot for every planet so the names line up; Saturn's rings fill it, the round ones sit centered. */
+.tonight__planet { width: 72px; height: 40px; object-fit: contain; flex: none; }
+.tonight__events { list-style: none; margin: 0; padding: 0; max-width: 46rem; }
+.tonight__events li { margin: 0 0 .45rem; }
+.tonight__credit { margin: 1rem 0 0; font-size: .875rem; }
+/* Phones: the Moon and its caption sit side by side above everything else. */
+@media (max-width: 640px) {
+  .tonight__inner { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding-block: 1.2rem; }
+  .tonight__moon { display: flex; align-items: center; gap: 1rem; width: auto; text-align: left; }
+  .tonight__disc { width: 5.5rem; flex: none; }
+  .tonight__moon figcaption { margin: 0; font-size: 1rem; }
+}
+/* Panel version (Resources): the same report stacked in a box beside the planning links. */
 .tonight--panel { border-top: 0; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
-.tonight--panel .tonight__inner { align-items: flex-start; gap: 1.2rem; padding: 1.6rem 1.4rem; }
-.tonight--panel .tonight__moon { width: 64px; height: 64px; }
-.tonight--panel .tonight__title { font-size: 1.2rem; }
-.tonight--panel .tonight__facts { flex-direction: column; gap: .35rem; margin-top: .6rem; font-size: 1rem; }
+.tonight--panel .tonight__inner { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.6rem 1.4rem; }
+.tonight--panel .tonight__moon { display: flex; align-items: center; gap: 1rem; width: auto; text-align: left; }
+.tonight--panel .tonight__disc { width: 5.5rem; flex: none; }
+.tonight--panel .tonight__moon figcaption { margin: 0; font-size: 1rem; }
+.tonight--panel .tonight__facts { flex-direction: column; gap: .3rem; }
 
 /* ---------- Get involved footer band ---------- */
 .involved { background: var(--mist); padding-block: 1.6rem; }
@@ -222,6 +243,18 @@ a:hover { text-decoration-thickness: 2px; }
 .update-note h2 { margin: 0 0 .3rem; font-family: var(--heading); font-size: 1.35rem; color: var(--steel); }
 .update-note p { margin: 0; }
 
+/* ---------- Sponsors and supporters (home) ---------- */
+/* Three plain columns: optional logo, Sponsor/Supporter, name, one line. No cards. */
+.supporters { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; text-align: center; }
+/* Logos share one height; the wide ones are capped in width so none outweighs the others. */
+.supporters__logo { display: flex; align-items: center; justify-content: center; height: 80px; margin-bottom: 1rem; }
+.supporters__logo img { width: auto; height: auto; max-width: min(100%, 15rem); max-height: 80px; }
+.supporters__kind { margin: 0 0 .2rem; font-style: italic; color: #5f6368; }
+.supporters h3 { margin: 0 0 .4rem; font-family: var(--heading); font-size: 1.25rem; line-height: 1.3; color: var(--blue); }
+.supporters p { margin: 0; }
+.supporters__ask { max-width: 38rem; margin: 2.5rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; }
+@media (max-width: 760px) { .supporters { grid-template-columns: 1fr; max-width: 26rem; margin-inline: auto; } }
+
 /* ---------- Gallery ---------- */
 /* Centers however many sections have photos (3 across on desktop, up to 6 sections). */
 .gallery-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 19.5rem)); justify-content: center; gap: 2rem 1.6rem; }
@@ -233,6 +266,7 @@ a:hover { text-decoration-thickness: 2px; }
 .gallery-index figure img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--heading); font-size: 1.45rem; color: var(--blue); }
 .gallery-index p { margin: 0; font-size: .95rem; color: #555; }
+.gallery-index__nophoto { color: #e8eef2; font-size: .95rem; }
 .gallery-index__count { display: block; margin-top: .2rem; font-size: .85rem; font-style: italic; }
 .coming-soon { max-width: 38rem; margin: 2.5rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; color: #555; }
 
@@ -281,7 +315,7 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
 
 /* ---------- Split rows: photo (or panel) beside text ---------- */
-/* Used by Dark Sites and Resources, like the old Google Site's image-beside-text rows.
+/* Used by Resources and the home page, like the old Google Site's image-beside-text rows.
    .split--flip puts the media on the right so rows can alternate sides. */
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2.5rem; align-items: start; }
 .split--flip { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
@@ -290,8 +324,9 @@ a:hover { text-decoration-thickness: 2px; }
 .split--map { grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); }
 .split--no-media { grid-template-columns: minmax(0, 40rem); justify-content: center; }
 .split__media { margin: 0; }
-.split__media img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
-.split__media figcaption { margin-top: .6rem; font-size: .9rem; font-style: italic; }
+/* Direct photos only (a figure's image, or one inside its link), so the Tonight panel's Moon and planets keep their own sizes. */
+.split__media > img, .split__media > a > img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.split__media > figcaption { margin-top: .6rem; font-size: .9rem; font-style: italic; }
 .split__text > p:first-child { margin-top: 0; }
 @media (max-width: 760px) {
   .split, .split--flip { grid-template-columns: 1fr; gap: 1.4rem; }
@@ -299,7 +334,9 @@ a:hover { text-decoration-thickness: 2px; }
   .map { height: 320px; }
 }
 
-/* ---------- Dark Sites ---------- */
+/* ---------- Trip info (gallery trip sections) and the FAQ trip guide ---------- */
+.trip-about { max-width: 38rem; margin: 0 auto 2.5rem; }
+.trip-about .lead { margin-bottom: 1rem; text-align: left; }
 .site__facts { margin: 1.2rem 0; display: grid; gap: .5rem; }
 .site__facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
 .band--dark .site__facts div { border-color: var(--rule-dark); }

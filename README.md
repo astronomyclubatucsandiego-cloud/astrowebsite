@@ -33,12 +33,14 @@ npm run dev      # open http://localhost:4321/astrowebsite/
 | Club links (Discord, Instagram, email), menu, board year shown | `src/config.ts` |
 | Colors, fonts and all styling | `src/styles/global.css` |
 | Top bar and footer on every page | `src/layouts/Base.astro` |
-| Pages (home, board, dark sites, FAQ, resources, 404, gallery) | `src/pages/` |
+| Pages (home, board, gallery, FAQ, resources, 404) | `src/pages/` |
 | Board members, one folder per year | `src/content/board/<year>/` |
 | Board photos | `src/assets/board/` |
 | Gallery photos, one folder per section | `src/assets/gallery/<section>/` |
-| Gallery section names and caption rules | `src/lib/gallery.ts` |
+| Gallery section names, captions and trip info | `src/lib/gallery.ts` |
 | Photo banner, Tonight strip, forecast, NASA picture | `src/components/` |
+| Tonight sky math: sun, moon, planets, meteor showers and other events | `src/lib/sky.ts`, `src/lib/planets.ts`, `src/lib/events.ts` |
+| Moon and planet photos (NASA) | `src/assets/sky/` |
 | Home page banner video | `public/video/` |
 | Build and deploy setup | `.github/workflows/deploy.yml` |
 | Security policy (allowed outside sites) | `astro.config.mjs` |
@@ -85,13 +87,15 @@ Their bio, word for word from the board form.
   - `--jane-doe` adds "Photo: Jane Doe". Leave it off if unknown.
 - Empty sections stay hidden until they have a photo.
 - Special punctuation in captions goes under `captions` in `src/lib/gallery.ts`.
+- Trip sections (Tierra Del Sol, Anza-Borrego, Palomar) also have an `about` block there: a short description, facts and links shown above the photos.
 
 ### Other pages
 
 - **Home:** `src/pages/index.astro`.
-- **Dark Sites:** the `SITES` list at the top of `src/pages/dark-sites.astro`.
-- **FAQ:** `src/pages/faq.astro`.
+- **Sponsors and supporters:** the `SUPPORTERS` list in `src/config.ts`. Logos go in `src/assets/supporters/` (see the note in that folder).
+- **FAQ:** `src/pages/faq.astro`, including the "Coming on a Trip" guide.
 - **Resources:** the `GROUPS` list at the top of `src/pages/resources.astro`. Check each link works before adding it.
+- **Meteor showers:** each January, compare the `SHOWERS` list in `src/lib/events.ts` with the International Meteor Organization's new calendar (imo.net) and update any changed peak or rate.
 - **Events:** not on the website. Announce them on Discord and Instagram, then add photos to the gallery.
 
 ## Rules for every change

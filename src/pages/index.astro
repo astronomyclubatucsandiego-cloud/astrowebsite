@@ -1,10 +1,11 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import SkyTonight from '../components/SkyTonight.astro';
 import SkyForecast from '../components/SkyForecast.astro';
-import { CLUB, url } from '../config';
+import { CLUB, SUPPORTERS, url } from '../config';
 import trunk from '../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 import { existsSync } from 'node:fs';
 
@@ -20,6 +21,13 @@ import andromeda from '../assets/gallery/astrophotography/03-andromeda-galaxy--c
 import campus1 from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
 import campus2 from '../assets/gallery/general/02-students-at-the-club-telescope-on-campus.jpg';
 import campus3 from '../assets/gallery/general/03-observing-event-on-campus.jpg';
+
+/* Logos are optional: src/assets/supporters/<slug>.svg (or .png/.jpg/.webp). */
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>('/src/assets/supporters/*.{svg,png,jpg,jpeg,webp}', { eager: true });
+const supporters = SUPPORTERS.map((s) => ({
+  ...s,
+  logo: Object.entries(logoFiles).find(([path]) => path.split('/').pop()!.replace(/\.[^.]+$/, '') === s.slug)?.[1].default,
+}));
 
 /* The public moon and astronomy events calendar (moon phases, meteor showers, eclipses).
    Month grid on wide screens; a readable list (agenda) on phones, where the grid is too cramped. */
@@ -110,6 +118,29 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
       <p class="lead">Moon phases, meteor showers, eclipses and other things worth looking up for.</p>
       <iframe class="calendar calendar--month" title="Moon phases and astronomy events calendar" src={calendar('MONTH')} loading="lazy"></iframe>
       <iframe class="calendar calendar--agenda" title="Moon phases and astronomy events, as a list" src={calendar('AGENDA')} loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="band" id="supporters">
+    <div class="wrap">
+      <h2 class="rule-title">Sponsors and Supporters</h2>
+      <ul class="supporters">
+        {supporters.map((s) => (
+          <li>
+            {/* Same-height slot for every entry (even one without a logo) so the names line up. */}
+            {supporters.some((x) => x.logo) && (
+              <div class="supporters__logo">{s.logo && <Image src={s.logo} alt="" height={80} densities={[1, 2]} />}</div>
+            )}
+            <p class="supporters__kind">{s.kind}</p>
+            <h3>{s.href ? <a href={s.href} rel="noopener">{s.name}</a> : s.name}</h3>
+            <p>{s.what}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="supporters__ask">
+        Interested in supporting the club with telescopes, equipment or funding? Email us at
+        {' '}<a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
+      </p>
     </div>
   </section>
 </Base>

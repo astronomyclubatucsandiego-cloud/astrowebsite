@@ -3,10 +3,14 @@ import { defineConfig } from 'astro/config';
 /* `site` is the origin and `base` the path the site is served from: a GitHub
    project page lives at <org>.github.io/<repo>/. If the repo is renamed to
    <org>.github.io (or a custom domain is added), set base to '/'. */
+const base = '/astrowebsite';
+
 export default defineConfig({
   site: 'https://astronomyclubatucsandiego-cloud.github.io',
-  base: '/astrowebsite',
+  base,
   trailingSlash: 'always',
+  // The Dark Sites page was folded into the gallery trip sections (Oct 2026); keep old links working.
+  redirects: { '/dark-sites/': `${base}/gallery/` }, // Astro doesn't add the base to redirect targets
   // No code blocks on the site; Shiki's inline colors would clash with the CSP below.
   markdown: { syntaxHighlight: false },
   /* Content Security Policy: a <meta> tag on every page listing the only places the page may load

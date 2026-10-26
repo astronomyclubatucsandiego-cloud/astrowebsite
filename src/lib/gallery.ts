@@ -6,7 +6,10 @@ import type { ImageMetadata } from 'astro';
  *  first photo), plus `bannerPosition` to pick the crop. Use it when the first photo is a
  *  group shot, since a wide banner crop cuts through faces.
  *  Optional `captions`: exact wording for photos whose file name can't spell it right
- *  (apostrophes, hyphens like "200-inch", capital letters in object names). Keyed by file name. */
+ *  (apostrophes, hyphens like "200-inch", capital letters in object names). Keyed by file name.
+ *  Optional `about`: for trip sections, what the place is, a few facts and outside links, shown above the
+ *  photos (this replaced the Dark Sites page, Oct 2026). A section with `about` shows even before it has
+ *  photos. Facts are sourced (SDAA, CA State Parks, the club's own trips); don't add unconfirmed ones. */
 export const GALLERY_SECTIONS = [
   { slug: 'general', title: 'Campus Events', description: 'Observing nights, star parties and meetings on campus.' },
   {
@@ -19,14 +22,57 @@ export const GALLERY_SECTIONS = [
       '03-andromeda-galaxy--connor-sandfer.jpg': 'Andromeda Galaxy',
     },
   },
-  { slug: 'tds', title: 'Tierra Del Sol', description: 'Photos from our trips to the Tierra Del Sol Darksite with the San Diego Astronomy Association.' },
-  { slug: 'anza', title: 'Anza-Borrego', description: 'Photos from our annual stargazing and camping trip to Anza-Borrego Desert State Park.' },
+  {
+    slug: 'tds',
+    title: 'Tierra Del Sol',
+    description: 'Photos from our trips to the Tierra Del Sol Darksite with the San Diego Astronomy Association.',
+    about: {
+      intro:
+        "The San Diego Astronomy Association's dark-sky observing site in east San Diego County, at 3,710 feet. " +
+        'We have gone out with SDAA for overnight stargazing, looking through small and big telescopes and ' +
+        'seeing a multitude of stars with just the naked eye.',
+      facts: [
+        ['Run by', 'The San Diego Astronomy Association (SDAA)'],
+        ['Good for', 'Overnight stargazing through telescopes, far from city light'],
+      ],
+      /* SDAA's two pages (the site, its weather) were removed on Oct 25, 2026 because sdaa.org was hacked
+         (hidden spam links injected on every page). Put them back once it's fixed:
+         https://sdaa.org/tierra-del-sol-dark-sky-observing-site/ and https://sdaa.org/tierra-del-sol-weather-conditions/ */
+      links: [],
+    },
+  },
+  {
+    slug: 'anza',
+    title: 'Anza-Borrego',
+    description: 'Photos from our annual stargazing and camping trip to Anza-Borrego Desert State Park.',
+    about: {
+      intro:
+        'Our annual weekend trip to Anza-Borrego Desert State Park, an International Dark Sky Park since 2018. ' +
+        'We hike through the desert, camp under the stars, play card games, learn how to build a campfire, ' +
+        'and look at the cosmos through our telescopes.',
+      facts: [
+        ['How often', 'Once a year, over a weekend'],
+        ['Spots', 'Limited, usually about 25, so watch Discord and Instagram for the announcement'],
+      ],
+      links: [
+        { label: 'Anza-Borrego Desert State Park', href: 'https://www.parks.ca.gov/?page_id=638' },
+        { label: 'Dark Sky Park announcement (CA State Parks)', href: 'https://www.parks.ca.gov/NewsRelease/783' },
+      ],
+    },
+  },
   {
     slug: 'palomar',
     title: 'Palomar',
     description: 'Our trip to Palomar Observatory, including a tour of the 200-inch Hale Telescope.',
     banner: '05-the-group-under-the-200-inch-Hale-Telescope.jpg',
     bannerPosition: 'center 30%',
+    about: {
+      intro:
+        'Not a place we set up our own telescopes. We visit the observatory on Palomar Mountain and tour the ' +
+        '200-inch Hale Telescope, dedicated in 1948.',
+      facts: [['Highlight', 'Standing under the 200-inch Hale Telescope']],
+      links: [{ label: 'Visiting Palomar Observatory', href: 'https://sites.astro.caltech.edu/palomar/visitor/' }],
+    },
     captions: {
       '05-the-group-under-the-200-inch-Hale-Telescope.jpg': 'The group under the 200-inch Hale Telescope',
     },
@@ -35,6 +81,13 @@ export const GALLERY_SECTIONS = [
 ] as const;
 
 export type GallerySection = (typeof GALLERY_SECTIONS)[number];
+
+type About = { intro: string; facts: readonly (readonly [string, string])[]; links: readonly { label: string; href: string }[] };
+/** A trip section's `about` block, if it has one. */
+export const aboutFor = (section: GallerySection): About | undefined => ('about' in section ? section.about : undefined);
+
+/** Sections listed on the gallery page and menu: any with photos, plus trip sections with an `about`. */
+export const isListed = (section: GallerySection) => !!aboutFor(section) || photosFor(section.slug).length > 0;
 
 export interface GalleryPhoto {
   image: ImageMetadata;

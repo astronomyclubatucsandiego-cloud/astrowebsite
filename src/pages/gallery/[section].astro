@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Banner from '../../components/Banner.astro';
 import { CLUB, url } from '../../config';
-import { GALLERY_SECTIONS, photosFor, type GallerySection } from '../../lib/gallery';
+import { GALLERY_SECTIONS, aboutFor, isListed, photosFor, type GallerySection } from '../../lib/gallery';
 import fallbackBanner from '../../assets/gallery/astrophotography/01-elephants-trunk-nebula--connor-sandfer.jpg';
 
 export function getStaticPaths() {
@@ -20,6 +20,7 @@ const photos = await Promise.all(
   })),
 );
 const here = url(`/gallery/${section.slug}/`);
+const about = aboutFor(section);
 const banner = ('banner' in section && photos.find((p) => p.file === section.banner)) || photos[0];
 ---
 
@@ -30,13 +31,30 @@ const banner = ('banner' in section && photos.find((p) => p.file === section.ban
     <div class="wrap">
       <ul class="subnav" aria-label="Gallery sections">
         <li><a href={url('/gallery/')}>All galleries</a></li>
-        {GALLERY_SECTIONS.filter((s) => s.slug === section.slug || photosFor(s.slug).length > 0).map((s) => {
+        {GALLERY_SECTIONS.filter((s) => s.slug === section.slug || isListed(s)).map((s) => {
           const href = url(`/gallery/${s.slug}/`);
           return <li><a href={href} aria-current={href === here ? 'page' : undefined}>{s.title}</a></li>;
         })}
       </ul>
 
-      <p class="lead">{section.description}</p>
+      {about ? (
+        <div class="trip-about">
+          <p class="lead">{about.intro}</p>
+          <dl class="site__facts">
+            {about.facts.map(([term, detail]) => (
+              <div><dt>{term}</dt><dd>{detail}</dd></div>
+            ))}
+          </dl>
+          {about.links.length > 0 && (
+            <ul class="site__links">
+              {about.links.map((l) => <li><a href={l.href} rel="noopener">{l.label}</a></li>)}
+            </ul>
+          )}
+          <p>Trips are announced on our <a href={CLUB.discord}>Discord</a> and <a href={CLUB.instagram}>Instagram</a>. See <a href={url('/faq/#trips')}>coming on a trip</a> for what to bring.</p>
+        </div>
+      ) : (
+        <p class="lead">{section.description}</p>
+      )}
 
       {photos.length > 0 ? (
         <div class="photos" data-lightbox>

@@ -1,30 +1,80 @@
 ---
-/** "Tonight from UC San Diego": sunset, full dark and the moon, filled in by the
- *  visitor's browser for today (src/lib/sky.ts). Hidden without JavaScript, so a
- *  stale or empty strip is never shown.
- *  variant="strip": full-width navy bar (home page, under the banner).
- *  variant="panel": a box that sits inside a page section (Resources). One per page. */
+/** "Tonight from UC San Diego": tonight's sky, worked out in the visitor's browser for today.
+ *  - Sun and Moon basics come from src/lib/sky.ts and show right away.
+ *  - Moonrise/set, the moon-free dark hours, planets and events come from Astronomy Engine
+ *    (src/lib/planets.ts, src/lib/events.ts), loaded just after.
+ *  The Moon is NASA's LRO photo with tonight's phase shaded over it; planet photos are NASA's
+ *  (MESSENGER, Mariner 10, Viking, Hubble, Cassini), cut out of their black backgrounds.
+ *  Hidden without JavaScript, so a stale or empty panel is never shown.
+ *  variant="strip": full-width navy band (home page, under the banner).
+ *  variant="panel": a box inside a page section (Resources). One per page. */
+import { Image } from 'astro:assets';
+import moon from '../assets/sky/moon.png';
+import mercury from '../assets/sky/mercury.png';
+import venus from '../assets/sky/venus.png';
+import mars from '../assets/sky/mars.png';
+import jupiter from '../assets/sky/jupiter.png';
+import saturn from '../assets/sky/saturn.png';
+
 interface Props {
   variant?: 'strip' | 'panel';
 }
 const { variant = 'strip' } = Astro.props;
 const Heading = variant === 'panel' ? 'h3' : 'h2';
+const Sub = variant === 'panel' ? 'h4' : 'h3';
+const PLANETS = [
+  { name: 'Mercury', image: mercury },
+  { name: 'Venus', image: venus },
+  { name: 'Mars', image: mars },
+  { name: 'Jupiter', image: jupiter },
+  { name: 'Saturn', image: saturn, wide: true },
+];
 ---
 
 <section class:list={['tonight', `tonight--${variant}`]} aria-labelledby="tonight-title" hidden>
   <div class:list={['tonight__inner', { wrap: variant === 'strip' }]}>
-    <svg class="tonight__moon" viewBox="-12 -12 24 24" width="44" height="44" aria-hidden="true">
-      <circle r="10" class="tonight__moon-dark" />
-      <path class="tonight__moon-lit" d="" />
-    </svg>
-    <div>
-      <Heading id="tonight-title" class="tonight__title">Tonight from UC San Diego</Heading>
-      <p class="tonight__facts">
-        <span>Sunset <strong data-sunset></strong></span>
-        <span>Fully dark <strong data-dark></strong></span>
-        <span>Moon <strong data-moon></strong></span>
-      </p>
-      <p class="tonight__planets" data-planets hidden></p>
+    <figure class="tonight__moon">
+      <div class="tonight__disc">
+        <Image src={moon} alt="" widths={[160, 320]} sizes="160px" loading="eager" />
+        <svg viewBox="-50 -50 100 100" aria-hidden="true">
+          <defs>
+            <clipPath id="tonight-disc"><circle r="49.5" /></clipPath>
+            <filter id="tonight-soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.4" /></filter>
+          </defs>
+          <path class="tonight__shadow" clip-path="url(#tonight-disc)" filter="url(#tonight-soft)" fill-rule="evenodd" d="" />
+        </svg>
+      </div>
+      <figcaption data-moon></figcaption>
+    </figure>
+
+    <div class="tonight__body">
+      <Heading id="tonight-title" class="tonight__title">Tonight from UC San Diego <span class="tonight__date" data-date></span></Heading>
+      <dl class="tonight__facts">
+        <div><dt>Sunset</dt><dd data-sunset></dd></div>
+        <div><dt>Fully dark</dt><dd data-dark></dd></div>
+        <div data-moonrise hidden><dt>Moonrise</dt><dd></dd></div>
+        <div data-moonset hidden><dt>Moonset</dt><dd></dd></div>
+        <div data-window hidden><dt>Dark, moon down</dt><dd></dd></div>
+      </dl>
+
+      <div class="tonight__group" data-planets hidden>
+        <Sub class="tonight__sub">Planets</Sub>
+        <ul class="tonight__planets">
+          {PLANETS.map((p) => (
+            <li data-planet={p.name} hidden>
+              <Image src={p.image} alt="" class="tonight__planet" widths={p.wide ? [72, 144] : [40, 80]} sizes={p.wide ? '72px' : '40px'} />
+              <span><strong>{p.name}</strong> <span data-detail></span></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="tonight__group" data-events hidden>
+        <Sub class="tonight__sub" data-events-title>Tonight</Sub>
+        <ul class="tonight__events"></ul>
+      </div>
+
+      <p class="tonight__credit">Moon and planet photos: NASA. Meteor showers: International Meteor Organization.</p>
     </div>
   </div>
 </section>
@@ -32,34 +82,71 @@ const Heading = variant === 'panel' ? 'h3' : 'h2';
 <script>
   import { UCSD, localDate, sunsetUtc, moonPhase, phaseName, moonLitPath } from '../lib/sky';
 
-  const strip = document.querySelector<HTMLElement>('.tonight');
-  if (strip) {
+  const panel = document.querySelector<HTMLElement>('.tonight');
+  if (panel) {
+    const $ = <T extends Element = HTMLElement>(sel: string) => panel.querySelector<T>(sel)!;
     const time = (d: Date | null) =>
       d ? d.toLocaleTimeString('en-US', { timeZone: UCSD.timeZone, hour: 'numeric', minute: '2-digit' }) : 'n/a';
-    const today = localDate(new Date());
+    const now = new Date();
+    const today = localDate(now);
     const sunset = sunsetUtc(today, 90.833);
     const dark = sunsetUtc(today, 108);
     // The moon as it looks around 9 PM, when people are actually out observing.
-    const moon = moonPhase(new Date((sunset ?? new Date()).getTime() + 2.5 * 3600000));
+    const moon = moonPhase(new Date((sunset ?? now).getTime() + 2.5 * 3600000));
 
-    strip.querySelector('[data-sunset]')!.textContent = time(sunset);
-    strip.querySelector('[data-dark]')!.textContent = time(dark);
-    strip.querySelector('[data-moon]')!.textContent = `${phaseName(moon)}, ${Math.round(moon.fraction * 100)}% lit`;
-    const lit = strip.querySelector<SVGPathElement>('.tonight__moon-lit')!;
-    lit.setAttribute('d', moonLitPath(moon.fraction, 10));
-    if (!moon.waxing) lit.setAttribute('transform', 'scale(-1 1)');
-    strip.hidden = false;
+    $('[data-date]').textContent = now.toLocaleDateString('en-US', { timeZone: UCSD.timeZone, weekday: 'long', month: 'long', day: 'numeric' });
+    $('[data-sunset]').textContent = time(sunset);
+    $('[data-dark]').textContent = time(dark);
+    $('[data-moon]').textContent = `${phaseName(moon)}, ${Math.round(moon.fraction * 100)}% lit`;
+    // Shadow = the whole disc minus the lit part (even-odd fill); mirrored when the Moon is waning.
+    const shadow = $<SVGPathElement>('.tonight__shadow');
+    shadow.setAttribute('d', `M0 -50A50 50 0 1 1 0 50A50 50 0 1 1 0 -50Z ${moonLitPath(moon.fraction, 50)}`);
+    if (!moon.waxing) shadow.setAttribute('transform', 'scale(-1 1)');
+    panel.hidden = false;
 
-    // Planets need a bigger library, so load it after the basics are already showing.
-    const planetsEl = strip.querySelector<HTMLElement>('[data-planets]')!;
+    const show = (sel: string, text: string) => {
+      const row = $(sel);
+      row.querySelector('dd')!.textContent = text;
+      row.hidden = false;
+    };
+
+    // Everything else needs Astronomy Engine, so load it after the basics are showing.
     if (sunset && dark) {
-      import('../lib/planets')
-        .then(({ planetsTonight }) => {
-          const list = planetsTonight(sunset, dark, time);
-          planetsEl.innerHTML = list.length
-            ? `Planets ${list.map((p) => `<strong>${p.name}</strong> ${p.detail}`).join(' · ')}`
-            : 'No bright planets up this evening';
-          planetsEl.hidden = false;
+      Promise.all([import('../lib/planets'), import('../lib/events')])
+        .then(([{ planetsTonight }, { nightFrom, moonTonight, skyEvents }]) => {
+          const night = nightFrom(sunset, dark);
+
+          const m = moonTonight(night);
+          if (m.rise) show('[data-moonrise]', time(m.rise));
+          if (m.set) show('[data-moonset]', time(m.set));
+          const span = (a: Date, b: Date) => `${time(a)} to ${time(b)}`;
+          show('[data-window]', m.darkWindows.length
+            ? m.darkWindows.map(([a, b]) => span(a, b)).join(', ')
+            : 'Not tonight; the Moon is up all night');
+
+          const planets = planetsTonight(sunset, dark, time);
+          for (const p of planets) {
+            const li = $(`[data-planet="${p.name}"]`);
+            li.querySelector('[data-detail]')!.textContent = p.detail;
+            li.parentElement!.append(li); // keep the computed order (soonest first)
+            li.hidden = false;
+          }
+          if (planets.length) $('[data-planets]').hidden = false;
+
+          const { tonight, ahead } = skyEvents(night, time);
+          const list = tonight.length ? tonight : ahead;
+          if (list.length) {
+            $('[data-events-title]').textContent = tonight.length ? 'Tonight' : 'Coming up';
+            const ul = $('.tonight__events');
+            for (const e of list) {
+              const li = document.createElement('li');
+              const title = document.createElement('strong');
+              title.textContent = e.title;
+              li.append(title, `: ${e.detail}`);
+              ul.append(li);
+            }
+            $('[data-events]').hidden = false;
+          }
         })
         .catch(() => {});
     }
