@@ -1,0 +1,22 @@
+# Dependabot opens a pull request when a package or a deploy step has an update or a security fix.
+# Updates are grouped into one PR per ecosystem a week, so the board isn't flooded.
+# Security fixes come in their own PRs right away. Merge only after the PR's build passes.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm:
+        patterns: ['*']
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']

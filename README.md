@@ -1,163 +1,106 @@
-# Astronomy Club @ UCSD website
+# Astronomy Club at UC San Diego website
 
-The club's website. It replaced our old Google Site and keeps the same look.
+The club's public website, built with [Astro](https://astro.build) and hosted on GitHub Pages.
 
-**Live:** https://astronomyclubatucsandiego-cloud.github.io/astrowebsite/
+- **Live site:** https://astronomyclubatucsandiego-cloud.github.io/astrowebsite/
+- **Repo:** `astronomyclubatucsandiego-cloud/astrowebsite`, branch `main`
 
-Built with [Astro](https://astro.build), hosted for free on GitHub Pages.
+## Run it locally
 
-## Getting set up
-
-You need:
-- **Node.js 22.22 or newer** (Astro won't run on older versions). Check with `node -v`.
-- **Git**, and write access to this repo (ask a board member who's an admin).
-
-Then:
+- Install **Node.js 22.22 or newer** and **Git**.
+- Then run:
 
 ```bash
-git clone https://github.com/astronomyclubatucsandiego-cloud/astrowebsite.git
-cd astrowebsite
 npm install      # first time only
-npm run dev      # then open http://localhost:4321/astrowebsite/
+npm run dev      # open http://localhost:4321/astrowebsite/
 ```
 
-The `/astrowebsite/` at the end matters. The site lives under that path, locally and on GitHub Pages.
-
-Other commands:
-- `npm run build` builds the real site into `dist/`. If this fails, don't push.
-- `npm run preview` serves that build so you can check it before pushing. Open the address it prints
-  plus `/astrowebsite/`.
+- `npm run build` builds the site into `dist/`. It must pass before you push.
+- `npm run preview` serves that build so you can check it.
+- The site lives under `/astrowebsite/`, so keep that at the end of local addresses.
 
 ## How it goes live
 
-Push to `main`. A GitHub Action builds the site and publishes it in about 1 to 2 minutes. Watch the
-**Actions** tab: green check means it's live, red X means the build broke (click it to see why).
+- Push to `main`. A GitHub Action builds and publishes the site in 1 to 2 minutes.
+- Check the **Actions** tab. A green check means it's live; a red X means the build failed (click it for the error).
+- Pages can take up to 10 minutes to show changes. Hard refresh with Cmd+Shift+R.
+- Dependabot opens weekly pull requests for updates. Merge them only when their build passes.
 
-GitHub Pages is already turned on (Settings, Pages, Source: GitHub Actions). Only repo admins can change that.
+## Where things are
 
-## What's where
+| What | Where |
+|---|---|
+| Club links (Discord, Instagram, email), menu, board year shown | `src/config.ts` |
+| Colors, fonts and all styling | `src/styles/global.css` |
+| Top bar and footer on every page | `src/layouts/Base.astro` |
+| Pages (home, board, dark sites, FAQ, resources, 404, gallery) | `src/pages/` |
+| Board members, one folder per year | `src/content/board/<year>/` |
+| Board photos | `src/assets/board/` |
+| Gallery photos, one folder per section | `src/assets/gallery/<section>/` |
+| Gallery section names and caption rules | `src/lib/gallery.ts` |
+| Photo banner, Tonight strip, forecast, NASA picture | `src/components/` |
+| Home page banner video | `public/video/` |
+| Build and deploy setup | `.github/workflows/deploy.yml` |
+| Security policy (allowed outside sites) | `astro.config.mjs` |
 
-```
-src/
-  config.ts             Club links (Discord, Instagram, email, forms, calendar), menu, which board year shows
-  styles/global.css     All the styling. Colors and fonts are at the top.
-  layouts/Base.astro    Top bar and the "Get involved" footer on every page
-  components/Banner.astro  The big photo banner at the top of each page
-  components/SkyTonight.astro  The "Tonight from UC San Diego" strip on the home page
-  pages/                One file per page: index (home), board, dark-sites, faq, resources, 404, gallery/
-  content/board/        Board members, one folder per year (2025-26/, 2026-27/)
-  lib/gallery.ts        Gallery section names and descriptions, and how photo captions are read from file names
-  lib/sky.ts            Sunset, darkness and moon phase math for the "Tonight" strip
-  assets/               Images: board/, gallery/, equipment/, site/ (logo and icons)
-.github/workflows/deploy.yml   The build and publish setup
-```
-
-## Updating stuff
-
-### Events
-The website doesn't do event announcements. Those go on **Discord and Instagram**. After an event, post the
-photos in the gallery.
-
-The home page has two things that keep themselves up to date:
-- **Tonight from UC San Diego** (under the banner): tonight's sunset, when it gets fully dark, and the moon
-  phase. It's calculated in the visitor's browser every time the page loads, so there's nothing to edit.
-  The math is in `src/lib/sky.ts`.
-- **Astronomy Calendar**: the public "Moon/Astro" Google Calendar (moon phases, meteor showers, eclipses).
-  To swap it for another calendar, change `calendars.astronomy` in `src/config.ts`.
+## Updating content
 
 ### Board members
-Each person is one file in that year's folder, like `src/content/board/2026-27/caleb-patton.md`:
+
+- One Markdown file per person, for example `src/content/board/2026-27/jane-doe.md`:
 
 ```md
 ---
-name: "Caleb Ruben Patton"
-role: "Social Media Director"
+name: "Jane Doe"
+role: "Treasurer"
 team: "Executive Board"
-order: 2
-photo: ../../../assets/board/caleb-patton.jpg
+order: 3
+photo: ../../../assets/board/2026-27/jane-doe.jpg
 favoriteNasa:
   text: "The Pillars of Creation"
 ---
 
-Their bio goes here, word for word from the board form.
+Their bio, word for word from the board form.
 ```
 
-- `team` has to be exactly `Executive Board`, `Media Team` or `Outreach Team`.
-- `order` is their spot within the team (1 shows first).
-- `photo` is optional. No photo yet? They just show without one.
-- `favoriteNasa` is optional. Add `url: "https://..."` under `text` to make it a link.
+- `team` must be `Executive Board`, `Media Team` or `Outreach Team`.
+- `order` sets their place in the team (1 is first).
+- `photo` and `favoriteNasa` are optional. Add `url:` under `text` to make the NASA image a link.
+- The page shows photo, name and role. The bio opens when someone clicks the photo.
 - Never put anyone's email on the site.
 
 ### New board year
-1. Make a folder like `src/content/board/2027-28/` and add one file per person (copy one from an older year).
-2. Put their photos in `src/assets/board/2027-28/`, about 1400px max. Point each `photo:` line at the file,
-   for example `photo: ../../../assets/board/2027-28/jane-doe.jpg`.
-3. Want to see it before it's live? Change `boardTerm` in `src/config.ts` to the new folder name, run
-   `npm run dev`, look, then change it back.
-4. When the roster's done, set `boardTerm` (`'2027-28'`) and `boardYear` (`'2027-2028'`) in `src/config.ts`
-   and push.
 
-Old years stay in their folders, so nothing gets lost.
+1. Make a new folder, for example `src/content/board/2027-28/`, with one file per person.
+2. Put photos in `src/assets/board/2027-28/`, 1400px max.
+3. To preview, set `boardTerm` in `src/config.ts` to the new folder, run `npm run dev`, then set it back.
+4. When the roster is complete, set `boardTerm` and `boardYear` in `src/config.ts` and push.
 
 ### Gallery photos
-Drop them in `src/assets/gallery/<section>/`. The sections are `general` (Campus Events),
-`astrophotography`, `tds` (Tierra Del Sol), `anza`, `palomar` and `merch`.
-- Name them like `04-orion-from-anza--jane-doe.jpg`:
+
+- Add photos to `src/assets/gallery/<section>/`. Sections: `general`, `astrophotography`, `tds`, `anza`, `palomar`, `merch`.
+- Name files like `04-orion-from-anza--jane-doe.jpg`:
   - `04` sets the order.
-  - `orion-from-anza` becomes the caption and the description for screen readers ("Orion from anza"), so
-    describe the photo.
-  - `--jane-doe` (two dashes, then the photographer) adds "Photo: Jane Doe" under it. Leave it off if you
-    don't know who took it. Always credit astrophotos when you can.
-- Empty sections stay hidden from the gallery page and its menu. They're listed in a "Coming soon" line
-  instead, and show up on their own as soon as you add the first photo.
-- Capital letters in the file name are kept, so write names like `Palomar-Visitor-Center` the way they should read.
-- Before adding photos from a camera, shrink them and strip the hidden camera data (it can include location):
-  `ffmpeg -i DSC0001.jpg -vf "scale=w=2400:h=2400:force_original_aspect_ratio=decrease" -q:v 6 -map_metadata -1 01-name.jpg`
-- To rename a section or change its description, edit `src/lib/gallery.ts`. If the page banner crops badly
-  (a group photo with heads cut off), set `banner` to a better photo's file name there, like Palomar does.
-- If a caption needs punctuation a file name can't hold (an apostrophe, "200-inch", capital letters), add it
-  under `captions` for that section in `src/lib/gallery.ts`, like "Elephant's Trunk Nebula".
+  - `orion-from-anza` becomes the caption and alt text.
+  - `--jane-doe` adds "Photo: Jane Doe". Leave it off if unknown.
+- Empty sections stay hidden until they have a photo.
+- Special punctuation in captions goes under `captions` in `src/lib/gallery.ts`.
 
-### Everything else
+### Other pages
 
-| What | Where |
-|---|---|
-| Discord, Instagram, email, forms, calendar | `CLUB` in `src/config.ts` |
-| Menu | `NAV` in `src/config.ts` |
-| Home page text and photos | `src/pages/index.astro` |
-| Dark Sites (Tierra Del Sol, Anza-Borrego, Palomar, trip tips) | `SITES` at the top of `src/pages/dark-sites.astro` |
-| FAQ | `src/pages/faq.astro` |
-| Resources | `GROUPS` at the top of `src/pages/resources.astro`: each group has a title, a one-line intro, a photo (or the live "Tonight" panel), and its links. Check a link works before adding it. |
-| "New here?" line on the home page | `src/pages/index.astro` |
-| Colors and fonts | top of `src/styles/global.css` |
+- **Home:** `src/pages/index.astro`.
+- **Dark Sites:** the `SITES` list at the top of `src/pages/dark-sites.astro`.
+- **FAQ:** `src/pages/faq.astro`.
+- **Resources:** the `GROUPS` list at the top of `src/pages/resources.astro`. Check each link works before adding it.
+- **Events:** not on the website. Announce them on Discord and Instagram, then add photos to the gallery.
 
-Linking between pages? Use the `url()` helper: `href={url('/board/')}`, not a plain `href="/board/"`.
-Plain links break because of the `/astrowebsite/` path. Import it at the top of the page with
-`import { url } from '../config';` (use `'../../config'` inside `src/pages/gallery/`).
+## Rules for every change
 
-## Keep it looking like us
-
-- Keep the look of the old Google Site: navy top bar, photo banners, Arvo headings, Lato text, white and
-  dark gray sections.
-- Use real club photos. No stock images, glowing gradients, or generic template stuff.
-- Don't make things up on the site (dates, numbers, policies). If you don't know it, leave it out.
-- Every image needs a description (`alt` text), except purely decorative banners.
-
-## Before you push
-
-- `npm run build` has to pass.
-- Check it on your phone, not just your laptop.
-- Shrink big photos first (about 2400px wide max, 1400px for board photos). Don't commit 10 MB PNGs.
-  On a Mac: check the size with `sips -g pixelWidth -g pixelHeight photo.jpg`, and if it's bigger than
-  2400px, shrink it with `sips -Z 2400 photo.jpg`. Don't run `-Z` on small photos. It blows them up and
-  makes them blurry.
-
-## To do
-
-- [ ] Finish the 2026-27 board. Only 6 form responses so far, and their photos are stuck on Drive behind a sign-in.
-- [ ] Add the Website Update Form link (`updateForm` in `src/config.ts`).
-- [ ] Get Connor's full-size Andromeda photo (the current one is only 200px).
-- [ ] Fill the empty gallery sections (Tierra Del Sol, Anza, Merch).
-- [ ] Add a photographer credit to the Palomar photos once we know who took them (rename to `...--first-last.jpg`).
-- [ ] Have the board look over the Resources links and add their favorites.
-- [ ] Point the old Google Site to this one, or take it down.
+- **Links between pages:** use `url()`, like `href={url('/board/')}`. A plain `href="/board/"` breaks on GitHub Pages.
+- **Real content only:** club photos, members' own words, no made-up dates or numbers.
+- **Alt text:** every image needs a description, except decorative banners.
+- **Shrink photos before committing:** 2400px max (1400px for board photos), and strip camera data:
+  `ffmpeg -i in.jpg -vf "scale=w=2400:h=2400:force_original_aspect_ratio=decrease" -q:v 6 -map_metadata -1 out.jpg`
+- **Outside services:** a new embed or service must be added to the security policy in `astro.config.mjs`, or the browser will block it.
+- **Check before you push:** run `npm run build`, then look at the page on a phone and a laptop.
+- **Never commit** `dist/`, `node_modules/`, `.astro/`, passwords or full-size camera files.
