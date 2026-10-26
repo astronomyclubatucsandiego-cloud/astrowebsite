@@ -5,7 +5,8 @@
  *    (src/lib/planets.ts, src/lib/events.ts), loaded just after.
  *  The Moon is NASA's LRO photo with tonight's phase shaded over it; planet photos are NASA's
  *  (MESSENGER, Mariner 10, Viking, Hubble, Cassini), cut out of their black backgrounds.
- *  Hidden without JavaScript, so a stale or empty panel is never shown.
+ *  The panel holds its full size from the first paint and fills in place, so nothing below it jumps
+ *  (Lighthouse layout shift, Oct 2026). Without JavaScript it shows a short note instead of times.
  *  variant="strip": full-width navy band (home page, under the banner).
  *  variant="panel": a box inside a page section (Resources). One per page. */
 import { Image } from 'astro:assets';
@@ -32,7 +33,7 @@ const PLANETS = [
 ---
 
 {/* "Coming up" (the next events, on quiet nights) only shows in the Resources panel; Home shows tonight only (owner, Oct 2026). */}
-<section class:list={['tonight', `tonight--${variant}`]} aria-labelledby="tonight-title" data-ahead={variant === 'panel' ? '' : undefined} hidden>
+<section class:list={['tonight', `tonight--${variant}`]} aria-labelledby="tonight-title" data-ahead={variant === 'panel' ? '' : undefined} data-pending>
   <div class:list={['tonight__inner', { wrap: variant === 'strip' }]}>
     <figure class="tonight__moon">
       <div class="tonight__disc">
@@ -53,11 +54,11 @@ const PLANETS = [
       <dl class="tonight__facts">
         <div><dt>Sunset</dt><dd data-sunset></dd></div>
         <div><dt>Fully dark</dt><dd data-dark></dd></div>
-        <div data-moonrise hidden><dt>Moonrise</dt><dd></dd></div>
-        <div data-moonset hidden><dt>Moonset</dt><dd></dd></div>
+        <div data-moonrise><dt>Moonrise</dt><dd>&nbsp;</dd></div>
+        <div data-moonset><dt>Moonset</dt><dd>&nbsp;</dd></div>
       </dl>
 
-      <div class="tonight__group" data-planets hidden>
+      <div class="tonight__group" data-planets>
         <Sub class="tonight__sub">Planets</Sub>
         <ul class="tonight__planets">
           {PLANETS.map((p) => (
@@ -66,6 +67,7 @@ const PLANETS = [
               <span><strong>{p.name}</strong> <span data-detail></span></span>
             </li>
           ))}
+          <li data-no-planets hidden>No bright planets up this evening.</li>
         </ul>
       </div>
 
@@ -77,6 +79,7 @@ const PLANETS = [
       <p class="tonight__credit">Moon and planet photos: NASA. Meteor showers: International Meteor Organization.</p>
     </div>
   </div>
+  <noscript><p class="tonight__nojs">Turn on JavaScript to see tonight's sky from UC San Diego.</p></noscript>
 </section>
 
 <script>
@@ -102,12 +105,10 @@ const PLANETS = [
     const shadow = $<SVGPathElement>('.tonight__shadow');
     shadow.setAttribute('d', `M0 -50A50 50 0 1 1 0 50A50 50 0 1 1 0 -50Z ${moonLitPath(moon.fraction, 50)}`);
     if (!moon.waxing) shadow.setAttribute('transform', 'scale(-1 1)');
-    panel.hidden = false;
+    delete panel.dataset.pending;
 
     const show = (sel: string, text: string) => {
-      const row = $(sel);
-      row.querySelector('dd')!.textContent = text;
-      row.hidden = false;
+      $(sel).querySelector('dd')!.textContent = text;
     };
 
     // Everything else needs Astronomy Engine, so load it after the basics are showing.
@@ -117,8 +118,8 @@ const PLANETS = [
           const night = nightFrom(sunset, dark);
 
           const m = moonTonight(night);
-          if (m.rise) show('[data-moonrise]', time(m.rise));
-          if (m.set) show('[data-moonset]', time(m.set));
+          show('[data-moonrise]', m.rise ? time(m.rise) : 'before sunset');
+          show('[data-moonset]', m.set ? time(m.set) : 'after sunrise');
 
           const planets = planetsTonight(sunset, dark, time);
           for (const p of planets) {
@@ -127,7 +128,7 @@ const PLANETS = [
             li.parentElement!.append(li); // keep the computed order (soonest first)
             li.hidden = false;
           }
-          if (planets.length) $('[data-planets]').hidden = false;
+          if (!planets.length) $('[data-no-planets]').hidden = false;
 
           const { tonight, ahead } = skyEvents(night, time);
           const list = tonight.length || panel.dataset.ahead === undefined ? tonight : ahead;

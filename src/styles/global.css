@@ -119,6 +119,9 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* About Us: the club's paragraph, the "New here?" line right under it, then one captioned photo grid (.photos). */
 #about .lead { margin-bottom: 1.6rem; }
+/* Tighter top so "About Us" peeks into the first screen even on a 1366x768 laptop: a cut-off heading tells
+   people there's more below (no scroll arrow; owner, Oct 2026). */
+#about { padding-top: 1.75rem; }
 
 /* One calendar, the full content width, same 520px height as before. */
 /* GBM map (home page): fixed height so nothing shifts while it loads. */
@@ -138,8 +141,12 @@ a:hover { text-decoration-thickness: 2px; }
    then planets and events. Plain rows on navy, no cards. */
 .tonight { background: var(--navy); color: #e8eef2; border-top: 1px solid rgba(255, 255, 255, .08); }
 .tonight[hidden], .tonight [hidden] { display: none; }
+/* Until the script has filled it in, the panel keeps its size but shows nothing (no jump, no flash of a full Moon). */
+.tonight[data-pending] .tonight__inner { visibility: hidden; }
+.tonight { position: relative; }
+.tonight__nojs { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 1rem; text-align: center; }
 .tonight--strip { position: relative; overflow: hidden; }
-.tonight__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.8rem; align-items: start; padding-block: 1.6rem; }
+.tonight__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.8rem; align-items: start; padding-block: 1.2rem; }
 .tonight__moon { margin: 0; width: 8.5rem; text-align: center; }
 .tonight__disc { position: relative; aspect-ratio: 1; }
 .tonight__disc img, .tonight__disc svg { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -152,7 +159,7 @@ a:hover { text-decoration-thickness: 2px; }
 .tonight__facts dd { margin: 0; font-weight: 700; color: #fff; }
 .tonight__group { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid rgba(255, 255, 255, .14); }
 .tonight__sub { margin: 0 0 .55rem; font-family: var(--heading); font-size: 1.05rem; color: #fff; }
-.tonight__planets { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .7rem 2rem; }
+.tonight__planets { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .7rem 2rem; min-height: 40px; }
 .tonight__planets li { display: flex; align-items: center; gap: .65rem; }
 .tonight__planets strong, .tonight__events strong { color: #fff; }
 /* Same-width slot for every planet so the names line up; Saturn's rings fill it, the round ones sit centered. */
@@ -166,6 +173,7 @@ a:hover { text-decoration-thickness: 2px; }
   .tonight__moon { display: flex; align-items: center; gap: 1rem; width: auto; text-align: left; }
   .tonight__disc { width: 5.5rem; flex: none; }
   .tonight__moon figcaption { margin: 0; font-size: 1rem; }
+  .tonight__planets { min-height: calc(80px + .7rem); } /* room for two planets, the usual count */
 }
 /* Panel version (Resources): the same report stacked in a box beside the planning links. */
 .tonight--panel { border-top: 0; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
@@ -174,6 +182,7 @@ a:hover { text-decoration-thickness: 2px; }
 .tonight--panel .tonight__disc { width: 5.5rem; flex: none; }
 .tonight--panel .tonight__moon figcaption { margin: 0; font-size: 1rem; }
 .tonight--panel .tonight__facts { flex-direction: column; gap: .3rem; }
+.tonight--panel .tonight__planets { min-height: calc(80px + .7rem); }
 
 /* ---------- Get involved footer band ---------- */
 .involved { background: var(--mist); padding-block: 1.6rem; }

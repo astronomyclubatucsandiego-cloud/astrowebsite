@@ -21,7 +21,7 @@ export default defineConfig({
     csp: {
       directives: [
         "default-src 'self'",
-        "img-src 'self' data: https://apod.nasa.gov https://img.youtube.com https://i.vimeocdn.com", // NASA picture of the day
+        "img-src 'self' data: https://apod.nasa.gov https://science.nasa.gov https://img.youtube.com https://i.vimeocdn.com", // NASA picture of the day (APOD moved to science.nasa.gov, Oct 2026)
         "connect-src 'self' https://api.nasa.gov",
         "frame-src https://www.google.com https://calendar.google.com https://www.astrospheric.com", // map, calendar, forecast
         "media-src 'self'",

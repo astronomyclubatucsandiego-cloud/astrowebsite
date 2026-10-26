@@ -14,6 +14,9 @@ export const CLUB = {
     address: ['3183 Matthews Ln', 'La Jolla, CA 92093'],
     mapQuery: 'SERF, UC San Diego, 3183 Matthews Ln, La Jolla, CA 92093',
   },
+  /** NASA API key for "Today from NASA" on Resources (api.nasa.gov, registered to the club Gmail, Oct 2026).
+   *  It's meant to be public: it only raises the rate limit (1,000 requests an hour) and can't access or cost anything. */
+  nasaApiKey: 'TzrJWDfk68MWrNLtjgqFkPRfcBGLthDcfdPQgKkQ',
   /** Google Calendar shown on the home page: moon phases and astronomy events ("Moon/Astro"). */
   calendars: {
     astronomy: 'sraeglclan8q6m551jc1gn6nlt61fk3a@import.calendar.google.com',
@@ -45,7 +48,7 @@ export const SUPPORTERS = [
     slug: 'sdaa',
     name: 'San Diego Astronomy Association',
     kind: 'Supporter',
-    what: 'Hosts our observing nights at its Tierra Del Sol dark-sky site.',
+    what: 'Hosts our major observing event at its Tierra Del Sol dark-sky site and lets us use its big telescopes.',
     /* No link while sdaa.org is hacked (Oct 2026). Restore https://sdaa.org/ once it's clean. */
     href: '',
   },

@@ -1,11 +1,12 @@
 ---
 /** Today's NASA Astronomy Picture of the Day (apod.nasa.gov), loaded in the browser from NASA's
- *  public API. Uses the shared DEMO_KEY, which allows a handful of requests per visitor per
- *  hour, so the result is cached for the day in localStorage. Hidden until it loads, and stays
+ *  public API, with the club's key (CLUB.nasaApiKey, 1,000 requests an hour). The result is cached
+ *  for the day in localStorage, so each visitor asks NASA at most once a day. Hidden until it loads, and stays
  *  hidden if NASA's API is down or the day's entry has no image. */
+import { CLUB } from '../config';
 ---
 
-<section class="band apod" id="nasa-picture" aria-labelledby="apod-title" hidden>
+<section class="band apod" data-key={CLUB.nasaApiKey} id="nasa-picture" aria-labelledby="apod-title" hidden>
   <div class="wrap">
     <h2 class="rule-title" id="apod-title">Today from NASA</h2>
     <div class="split split--flip">
@@ -39,9 +40,13 @@
     const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
     const KEY = 'apod-cache';
 
+    /* Since APOD moved to science.nasa.gov (Oct 2026) the API sometimes answers with NASA's logo titled
+       "NASA Science" instead of the picture. Treat that as no picture rather than show a logo. */
+    const real = (a: Apod) => a.title !== 'NASA Science' && !/nasa-logo/i.test(`${a.url} ${a.thumbnail_url}`);
+
     const show = (a: Apod) => {
       const src = a.media_type === 'image' ? a.url : a.thumbnail_url;
-      if (!src) return;
+      if (!src || !real(a)) return;
       const page = `https://apod.nasa.gov/apod/ap${a.date.slice(2).replaceAll('-', '')}.html`;
       const q = <T extends Element>(sel: string) => section.querySelector<T>(sel)!;
       q<HTMLImageElement>('[data-apod-img]').src = src;
@@ -68,7 +73,7 @@
     if (cached && cached.date === today) {
       show(cached);
     } else {
-      fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&thumbs=true')
+      fetch(`https://api.nasa.gov/planetary/apod?api_key=${section.dataset.key || 'DEMO_KEY'}&thumbs=true`)
         .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
         .then((a: Apod) => {
           try { localStorage.setItem(KEY, JSON.stringify(a)); } catch {}

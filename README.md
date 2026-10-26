@@ -21,29 +21,31 @@ npm run dev      # open http://localhost:4321/astrowebsite/
 
 ## How it goes live
 
-- Push to `main`. A GitHub Action builds and publishes the site in 1 to 2 minutes.
+- Push to `main`. A GitHub Action builds and publishes the site in about 1 minute.
 - Check the **Actions** tab. A green check means it's live; a red X means the build failed (click it for the error).
-- Pages can take up to 10 minutes to show changes. Hard refresh with Cmd+Shift+R.
+- Browsers can keep the old page for up to 10 minutes. Hard refresh with Cmd+Shift+R.
 - Dependabot opens weekly pull requests for updates. Merge them only when their build passes.
 
 ## Where things are
 
 | What | Where |
 |---|---|
-| Club links (Discord, Instagram, email), menu, board year shown | `src/config.ts` |
+| Club links (Discord, Instagram, email), menu, board year shown, NASA API key, sponsors | `src/config.ts` |
 | Colors, fonts and all styling | `src/styles/global.css` |
 | Top bar and footer on every page | `src/layouts/Base.astro` |
 | Pages (home, board, gallery, FAQ, resources, 404) | `src/pages/` |
 | Board members, one folder per year | `src/content/board/<year>/` |
-| Board photos | `src/assets/board/` |
+| Board photos | `src/assets/board/` (2025-26), `src/assets/board/<year>/` (later years) |
 | Gallery photos, one folder per section | `src/assets/gallery/<section>/` |
 | Gallery section names, captions and trip info | `src/lib/gallery.ts` |
-| Photo banner, Tonight strip, forecast, NASA picture | `src/components/` |
+| Photo banner, Tonight panel, forecast, NASA picture | `src/components/` |
 | Tonight sky math: sun, moon, planets, meteor showers and other events | `src/lib/sky.ts`, `src/lib/planets.ts`, `src/lib/events.ts` |
-| Moon and planet photos (NASA) | `src/assets/sky/` |
+| Moon and planet photos (NASA, public domain) | `src/assets/sky/` |
+| Sponsor and supporter logos | `src/assets/supporters/` |
 | Home page banner video | `public/video/` |
 | Build and deploy setup | `.github/workflows/deploy.yml` |
-| Security policy (allowed outside sites) | `astro.config.mjs` |
+| Dependabot settings | `.github/dependabot.yml` |
+| Security policy (allowed outside sites) and the old `/dark-sites/` redirect | `astro.config.mjs` |
 
 ## Updating content
 
@@ -80,23 +82,25 @@ Their bio, word for word from the board form.
 
 ### Gallery photos
 
-- Add photos to `src/assets/gallery/<section>/`. Sections: `general`, `astrophotography`, `tds`, `anza`, `palomar`, `merch`.
+- Add photos to `src/assets/gallery/<section>/`. Sections: `general` (Campus Events), `astrophotography`, `tds` (Tierra Del Sol), `anza`, `palomar`, `merch`.
 - Name files like `04-orion-from-anza--jane-doe.jpg`:
   - `04` sets the order.
   - `orion-from-anza` becomes the caption and alt text.
   - `--jane-doe` adds "Photo: Jane Doe". Leave it off if unknown.
-- Empty sections stay hidden until they have a photo.
 - Special punctuation in captions goes under `captions` in `src/lib/gallery.ts`.
-- Trip sections (Tierra Del Sol, Anza-Borrego, Palomar) also have an `about` block there: a short description, facts and links shown above the photos.
+- Trip sections (Tierra Del Sol, Anza-Borrego, Palomar) have an `about` block in `src/lib/gallery.ts`: a short description, facts and links shown above the photos. They always show, even before they have photos.
+- Other empty sections (like Merch) stay hidden until they have a photo.
 
-### Other pages
+### Other content
 
-- **Home:** `src/pages/index.astro`.
-- **Sponsors and supporters:** the `SUPPORTERS` list in `src/config.ts`. Logos go in `src/assets/supporters/` (see the note in that folder).
+- **Home:** `src/pages/index.astro`. Sections: About Us, General Body Meetings, Sponsors and Supporters, Observing Forecast, Astronomy Calendar.
+- **Sponsors and supporters:** the `SUPPORTERS` list in `src/config.ts`. Logos go in `src/assets/supporters/`, named after each `slug` (see the note in that folder).
 - **FAQ:** `src/pages/faq.astro`, including the "Coming on a Trip" guide.
 - **Resources:** the `GROUPS` list at the top of `src/pages/resources.astro`. Check each link works before adding it.
+- **Tonight panel:** calculated in the browser every day, so there's nothing to update, except the meteor showers below.
 - **Meteor showers:** each January, compare the `SHOWERS` list in `src/lib/events.ts` with the International Meteor Organization's new calendar (imo.net) and update any changed peak or rate.
-- **Events:** not on the website. Announce them on Discord and Instagram, then add photos to the gallery.
+- **NASA API key:** `nasaApiKey` in `src/config.ts`, registered to the club Gmail at api.nasa.gov. It's public by design. If it stops working, get a new one there.
+- **Events:** not on the website. Announce them on Discord and Instagram (each trip has its own sign-up form there), then add photos to the gallery.
 
 ## Rules for every change
 
