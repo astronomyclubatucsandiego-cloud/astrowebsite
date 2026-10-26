@@ -80,7 +80,7 @@ a:hover { text-decoration-thickness: 2px; }
 .banner::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
 .banner h1 { position: relative; z-index: 2; margin: 0; font-family: var(--serif-display); font-weight: 700; font-size: clamp(2.3rem, 5.5vw, 4rem); line-height: 1.1; text-shadow: 0 2px 12px rgba(0, 0, 0, .5); }
 /* Optional video loop (Banner.astro). Hidden until it is actually playing, so there's never a black flash. */
-.banner__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.banner__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
 .banner--playing .banner__video { opacity: 1; }
 /* Credit and pause button along the bottom edge, on a dark box so they stay readable over any frame
    (white on black 60% over a white frame is 5.7:1). */

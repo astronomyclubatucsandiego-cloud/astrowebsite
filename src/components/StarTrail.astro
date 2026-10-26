@@ -1,8 +1,8 @@
 ---
-/** A star trail that follows the mouse over the photo banners and the home "Tonight" strip,
- *  drawn to look like a long-exposure photo: a thin streak of light that fades from its tail,
- *  with point-like stars left along it. The owner chose to keep a trail; this version is
- *  meant to read as real starlight, not sparkles:
+/** A trail of stars that follows the mouse over the photo banners and the home "Tonight" strip:
+ *  point-like stars appear along the path and fade, like stars coming out as your eyes adjust.
+ *  No connecting line (it read as a scratch on the photo). The owner chose to keep a trail;
+ *  this version is meant to read as real starlight, not sparkles:
  *  - stars are round points with a soft glow, never spiky shapes, and never fall or spin;
  *  - colors are blackbody star colors (Mitchell Charity, "What color are the stars?"),
  *    weighted toward white and blue-white, with yellow and orange stars rarer;
@@ -16,7 +16,6 @@
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (fineMouse && !calm) {
-    const TRAIL_MS = 650; // how long the streak lingers
     // Gap between stars along the path, random so they clump like real stars instead of a dotted line.
     const nextGap = () => 8 + Math.random() * 26;
     const MAX_STARS = 70;
@@ -43,7 +42,6 @@
       return 1.7 + Math.random() * 0.6;
     };
 
-    type Point = { x: number; y: number; t: number; gap: boolean };
     type Star = { x: number; y: number; t: number; life: number; r: number; rgb: string };
 
     const setUp = (area: HTMLElement) => {
@@ -52,12 +50,11 @@
       canvas.setAttribute('aria-hidden', 'true');
       area.appendChild(canvas);
       const ctx = canvas.getContext('2d')!;
-      const points: Point[] = [];
       const stars: Star[] = [];
+      let last: { x: number; y: number } | null = null;
       let running = false;
       let travelled = 0;
       let gap = nextGap();
-      let gapNext = true;
 
       const fit = () => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -69,12 +66,12 @@
 
       const addStar = (x: number, y: number, now: number) => {
         if (stars.length >= MAX_STARS) stars.shift();
-        // A little scatter either side of the path, like stars near (not on) a trail.
+        // A little scatter either side of the path, like stars near (not on) a line.
         stars.push({
           x: x + (Math.random() - 0.5) * 18,
           y: y + (Math.random() - 0.5) * 18,
           t: now,
-          life: 1100 + Math.random() * 900,
+          life: 1300 + Math.random() * 1000,
           r: pickRadius(),
           rgb: pickColor(),
         });
@@ -96,57 +93,33 @@
         ctx.fill();
       };
 
-      const drawTrail = (now: number) => {
-        ctx.lineCap = 'round';
-        for (let i = 1; i < points.length; i++) {
-          const a = points[i - 1];
-          const b = points[i];
-          if (b.gap) continue;
-          const fade = 1 - (now - b.t) / TRAIL_MS; // 1 at the head, 0 at the tail
-          if (fade <= 0) continue;
-          // Soft halo, then a thin bright core that tapers toward the tail.
-          ctx.strokeStyle = `rgba(202, 215, 255, ${0.12 * fade})`;
-          ctx.lineWidth = 5 * fade + 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-          ctx.strokeStyle = `rgba(248, 247, 255, ${0.75 * fade})`;
-          ctx.lineWidth = 1.4 * fade + 0.3;
-          ctx.stroke();
-        }
-      };
-
       const frame = (now: number) => {
-        while (points.length && now - points[0].t > TRAIL_MS) points.shift();
         for (let i = stars.length - 1; i >= 0; i--) if (now - stars[i].t > stars[i].life) stars.splice(i, 1);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.globalCompositeOperation = 'lighter'; // light adds up, like on a sensor
-        drawTrail(now);
         for (const s of stars) drawStar(s, now);
         ctx.globalCompositeOperation = 'source-over';
-        if (points.length || stars.length) requestAnimationFrame(frame);
+        if (stars.length) requestAnimationFrame(frame);
         else running = false;
       };
 
       area.addEventListener('pointerenter', () => {
         fit();
-        gapNext = true;
+        last = null;
         travelled = 0;
       });
       area.addEventListener('pointerleave', () => {
-        gapNext = true;
+        last = null;
       });
       area.addEventListener('pointermove', (e) => {
         const box = area.getBoundingClientRect();
         const now = performance.now();
-        // Coalesced events give the in-between positions of a fast flick, so the streak stays smooth.
+        // Coalesced events give the in-between positions of a fast flick, so stars spread evenly along it.
         const coalesced = e.getCoalescedEvents?.();
         for (const ev of coalesced?.length ? coalesced : [e]) {
           const x = ev.clientX - box.left;
           const y = ev.clientY - box.top;
-          const last = points[points.length - 1];
-          if (last && !gapNext) {
+          if (last) {
             const step = Math.hypot(x - last.x, y - last.y);
             travelled += step;
             while (travelled >= gap) {
@@ -156,10 +129,9 @@
               addStar(last.x + (x - last.x) * k, last.y + (y - last.y) * k, now);
             }
           }
-          points.push({ x, y, t: now, gap: gapNext });
-          gapNext = false;
+          last = { x, y };
         }
-        if (!running) {
+        if (!running && stars.length) {
           running = true;
           requestAnimationFrame(frame);
         }
