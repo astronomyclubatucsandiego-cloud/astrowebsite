@@ -4,12 +4,19 @@ export const CLUB = {
   shortName: 'The Astronomy Club',
   email: 'astronomyclubatucsandiego@gmail.com',
   discord: 'https://discord.com/invite/QfNXmwywTK',
-  instagram: 'https://www.instagram.com/ucsdastronomyclub',
-  instagramHandle: '@ucsdastronomyclub',
+  instagram: 'https://www.instagram.com/astronomyclubatucsd/',
+  instagramHandle: '@astronomyclubatucsd',
   /** Sign-up form required for off-campus events. */
   offCampusForm: 'https://forms.gle/w1VfiPrjYYpbZkT99',
   /** Where board members request website changes. TODO: add the real form link. */
   updateForm: '',
+  /** Where General Body Meetings are held (one GBM each fall, winter and spring; dates go out on Discord and Instagram). */
+  gbm: {
+    room: 'SERF 383',
+    building: 'SERF (Science and Engineering Research Facility)',
+    address: ['3183 Matthews Ln', 'La Jolla, CA 92093'],
+    mapQuery: 'SERF, UC San Diego, 3183 Matthews Ln, La Jolla, CA 92093',
+  },
   /** Google Calendar shown on the home page: moon phases and astronomy events ("Moon/Astro"). */
   calendars: {
     astronomy: 'sraeglclan8q6m551jc1gn6nlt61fk3a@import.calendar.google.com',

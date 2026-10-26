@@ -82,14 +82,12 @@ a:hover { text-decoration-thickness: 2px; }
 /* Optional video loop (Banner.astro). Hidden until it is actually playing, so there's never a black flash. */
 .banner__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
 .banner--playing .banner__video { opacity: 1; }
-/* Credit and pause button along the bottom edge, on a dark box so they stay readable over any frame
-   (white on black 60% over a white frame is 5.7:1). */
-.banner__bar { position: absolute; inset: auto 0 0; z-index: 3; display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding: .6rem 1rem; }
-.banner__bar[hidden] { display: none; }
-.banner__credit { margin: 0; padding: .35rem .6rem; font-size: .875rem; background: rgba(0, 0, 0, .6); }
-.banner__credit a { color: #fff; }
-.banner__pause { min-height: 44px; padding: 0 .9rem; font: 700 .875rem var(--sans); color: #fff; background: rgba(0, 0, 0, .6); border: 1px solid rgba(255, 255, 255, .6); cursor: pointer; }
-.banner__pause:hover { background: rgba(0, 0, 0, .8); }
+/* Video credit: a navy line right under the banner, right-aligned, so it reads as part of the blue
+   area below (the Tonight strip on Home). #e8eef2 on navy is 12.1:1; the white link 14.2:1. */
+.banner-credit { margin: 0; background: var(--navy); color: #e8eef2; font-size: .875rem; }
+.banner-credit[hidden] { display: none; }
+.banner-credit .wrap { display: block; padding-top: .45rem; text-align: right; }
+.banner-credit a { color: #fff; }
 /* Height grows with screen width so the crop looks the same on a laptop and a big monitor. */
 .banner--short { min-height: clamp(240px, 17vw, 420px); }
 
@@ -129,6 +127,9 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* One calendar, the full content width, same 520px height as before. */
+/* GBM map (home page): fixed height so nothing shifts while it loads. */
+.map { display: block; width: 100%; height: 340px; border: 1px solid #d8dde3; background: #eef1f4; }
+.meeting-address { margin: 0 0 1rem; padding-left: .9rem; border-left: 4px solid var(--rule); font-style: normal; }
 .calendar { display: block; width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
 /* Only one loads: a display:none lazy iframe is never fetched. */
 .calendar--agenda { display: none; }

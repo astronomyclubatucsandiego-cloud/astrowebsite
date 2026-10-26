@@ -10,8 +10,10 @@ import StarTrail from '../components/StarTrail.astro';
 interface Props {
   title?: string;
   description?: string;
+  /** The mouse star trail over banners. Off on Home, where it clashed with the video banner. */
+  starTrail?: boolean;
 }
-const { title, description = `${CLUB.name}: stargazing, astrophotography, talks and dark-sky trips for UC San Diego students.` } = Astro.props;
+const { title, description = `${CLUB.name}: stargazing, astrophotography, talks and dark-sky trips for UC San Diego students.`, starTrail = true } = Astro.props;
 const pageTitle = title ? `${CLUB.shortName} - ${title}` : CLUB.shortName;
 const here = Astro.url.pathname;
 const isCurrent = (href: string) => {
@@ -67,6 +69,6 @@ const isCurrent = (href: string) => {
         <p>© {new Date().getFullYear()} {CLUB.name}</p>
       </div>
     </footer>
-    <StarTrail />
+    {starTrail && <StarTrail />}
   </body>
 </html>
