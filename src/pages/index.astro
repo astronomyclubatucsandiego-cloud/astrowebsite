@@ -72,20 +72,16 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
   <section class="band" id="meetings">
     <div class="wrap">
       <h2 class="rule-title">General Body Meetings</h2>
-      <div class="split split--flip">
+      <div class="split split--flip split--map">
         <div class="split__media">
           <iframe class="map" title={`Map of ${CLUB.gbm.room}'s building, SERF, at UC San Diego`} src={`https://www.google.com/maps?q=${encodeURIComponent(CLUB.gbm.mapQuery)}&z=17&output=embed`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="split__text">
           <p>
-            We hold <strong>one General Body Meeting (GBM) each quarter</strong>, in fall, winter and spring, to go
-            over the events coming up that quarter. Dates are announced on our <a href={CLUB.discord}>Discord</a> and
-            {' '}<a href={CLUB.instagram}>Instagram</a>.
+            <strong>One GBM each quarter</strong> (fall, winter and spring). Dates are announced on
+            {' '}<a href={CLUB.discord}>Discord</a> and <a href={CLUB.instagram}>Instagram</a>.
           </p>
-          <p>
-            GBMs are in <strong>{CLUB.gbm.room}</strong>, on the third floor of {CLUB.gbm.building}. It can be tricky
-            to find the first time, so leave a few extra minutes.
-          </p>
+          <p><strong>{CLUB.gbm.room}</strong>: take the elevator to the third floor; the room is down the hall.</p>
           <address class="meeting-address">
             {CLUB.gbm.room}, UC San Diego<br />
             {CLUB.gbm.address[0]}<br />

@@ -1,7 +1,7 @@
 ---
 /** Resources: free tools and places, each group shown as a photo (or the live Tonight panel)
  *  beside its links, like the image-beside-text rows on the old Google Site. Rows alternate
- *  sides; Astrophotography is the one dark band. Every link was opened in a browser and its
+ *  sides, all on white (owner, Oct 2026: one shaded section looked odd). Every link was opened in a browser and its
  *  description checked against the site (October 2026). */
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
@@ -41,7 +41,6 @@ const GROUPS = [
     id: 'astrophotography',
     title: 'Astrophotography',
     intro: 'Want to take pictures like the ones in our gallery? Start here.',
-    dark: true,
     media: { src: horsehead, alt: 'The Horsehead Nebula', caption: 'The Horsehead Nebula, taken by our former club president Connor Sandfer.', href: '/gallery/astrophotography/' },
     links: [
       { name: 'Siril', url: 'https://siril.org/', note: 'Free software for stacking and processing deep-sky images, for Windows, Mac and Linux.' },
@@ -75,7 +74,7 @@ const flipped = (i: number) => (i > nasaIndex ? i + 1 : i) % 2 === 1;
 
   {GROUPS.map((group, i) => (
     <>
-    <section id={group.id} class:list={['band', { 'band--dark': 'dark' in group && group.dark }]}>
+    <section id={group.id} class="band">
       <div class="wrap">
         <h2 class="rule-title">{group.title}</h2>
         <div class:list={['split', { 'split--flip': flipped(i) }]}>

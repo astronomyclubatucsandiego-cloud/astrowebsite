@@ -1,11 +1,9 @@
 /* The Astronomy Club at UC San Diego.
    Look carried over from the club's Google Site: a navy top bar, photo
-   banners with a Playfair Display title, Arvo headings between grey rules,
+   banners with a Playfair Display title, Playfair headings between grey rules,
    Lato body text, and white bands with one dark highlight band per page.
    Colors are UC San Diego's brand navy, blue and yellow (brand.ucsd.edu). */
 
-@import '@fontsource/arvo/400.css';
-@import '@fontsource/arvo/700.css';
 @import '@fontsource/lato/400.css';
 @import '@fontsource/lato/400-italic.css';
 @import '@fontsource/lato/700.css';
@@ -23,7 +21,8 @@
   --yellow: #ffcd00;      /* UC San Diego Yellow: active nav underline only */
 
   --serif-display: 'Playfair Display', Georgia, serif;
-  --slab: 'Arvo', Rockwell, Georgia, serif;
+  /* Headings: Playfair Display 700, the same face as the banner titles (owner, Oct 2026: Arvo looked too casual). */
+  --heading: 'Playfair Display', Georgia, serif;
   --sans: 'Lato', 'Helvetica Neue', Arial, sans-serif;
   --page: 62rem;
 }
@@ -58,7 +57,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* ---------- Top bar ---------- */
 .topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); color: #fff; }
 .topbar__inner { display: flex; align-items: center; gap: 1rem; min-height: 56px; padding-inline: 1.5rem; }
-.brand { display: flex; align-items: center; gap: .75rem; color: #fff; text-decoration: none; font-family: var(--slab); font-size: 1.25rem; white-space: nowrap; }
+.brand { display: flex; align-items: center; gap: .75rem; color: #fff; text-decoration: none; font-family: var(--heading); font-weight: 700; font-size: 1.25rem; white-space: nowrap; }
 .brand img { width: 34px; height: 34px; border-radius: 50%; background: #fff; }
 .nav { margin-left: auto; display: flex; gap: 1.4rem; }
 .nav a { position: relative; color: #fff; text-decoration: none; font-weight: 700; font-size: .95rem; padding-block: 1rem; white-space: nowrap; }
@@ -103,12 +102,12 @@ a:hover { text-decoration-thickness: 2px; }
 .band--dark a { color: #cfe2f5; }
 .band--tight { padding-bottom: 0; }
 
-/* Section heading: Arvo between two thick grey rules, as on the Google Site. */
-.rule-title { margin: 0 0 2rem; padding-block: 1rem; border-block: 4px solid var(--rule); text-align: center; font-family: var(--slab); font-weight: 700; font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.2; color: var(--steel); }
+/* Section heading: Playfair Display between two thick grey rules, as on the Google Site. */
+.rule-title { margin: 0 0 2rem; padding-block: 1rem; border-block: 4px solid var(--rule); text-align: center; font-family: var(--heading); font-weight: 700; font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.2; color: var(--steel); }
 .band--dark .rule-title { border-color: var(--rule-dark); color: #fff; }
 /* Smaller heading for sub-groups (Resources groups, "Still Have a Question?", page intros),
    so the big ruled title stays reserved for main sections. */
-.subhead { margin: 0 0 1rem; text-align: center; font-family: var(--slab); font-weight: 700; font-size: clamp(1.4rem, 2.6vw, 1.75rem); line-height: 1.25; color: var(--steel); }
+.subhead { margin: 0 0 1rem; text-align: center; font-family: var(--heading); font-weight: 700; font-size: clamp(1.4rem, 2.6vw, 1.75rem); line-height: 1.25; color: var(--steel); }
 .page-intro { padding-bottom: 1rem; text-align: center; }
 .page-intro p { margin: 0; font-weight: 700; color: var(--blue); }
 
@@ -128,7 +127,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* One calendar, the full content width, same 520px height as before. */
 /* GBM map (home page): fixed height so nothing shifts while it loads. */
-.map { display: block; width: 100%; height: 340px; border: 1px solid #d8dde3; background: #eef1f4; }
+.map { display: block; width: 100%; height: 440px; border: 1px solid #d8dde3; background: #eef1f4; }
 .meeting-address { margin: 0 0 1rem; padding-left: .9rem; border-left: 4px solid var(--rule); font-style: normal; }
 .calendar { display: block; width: 100%; height: 520px; border: 1px solid #d8dde3; background: #fff; }
 /* Only one loads: a display:none lazy iframe is never fetched. */
@@ -148,7 +147,7 @@ a:hover { text-decoration-thickness: 2px; }
 .tonight__moon { flex: none; }
 .tonight__moon-dark { fill: #3b4b64; }
 .tonight__moon-lit { fill: #efe8cf; }
-.tonight__title { margin: 0; font-family: var(--slab); font-size: 1rem; font-weight: 700; color: #fff; }
+.tonight__title { margin: 0; font-family: var(--heading); font-size: 1rem; font-weight: 700; color: #fff; }
 .tonight__facts { margin: .15rem 0 0; display: flex; flex-wrap: wrap; gap: .2rem 1.6rem; font-size: .95rem; }
 .tonight__facts strong { color: #fff; }
 .tonight__planets { margin: .3rem 0 0; font-size: .95rem; }
@@ -182,7 +181,7 @@ a:hover { text-decoration-thickness: 2px; }
 .member img { grid-area: photo; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .member__head { grid-area: head; }
 .member__body { grid-area: body; max-width: 38rem; }
-.member h3 { margin: 0; font-family: var(--slab); font-size: 1.35rem; line-height: 1.25; color: var(--blue); }
+.member h3 { margin: 0; font-family: var(--heading); font-size: 1.35rem; line-height: 1.25; color: var(--blue); }
 .member__name { margin: .2rem 0 .7rem; font-weight: 700; }
 .member__bio p { margin: 0 0 .7rem; }
 .member__nasa { margin: .3rem 0 0; font-style: italic; }
@@ -195,7 +194,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 .update-note { margin-top: 0; padding: 1.4rem 1.6rem; border: 2px solid var(--rule); }
-.update-note h2 { margin: 0 0 .3rem; font-family: var(--slab); font-size: 1.35rem; color: var(--steel); }
+.update-note h2 { margin: 0 0 .3rem; font-family: var(--heading); font-size: 1.35rem; color: var(--steel); }
 .update-note p { margin: 0; }
 
 /* ---------- Gallery ---------- */
@@ -207,7 +206,7 @@ a:hover { text-decoration-thickness: 2px; }
 .gallery-index a:hover h2 { text-decoration-thickness: 2px; }
 .gallery-index figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: #1b232b; display: grid; place-items: center; }
 .gallery-index figure img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--slab); font-size: 1.45rem; color: var(--blue); }
+.gallery-index h2 { margin: .8rem 0 .2rem; font-family: var(--heading); font-size: 1.45rem; color: var(--blue); }
 .gallery-index p { margin: 0; font-size: .95rem; color: #555; }
 .gallery-index__count { display: block; margin-top: .2rem; font-size: .85rem; font-style: italic; }
 .coming-soon { max-width: 38rem; margin: 2.5rem auto 0; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; color: #555; }
@@ -222,7 +221,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- NASA picture of the day (Resources) ---------- */
 .apod[hidden] { display: none; }
-.apod__title { margin: 0; font-family: var(--slab); font-size: 1.5rem; line-height: 1.25; color: var(--blue); }
+.apod__title { margin: 0; font-family: var(--heading); font-size: 1.5rem; line-height: 1.25; color: var(--blue); }
 .apod__date { margin: .2rem 0 1rem; font-style: italic; }
 
 /* ---------- Observing forecast (Astrospheric embed) ---------- */
@@ -247,12 +246,12 @@ a:hover { text-decoration-thickness: 2px; }
 .faq { max-width: 38rem; margin-inline: auto; }
 .faq__item { padding-block: 1.4rem; border-top: 1px solid var(--rule); }
 .faq__item:first-child { padding-top: 0; border-top: 0; }
-.faq__item h3 { margin: 0 0 .5rem; font-family: var(--slab); font-size: 1.35rem; line-height: 1.3; color: var(--blue); }
+.faq__item h3 { margin: 0 0 .5rem; font-family: var(--heading); font-size: 1.35rem; line-height: 1.3; color: var(--blue); }
 .faq__item p { margin: 0; }
 .equipment { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .equipment figure { margin: 0; }
 .equipment img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
-.equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
+.equipment figcaption { margin-top: .8rem; text-align: center; font-family: var(--heading); font-size: 1.2rem; font-weight: 700; }
 @media (max-width: 640px) { .equipment { grid-template-columns: 1fr; } }
 
 /* ---------- Split rows: photo (or panel) beside text ---------- */
@@ -261,6 +260,8 @@ a:hover { text-decoration-thickness: 2px; }
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 2.5rem; align-items: start; }
 .split--flip { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 .split--flip .split__media { order: 2; }
+/* GBM row on Home: the map gets the wide column (owner, Oct 2026), the short text the narrow one. */
+.split--map { grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); }
 .split--no-media { grid-template-columns: minmax(0, 40rem); justify-content: center; }
 .split__media { margin: 0; }
 .split__media img { width: 100%; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
@@ -269,20 +270,21 @@ a:hover { text-decoration-thickness: 2px; }
 @media (max-width: 760px) {
   .split, .split--flip { grid-template-columns: 1fr; gap: 1.4rem; }
   .split--flip .split__media { order: 0; }
+  .map { height: 320px; }
 }
 
 /* ---------- Dark Sites ---------- */
 .site__facts { margin: 1.2rem 0; display: grid; gap: .5rem; }
 .site__facts div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
 .band--dark .site__facts div { border-color: var(--rule-dark); }
-.site__facts dt { font-family: var(--slab); font-weight: 700; }
+.site__facts dt { font-family: var(--heading); font-weight: 700; }
 .site__facts dd { margin: 0; }
 .site__links { margin: 0; padding-left: 1.2rem; }
 .site__links li { margin: .25rem 0; }
 @media (max-width: 760px) { .site__facts div { grid-template-columns: 1fr; gap: 0; } }
 
 .trip-guide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
-.trip-guide h3 { margin: 0 0 .6rem; font-family: var(--slab); font-size: 1.3rem; color: var(--blue); }
+.trip-guide h3 { margin: 0 0 .6rem; font-family: var(--heading); font-size: 1.3rem; color: var(--blue); }
 .trip-guide ul { margin: 0; padding-left: 1.2rem; }
 .trip-guide li { margin: 0 0 .5rem; }
 @media (max-width: 860px) { .trip-guide { grid-template-columns: 1fr; gap: 1.6rem; max-width: 38rem; margin-inline: auto; } }
@@ -293,14 +295,14 @@ a:hover { text-decoration-thickness: 2px; }
 .resources li { padding-block: 1rem; border-top: 1px solid var(--rule); }
 .resources li:first-child { border-top: 3px solid var(--rule); }
 .band--dark .resources li { border-color: var(--rule-dark); }
-.resources a { font-family: var(--slab); font-size: 1.2rem; font-weight: 700; }
+.resources a { font-family: var(--heading); font-size: 1.2rem; font-weight: 700; }
 .resources p { margin: .3rem 0 0; }
 .resources-note { max-width: 38rem; margin: 0 auto; padding-top: 1.4rem; border-top: 4px solid var(--rule); text-align: center; }
 .band--tight-top { padding-top: 0; }
 
 /* ---------- Prose pages ---------- */
 .prose { max-width: 38rem; margin-inline: auto; }
-.prose h2 { font-family: var(--slab); color: var(--blue); }
+.prose h2 { font-family: var(--heading); color: var(--blue); }
 
 /* ---------- Lightbox ---------- */
 .lightbox { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 94vh; overflow: visible; }
