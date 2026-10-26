@@ -1,7 +1,7 @@
 ---
 /** "Tonight from UC San Diego": tonight's sky, worked out in the visitor's browser for today.
  *  - Sun and Moon basics come from src/lib/sky.ts and show right away.
- *  - Moonrise/set, the moon-free dark hours, planets and events come from Astronomy Engine
+ *  - Moonrise/set, planets and events come from Astronomy Engine
  *    (src/lib/planets.ts, src/lib/events.ts), loaded just after.
  *  The Moon is NASA's LRO photo with tonight's phase shaded over it; planet photos are NASA's
  *  (MESSENGER, Mariner 10, Viking, Hubble, Cassini), cut out of their black backgrounds.
@@ -31,7 +31,8 @@ const PLANETS = [
 ];
 ---
 
-<section class:list={['tonight', `tonight--${variant}`]} aria-labelledby="tonight-title" hidden>
+{/* "Coming up" (the next events, on quiet nights) only shows in the Resources panel; Home shows tonight only (owner, Oct 2026). */}
+<section class:list={['tonight', `tonight--${variant}`]} aria-labelledby="tonight-title" data-ahead={variant === 'panel' ? '' : undefined} hidden>
   <div class:list={['tonight__inner', { wrap: variant === 'strip' }]}>
     <figure class="tonight__moon">
       <div class="tonight__disc">
@@ -54,7 +55,6 @@ const PLANETS = [
         <div><dt>Fully dark</dt><dd data-dark></dd></div>
         <div data-moonrise hidden><dt>Moonrise</dt><dd></dd></div>
         <div data-moonset hidden><dt>Moonset</dt><dd></dd></div>
-        <div data-window hidden><dt>Dark, moon down</dt><dd></dd></div>
       </dl>
 
       <div class="tonight__group" data-planets hidden>
@@ -119,10 +119,6 @@ const PLANETS = [
           const m = moonTonight(night);
           if (m.rise) show('[data-moonrise]', time(m.rise));
           if (m.set) show('[data-moonset]', time(m.set));
-          const span = (a: Date, b: Date) => `${time(a)} to ${time(b)}`;
-          show('[data-window]', m.darkWindows.length
-            ? m.darkWindows.map(([a, b]) => span(a, b)).join(', ')
-            : 'Not tonight; the Moon is up all night');
 
           const planets = planetsTonight(sunset, dark, time);
           for (const p of planets) {
@@ -134,7 +130,7 @@ const PLANETS = [
           if (planets.length) $('[data-planets]').hidden = false;
 
           const { tonight, ahead } = skyEvents(night, time);
-          const list = tonight.length ? tonight : ahead;
+          const list = tonight.length || panel.dataset.ahead === undefined ? tonight : ahead;
           if (list.length) {
             $('[data-events-title]').textContent = tonight.length ? 'Tonight' : 'Coming up';
             const ul = $('.tonight__events');

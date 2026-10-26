@@ -31,6 +31,15 @@ const supporters = SUPPORTERS.map((s) => ({
 
 /* The public moon and astronomy events calendar (moon phases, meteor showers, eclipses).
    Month grid on wide screens; a readable list (agenda) on phones, where the grid is too cramped. */
+const ABOUT_PHOTOS = [
+  { src: campus1, alt: 'A member imaging with the club Dobsonian telescope on campus', caption: 'Imaging with the club Dobsonian' },
+  { src: campus2, alt: 'Students lining up at the club telescope at an outdoor campus event', caption: 'Students at the club telescope' },
+  { src: campus3, alt: 'A crowd at a campus observing event with telescopes and a live view on a laptop', caption: 'An observing event on campus' },
+  { src: trunk, alt: "The Elephant's Trunk Nebula", caption: "Elephant's Trunk Nebula", credit: 'Connor Sandfer, former club president' },
+  { src: horsehead, alt: 'The Horsehead Nebula', caption: 'Horsehead Nebula', credit: 'Connor Sandfer, former club president' },
+  { src: andromeda, alt: 'The Andromeda Galaxy', caption: 'Andromeda Galaxy', credit: 'Connor Sandfer, former club president' },
+];
+
 const calendar = (mode: 'MONTH' | 'AGENDA') =>
   `https://calendar.google.com/calendar/embed?${new URLSearchParams({
     src: CLUB.calendars.astronomy,
@@ -49,29 +58,29 @@ const calendar = (mode: 'MONTH' | 'AGENDA') =>
 
   <section class="band" id="about">
     <div class="wrap">
-      <p class="new-here">
-        <strong>New here?</strong> Join our <a href={CLUB.discord}>Discord</a> and follow
-        {' '}<a href={CLUB.instagram}>{CLUB.instagramHandle}</a> on Instagram. That's where we announce star
-        parties, trips and meetings.
-      </p>
       <h2 class="rule-title">About Us</h2>
       <p class="lead">
         The Astronomy Club at UC San Diego aims to promote interest in astronomy and astrophysics among UC San Diego
         undergraduates. Our organization focuses on the exploration of the universe and our night sky. We hope to help
         students interested in astronomy get to know each other and facilitate their access to professional faculty.
       </p>
+      <p class="new-here">
+        <strong>New here?</strong> Join our <a href={CLUB.discord}>Discord</a> and follow
+        {' '}<a href={CLUB.instagram}>{CLUB.instagramHandle}</a> on Instagram. That's where we announce star
+        parties, trips and meetings.
+      </p>
 
-      <div class="photo-row">
-        <Image src={trunk} alt="The Elephant's Trunk Nebula" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
-        <Image src={horsehead} alt="The Horsehead Nebula" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
-        <Image src={andromeda} alt="The Andromeda Galaxy" sizes="(max-width: 760px) 50vw, 240px" />
-        <p>Images taken by our former club president Connor Sandfer</p>
-      </div>
-      <div class="photo-row photo-row--caption-first">
-        <p>Pictures of some observing events conducted on campus</p>
-        <Image src={campus1} alt="A member imaging with the club Dobsonian telescope on campus" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
-        <Image src={campus2} alt="Students lining up at the club telescope at an outdoor campus event" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
-        <Image src={campus3} alt="A crowd at a campus observing event with telescopes and a live view on a laptop" widths={[300, 600]} sizes="(max-width: 760px) 50vw, 240px" />
+      {/* One grid, captioned like the gallery: campus events first (real people), then members' astrophotos. */}
+      <div class="photos about-photos">
+        {ABOUT_PHOTOS.map((p) => (
+          <figure>
+            <Image src={p.src} alt={p.alt} widths={[300, 600]} sizes="(max-width: 760px) 50vw, 320px" />
+            <figcaption>
+              {p.caption}
+              {p.credit && <span class="photo-credit">Photo: {p.credit}</span>}
+            </figcaption>
+          </figure>
+        ))}
       </div>
       <p class="more-link"><a href={url('/gallery/')}>See more in the gallery</a></p>
     </div>

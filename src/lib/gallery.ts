@@ -65,7 +65,7 @@ export const GALLERY_SECTIONS = [
     title: 'Palomar',
     description: 'Our trip to Palomar Observatory, including a tour of the 200-inch Hale Telescope.',
     banner: '05-the-group-under-the-200-inch-Hale-Telescope.jpg',
-    bannerPosition: 'center 30%',
+    bannerPosition: 'center 62%',
     about: {
       intro:
         'Not a place we set up our own telescopes. We visit the observatory on Palomar Mountain and tour the ' +

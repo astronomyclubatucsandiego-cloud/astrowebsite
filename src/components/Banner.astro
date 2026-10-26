@@ -13,14 +13,13 @@ interface Props {
   image: ImageMetadata;
   /** CSS object-position for the crop, e.g. "center 30%". */
   position?: string;
-  short?: boolean;
   /** Files in public/: `${base}-960.mp4` (phones) and `${base}-1920.mp4` (everything wider). */
   video?: { base: string; credit: string; creditUrl: string };
 }
-const { title, image, position = 'center', short = false, video } = Astro.props;
+const { title, image, position = 'center', video } = Astro.props;
 ---
 
-<header class:list={['banner', { 'banner--short': short }]} data-video={video ? '' : undefined}>
+<header class="banner" data-video={video ? '' : undefined}>
   <Image src={image} alt="" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" style={`object-position:${position}`} />
   {video && (
     <video

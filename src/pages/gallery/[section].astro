@@ -25,7 +25,7 @@ const banner = ('banner' in section && photos.find((p) => p.file === section.ban
 ---
 
 <Base title={`Gallery - ${section.title}`} description={section.description}>
-  <Banner title={section.title} image={banner?.image ?? fallbackBanner} position={'bannerPosition' in section ? section.bannerPosition : undefined} short />
+  <Banner title={section.title} image={banner?.image ?? fallbackBanner} position={'bannerPosition' in section ? section.bannerPosition : undefined} />
 
   <section class="band">
     <div class="wrap">

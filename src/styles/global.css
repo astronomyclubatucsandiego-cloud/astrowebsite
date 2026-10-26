@@ -75,6 +75,8 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* ---------- Photo banner ---------- */
+/* Every page's banner is the same height as the home video banner (owner, Oct 2026). Height grows with
+   screen width so the crop looks the same on a laptop and a big monitor. */
 .banner { position: relative; display: grid; place-items: center; min-height: clamp(320px, 24vw, 560px); padding: 4rem 1rem; color: #fff; text-align: center; overflow: hidden; background: #05080c; }
 .banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .banner::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
@@ -88,8 +90,6 @@ a:hover { text-decoration-thickness: 2px; }
 .banner-credit[hidden] { display: none; }
 .banner-credit .wrap { display: block; padding-top: .45rem; text-align: right; }
 .banner-credit a { color: #fff; }
-/* Height grows with screen width so the crop looks the same on a laptop and a big monitor. */
-.banner--short { min-height: clamp(240px, 17vw, 420px); }
 
 /* Star trail (StarTrail.astro): a canvas over banners and the Tonight strip. Above the banner's
    dark overlay, below the title and the Tonight text. */
@@ -117,14 +117,8 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* ---------- Home ---------- */
 
-.photo-row { display: grid; grid-template-columns: repeat(3, 1fr) 1fr; gap: 1.6rem; align-items: start; margin-top: 2rem; }
-.photo-row img { aspect-ratio: 1; object-fit: cover; width: 100%; }
-.photo-row p { margin: 0; }
-.photo-row--caption-first { grid-template-columns: 1fr repeat(3, 1fr); }
-@media (max-width: 760px) {
-  .photo-row, .photo-row--caption-first { grid-template-columns: 1fr 1fr; }
-  .photo-row p { grid-column: 1 / -1; order: -1; }
-}
+/* About Us: the club's paragraph, the "New here?" line right under it, then one captioned photo grid (.photos). */
+#about .lead { margin-bottom: 1.6rem; }
 
 /* One calendar, the full content width, same 520px height as before. */
 /* GBM map (home page): fixed height so nothing shifts while it loads. */

@@ -196,22 +196,12 @@ export function skyEvents(night: Night, fmt: (d: Date) => string, aheadDays = 45
   return { tonight: tonight.sort(byTime), ahead: ahead.sort(byTime).slice(0, 2) };
 }
 
-/** Moonrise and moonset during the night, and the dark hours with the Moon down (best for faint things). */
+/** Moonrise and moonset between sunset and the next sunrise (null if it doesn't happen tonight). */
 export function moonTonight(night: Night) {
   const rise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, +1, night.sunset, 1)?.date ?? null;
   const set = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, -1, night.sunset, 1)?.date ?? null;
-  // Walk the dark hours in 5-minute steps and collect the stretches with the Moon below the horizon.
-  const windows: [Date, Date][] = [];
-  let open: Date | null = null;
-  for (let t = night.dark.getTime(); t <= night.dawn.getTime(); t += 5 * 60000) {
-    const down = altitude(Astronomy.Body.Moon, new Date(t)) < 0;
-    if (down && !open) open = new Date(t);
-    if (!down && open) { windows.push([open, new Date(t)]); open = null; }
-  }
-  if (open) windows.push([open, night.dawn]);
   return {
     rise: rise && rise.getTime() < night.sunrise.getTime() ? rise : null,
     set: set && set.getTime() < night.sunrise.getTime() ? set : null,
-    darkWindows: windows.filter(([a, b]) => b.getTime() - a.getTime() >= 20 * 60000),
   };
 }
