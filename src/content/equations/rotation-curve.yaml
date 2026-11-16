@@ -1,0 +1,27 @@
+id: rotation-curve
+title: 'Circular velocity and galaxy rotation curves'
+latex: 'v_c(r) = \sqrt{\frac{G\,M(<r)}{r}}'
+variables:
+  - symbol: 'v_c'
+    meaning: 'speed of a circular orbit at radius $r$'
+  - symbol: 'M(<r)'
+    meaning: 'mass enclosed within radius $r$ (exact for spherical distributions, approximate for disks)'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  For a circular orbit, gravity supplies the centripetal force, $v^2/r =
+  GM(<r)/r^2$. If a galaxy's mass followed its light, $v_c$ should fall off as
+  $r^{-1/2}$ beyond the stellar disk. Instead, measured rotation curves stay
+  roughly flat out to large radii, which requires $M(<r) \propto r$. That
+  discrepancy, established in the 1970s by Vera Rubin, Kent Ford and radio
+  observations of hydrogen gas, is one of the main lines of evidence for dark
+  matter.
+tags: [galaxies, dark-matter]
+level: intermediate
+references:
+  - 'Binney & Tremaine, Galactic Dynamics, 2nd ed. (2008)'
+  - 'Rubin, Ford & Thonnard (1980), ApJ 238, 471'
+docs: 'https://en.wikipedia.org/wiki/Galaxy_rotation_curve'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

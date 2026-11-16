@@ -1,0 +1,33 @@
+id: saha-equation
+title: 'Saha ionization equation'
+latex: '\frac{n_{i+1}\,n_e}{n_i} = \frac{2\,g_{i+1}}{g_i}\left(\frac{2\pi m_e k_B T}{h^2}\right)^{3/2} e^{-\chi_i/k_B T}'
+variables:
+  - symbol: 'n_i,\ n_{i+1}'
+    meaning: 'number densities of ions in successive ionization states'
+  - symbol: 'n_e'
+    meaning: 'electron number density'
+  - symbol: 'g_i,\ g_{i+1}'
+    meaning: 'statistical weights of the two states'
+  - symbol: '\chi_i'
+    meaning: 'ionization energy'
+  - symbol: 'm_e,\ k_B,\ h,\ T'
+    meaning: 'electron mass, Boltzmann constant, Planck constant, temperature'
+blurb: >-
+  Meghnad Saha derived it in 1920 by treating ionization like a chemical
+  reaction in thermal equilibrium. Cecilia Payne used it in her 1925 thesis to
+  show that the spectral sequence O B A F G K M is a temperature sequence, not
+  a composition sequence, and that stars are made mostly of hydrogen. It also
+  explains why the early universe became transparent near 3000 K rather than
+  at $13.6\ \text{eV}/k_B \approx 158{,}000$ K: photons outnumber baryons
+  about a billion to one, so the rare high-energy photons keep hydrogen
+  ionized until the gas is much cooler.
+tags: [stars, radiation, cosmology]
+level: intermediate
+references:
+  - 'Saha (1920), Phil. Mag. 40, 472'
+  - 'Payne (1925), PhD thesis, Radcliffe College'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Saha_ionization_equation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

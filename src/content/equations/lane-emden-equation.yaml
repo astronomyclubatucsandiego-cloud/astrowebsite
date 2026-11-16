@@ -1,0 +1,27 @@
+id: lane-emden-equation
+title: 'Lane–Emden equation'
+latex: '\frac{1}{\xi^2}\frac{d}{d\xi}\left(\xi^2\frac{d\theta}{d\xi}\right) = -\theta^n'
+variables:
+  - symbol: '\theta'
+    meaning: 'dimensionless density variable, $\rho = \rho_c\,\theta^n$'
+  - symbol: '\xi'
+    meaning: 'dimensionless radius'
+  - symbol: 'n'
+    meaning: 'polytropic index, from $P = K\rho^{1 + 1/n}$'
+blurb: >-
+  Combine hydrostatic equilibrium with Poisson's equation for a gas obeying $P
+  = K\rho^{1+1/n}$, and the whole star reduces to this one dimensionless ODE
+  with $\theta(0) = 1$, $\theta'(0) = 0$, and the surface at the first zero of
+  $\theta$. It has closed-form solutions only for $n = 0$, $1$ and $5$, and
+  the $n = 5$ star has infinite radius but finite mass. $n = 3/2$ models fully
+  convective stars and low-mass white dwarfs, and $n = 3$ gives Eddington's
+  standard model and the Chandrasekhar mass.
+tags: [stars, stellar-structure]
+level: advanced
+references:
+  - 'Chandrasekhar, An Introduction to the Study of Stellar Structure (1939)'
+  - 'Kippenhahn, Weigert & Weiss, Stellar Structure and Evolution, 2nd ed. (2012)'
+docs: 'https://en.wikipedia.org/wiki/Lane–Emden_equation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

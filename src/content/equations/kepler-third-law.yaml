@@ -1,0 +1,27 @@
+id: kepler-third-law
+title: 'Kepler''s third law'
+latex: 'T^2 = \frac{4\pi^2}{G\,(M + m)}\,a^3'
+variables:
+  - symbol: 'T'
+    meaning: 'orbital period'
+  - symbol: 'a'
+    meaning: 'semi-major axis of the relative orbit'
+  - symbol: 'M,\ m'
+    meaning: 'masses of the two bodies'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Kepler found $T^2 \propto a^3$ in 1619 from Tycho Brahe's planetary data;
+  Newton explained it and supplied the constant. That constant is the payoff:
+  measure a period and an orbit size and you have weighed the central body.
+  This is how we know the mass of the Sun, of Jupiter (from its moons), and of
+  the roughly 4-million-solar-mass black hole at the center of the Milky Way
+  (from stars orbiting it).
+tags: [orbits, gravity]
+level: intro
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Kepler''s_laws_of_planetary_motion'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

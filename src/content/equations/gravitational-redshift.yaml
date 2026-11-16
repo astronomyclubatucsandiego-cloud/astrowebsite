@@ -1,0 +1,26 @@
+id: gravitational-redshift
+title: 'Gravitational redshift'
+latex: '1 + z = \left(1 - \frac{r_s}{r}\right)^{-1/2}'
+variables:
+  - symbol: 'z'
+    meaning: 'redshift measured by a distant observer'
+  - symbol: 'r'
+    meaning: 'radius of a static emitter outside a non-rotating mass'
+  - symbol: 'r_s'
+    meaning: 'Schwarzschild radius, $2GM/c^2$'
+blurb: >-
+  Light climbing out of a gravitational well arrives with a longer wavelength,
+  and clocks deeper in the well run slow. Robert Pound and Glen Rebka measured
+  the effect in 1959 by sending gamma rays up a 22.5 m tower at Harvard. GPS
+  satellites must correct for it: their clocks gain about 45 microseconds per
+  day from the weaker gravity at altitude, partly offset by about 7
+  microseconds per day lost to their orbital speed.
+tags: [general-relativity, black-holes]
+level: intermediate
+references:
+  - 'Pound & Rebka (1960), Phys. Rev. Lett. 4, 337'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Gravitational_redshift'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

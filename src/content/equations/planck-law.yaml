@@ -1,0 +1,29 @@
+id: planck-law
+title: 'Planck''s law'
+latex: 'B_\nu(T) = \frac{2h\nu^3}{c^2}\,\frac{1}{e^{h\nu/k_B T} - 1}'
+variables:
+  - symbol: 'B_\nu(T)'
+    meaning: 'spectral radiance per unit frequency'
+  - symbol: '\nu'
+    meaning: 'frequency'
+  - symbol: 'T'
+    meaning: 'temperature'
+  - symbol: 'h,\ k_B,\ c'
+    meaning: 'Planck constant, Boltzmann constant, speed of light'
+blurb: >-
+  The spectrum of light from a perfect absorber in thermal equilibrium. Max
+  Planck derived it in 1900 by assuming energy comes in packets $E = h\nu$,
+  which turned out to be the birth of quantum theory. The cosmic microwave
+  background is the most perfect blackbody ever measured: COBE's FIRAS
+  instrument found it matches this curve at $T = 2.725$ K with deviations
+  below 50 parts per million.
+tags: [radiation, quantum, cosmology]
+level: intermediate
+references:
+  - 'Planck (1901), Ann. Phys. 4, 553'
+  - 'Rybicki & Lightman, Radiative Processes in Astrophysics (1979)'
+  - 'Fixsen et al. (1996), ApJ 473, 576'
+docs: 'https://en.wikipedia.org/wiki/Planck''s_law'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

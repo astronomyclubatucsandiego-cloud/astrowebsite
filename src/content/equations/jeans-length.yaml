@@ -1,0 +1,28 @@
+id: jeans-length
+title: 'Jeans length'
+latex: '\lambda_J = \sqrt{\frac{\pi c_s^2}{G\rho}}'
+variables:
+  - symbol: '\lambda_J'
+    meaning: 'Jeans length'
+  - symbol: 'c_s'
+    meaning: 'sound speed in the gas'
+  - symbol: '\rho'
+    meaning: 'gas density'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Perturbations in a self-gravitating gas larger than $\lambda_J$ collapse;
+  smaller ones just oscillate as sound waves. Linearize the fluid equations
+  together with Poisson's equation and you get $\omega^2 = c_s^2 k^2 - 4\pi
+  G\rho$; when the right side goes negative, $\omega$ is imaginary and the
+  perturbation grows exponentially. James Jeans derived it in 1902, and it
+  still sets the rough scale of star-forming clumps in molecular clouds.
+tags: [star-formation, gravity]
+level: intermediate
+references:
+  - 'Jeans (1902), Phil. Trans. R. Soc. A 199, 1'
+  - 'Binney & Tremaine, Galactic Dynamics, 2nd ed. (2008)'
+docs: 'https://en.wikipedia.org/wiki/Jeans_instability'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

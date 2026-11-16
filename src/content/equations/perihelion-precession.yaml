@@ -1,0 +1,27 @@
+id: perihelion-precession
+title: 'Relativistic perihelion precession'
+latex: '\Delta\phi = \frac{6\pi G M}{c^2\,a\,(1 - e^2)}'
+variables:
+  - symbol: '\Delta\phi'
+    meaning: 'advance of the perihelion per orbit, in radians'
+  - symbol: 'M'
+    meaning: 'mass of the central body'
+  - symbol: 'a'
+    meaning: 'semi-major axis'
+  - symbol: 'e'
+    meaning: 'orbital eccentricity'
+blurb: >-
+  In general relativity orbits do not quite close: the perihelion advances a
+  little every lap. For Mercury this adds up to about 43 arcseconds per
+  century, the leftover that Urbain Le Verrier first identified in 1859 and
+  that no Newtonian explanation could remove. Einstein's calculation of this
+  number in November 1915 was the first success of general relativity.
+tags: [general-relativity, orbits]
+level: intermediate
+references:
+  - 'Einstein (1915), Sitzungsber. Preuss. Akad. Wiss., 831'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Tests_of_general_relativity'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

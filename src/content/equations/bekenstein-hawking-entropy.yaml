@@ -1,0 +1,26 @@
+id: bekenstein-hawking-entropy
+title: 'Bekenstein–Hawking entropy'
+latex: 'S_{\text{BH}} = \frac{k_B\,c^3 A}{4 G \hbar}'
+variables:
+  - symbol: 'S_{\text{BH}}'
+    meaning: 'entropy of the black hole'
+  - symbol: 'A'
+    meaning: 'area of the event horizon'
+  - symbol: 'k_B,\ c,\ G,\ \hbar'
+    meaning: 'Boltzmann constant, speed of light, gravitational constant, reduced Planck constant'
+blurb: >-
+  A black hole's entropy is proportional to the area of its horizon, not its
+  volume. Jacob Bekenstein proposed the area law in 1972–73, and Hawking's
+  radiation calculation fixed the factor of 1/4. In Planck units it reads
+  $S/k_B = A/4\ell_P^2$, about $10^{77}$ for a solar-mass black hole. The idea
+  that the information in a region is limited by its boundary area grew into
+  the holographic principle.
+tags: [black-holes, quantum, thermodynamics]
+level: advanced
+references:
+  - 'Bekenstein (1973), Phys. Rev. D 7, 2333'
+  - 'Hawking (1975), Commun. Math. Phys. 43, 199'
+docs: 'https://en.wikipedia.org/wiki/Black_hole_thermodynamics'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

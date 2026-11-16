@@ -1,0 +1,30 @@
+id: friedmann-equation
+title: 'Friedmann equation'
+latex: 'H^2 = \left(\frac{\dot{a}}{a}\right)^2 = \frac{8\pi G}{3}\rho - \frac{k c^2}{a^2} + \frac{\Lambda c^2}{3}'
+variables:
+  - symbol: 'H'
+    meaning: 'Hubble parameter, the expansion rate'
+  - symbol: 'a'
+    meaning: 'scale factor'
+  - symbol: '\rho'
+    meaning: 'total mass density of matter and radiation'
+  - symbol: 'k'
+    meaning: 'spatial curvature'
+  - symbol: '\Lambda'
+    meaning: 'cosmological constant'
+blurb: >-
+  Plug the FLRW metric into Einstein's equations and the time–time component
+  gives this ODE for the expansion rate. Alexander Friedmann derived it in
+  1922; Einstein first published a note claiming it was wrong, then retracted
+  it. The same equation (without $\Lambda$) falls out of Newtonian energy
+  conservation for an expanding sphere, with curvature playing the role of
+  total energy.
+tags: [cosmology, general-relativity]
+level: intermediate
+references:
+  - 'Friedmann (1922), Z. Phys. 10, 377'
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+docs: 'https://en.wikipedia.org/wiki/Friedmann_equations'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

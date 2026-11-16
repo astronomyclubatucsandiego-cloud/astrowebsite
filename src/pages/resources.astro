@@ -8,6 +8,7 @@ import Base from '../layouts/Base.astro';
 import Banner from '../components/Banner.astro';
 import SkyTonight from '../components/SkyTonight.astro';
 import NasaPicture from '../components/NasaPicture.astro';
+import EquationOfTheDay from '../components/EquationOfTheDay.astro';
 import { CLUB, url } from '../config';
 import campus from '../assets/gallery/general/01-member-imaging-with-the-club-dobsonian.jpg';
 import horsehead from '../assets/gallery/astrophotography/02-horsehead-nebula--connor-sandfer.jpg';
@@ -111,6 +112,9 @@ const flipped = (i: number) => (i > nasaIndex ? i + 1 : i) % 2 === 1;
     {group.id === NASA_AFTER && <NasaPicture />}
     </>
   ))}
+
+  {/* White, after the navy "Going Further" row. Hidden until there's a reviewed equation. */}
+  <EquationOfTheDay />
 
   <section class="band">
     <div class="wrap">

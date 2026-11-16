@@ -1,0 +1,28 @@
+id: doppler-radial-velocity
+title: 'Doppler shift and radial velocity'
+latex: '\frac{\Delta\lambda}{\lambda} = \frac{v_r}{c}'
+variables:
+  - symbol: '\Delta\lambda'
+    meaning: 'shift in wavelength (positive means redshift)'
+  - symbol: '\lambda'
+    meaning: 'rest wavelength of the spectral line'
+  - symbol: 'v_r'
+    meaning: 'velocity along the line of sight (positive means receding)'
+  - symbol: 'c'
+    meaning: 'speed of light'
+blurb: >-
+  Motion along the line of sight shifts spectral lines: redder when receding,
+  bluer when approaching (valid for $v_r \ll c$). Spectral lines are such
+  precise rulers that modern spectrographs reach about 1 m/s, enough to see a
+  star wobble as a planet tugs on it. Michel Mayor and Didier Queloz
+  discovered 51 Pegasi b this way in 1995 (Nobel Prize 2019), and the same
+  shift gives binary-star masses and galaxy rotation curves.
+tags: [observation, exoplanets]
+level: intro
+references:
+  - 'Mayor & Queloz (1995), Nature 378, 355'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Radial_velocity'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

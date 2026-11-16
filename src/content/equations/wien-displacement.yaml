@@ -1,0 +1,25 @@
+id: wien-displacement
+title: 'Wien''s displacement law'
+latex: '\lambda_{\max}\,T = b \approx 2.898\times10^{-3}\ \text{m K}'
+variables:
+  - symbol: '\lambda_{\max}'
+    meaning: 'wavelength where a blackbody''s emission per unit wavelength peaks'
+  - symbol: 'T'
+    meaning: 'temperature'
+  - symbol: 'b'
+    meaning: 'Wien''s displacement constant'
+blurb: >-
+  Hotter objects peak at shorter wavelengths. The Sun (5772 K) peaks near 500
+  nm; a person (310 K) peaks near 9.3 μm in the infrared, which is why thermal
+  cameras work there; the microwave background (2.7 K) peaks near 1 mm. The
+  law comes from maximizing Planck's law: $b = hc/(x k_B)$, where $x \approx
+  4.965$ solves $x = 5(1 - e^{-x})$.
+tags: [radiation, stars]
+level: intro
+references:
+  - 'Rybicki & Lightman, Radiative Processes in Astrophysics (1979)'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Wien''s_displacement_law'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

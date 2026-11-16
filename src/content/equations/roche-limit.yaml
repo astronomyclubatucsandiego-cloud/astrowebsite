@@ -1,0 +1,28 @@
+id: roche-limit
+title: 'Roche limit'
+latex: 'd = R_M \left(\frac{2\rho_M}{\rho_m}\right)^{1/3}'
+variables:
+  - symbol: 'd'
+    meaning: 'distance from the primary''s center inside which the satellite is torn apart'
+  - symbol: 'R_M'
+    meaning: 'radius of the primary'
+  - symbol: '\rho_M'
+    meaning: 'density of the primary'
+  - symbol: '\rho_m'
+    meaning: 'density of the satellite'
+blurb: >-
+  Inside the Roche limit, the tidal stretching from a planet beats the
+  self-gravity holding a satellite together. This is the rigid-body estimate;
+  a fluid satellite that deforms breaks up farther out, near
+  $2.44\,R_M(\rho_M/\rho_m)^{1/3}$. Saturn's main rings lie largely inside its
+  Roche limit, where ring particles cannot gather into a moon. Bodies held
+  together by material strength, like small rocky moons or spacecraft, can
+  survive inside it.
+tags: [gravity, planets]
+level: intermediate
+references:
+  - 'Murray & Dermott, Solar System Dynamics (1999)'
+docs: 'https://en.wikipedia.org/wiki/Roche_limit'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

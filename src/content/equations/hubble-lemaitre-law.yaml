@@ -1,0 +1,28 @@
+id: hubble-lemaitre-law
+title: 'Hubble–Lemaître law'
+latex: 'v = H_0\, d'
+variables:
+  - symbol: 'v'
+    meaning: 'recession velocity of a galaxy'
+  - symbol: 'd'
+    meaning: 'its distance'
+  - symbol: 'H_0'
+    meaning: 'Hubble constant, usually quoted in km/s/Mpc'
+blurb: >-
+  Galaxies recede at speeds proportional to their distance, the signature of a
+  uniformly expanding universe. Georges Lemaître derived it from general
+  relativity and estimated the slope in 1927; Edwin Hubble's 1929 data
+  established it, and in 2018 the IAU recommended the name Hubble–Lemaître
+  law. Measurements based on the early universe give about 67–68 km/s/Mpc
+  while the local distance ladder gives about 73, a disagreement known as the
+  Hubble tension.
+tags: [cosmology, observation]
+level: intro
+references:
+  - 'Lemaître (1927), Ann. Soc. Sci. Bruxelles A47, 49'
+  - 'Hubble (1929), PNAS 15, 168'
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+docs: 'https://en.wikipedia.org/wiki/Hubble''s_law'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

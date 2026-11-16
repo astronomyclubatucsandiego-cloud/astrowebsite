@@ -1,0 +1,28 @@
+id: chandrasekhar-limit
+title: 'Chandrasekhar limit'
+latex: 'M_{\text{Ch}} = \frac{\omega_3^0\sqrt{3\pi}}{2}\left(\frac{\hbar c}{G}\right)^{3/2}\frac{1}{(\mu_e m_{\text{H}})^2} \approx 1.4\,M_\odot'
+variables:
+  - symbol: '\omega_3^0'
+    meaning: 'constant from the $n = 3$ Lane–Emden solution, $\approx 2.018$'
+  - symbol: '\mu_e'
+    meaning: 'mean molecular weight per electron, $\approx 2$ for carbon–oxygen white dwarfs'
+  - symbol: 'm_{\text{H}}'
+    meaning: 'mass of a hydrogen atom'
+  - symbol: '\hbar,\ c,\ G'
+    meaning: 'reduced Planck constant, speed of light, gravitational constant'
+blurb: >-
+  The maximum mass of a white dwarf supported by electron degeneracy pressure.
+  Subrahmanyan Chandrasekhar worked out the idea at age 19 on the voyage from
+  India to England in 1930; Eddington publicly ridiculed it, and Chandrasekhar
+  shared the 1983 Nobel Prize. The factor $(\hbar c/G)^{3/2}$ is the Planck
+  mass cubed, so stellar masses are set by fundamental constants. Above the
+  limit, a stellar core collapses to a neutron star or black hole.
+tags: [stars, white-dwarfs, quantum]
+level: advanced
+references:
+  - 'Chandrasekhar (1931), ApJ 74, 81'
+  - 'Kippenhahn, Weigert & Weiss, Stellar Structure and Evolution, 2nd ed. (2012)'
+docs: 'https://en.wikipedia.org/wiki/Chandrasekhar_limit'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

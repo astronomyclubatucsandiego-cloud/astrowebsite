@@ -1,0 +1,26 @@
+id: flrw-metric
+title: 'Friedmann–Lemaître–Robertson–Walker metric'
+latex: 'ds^2 = -c^2\,dt^2 + a(t)^2\left[\frac{dr^2}{1 - k r^2} + r^2\left(d\theta^2 + \sin^2\theta\,d\phi^2\right)\right]'
+variables:
+  - symbol: 'a(t)'
+    meaning: 'scale factor'
+  - symbol: 'k'
+    meaning: 'spatial curvature: positive (closed), zero (flat) or negative (open)'
+  - symbol: 'r,\ \theta,\ \phi'
+    meaning: 'comoving coordinates'
+blurb: >-
+  The most general spacetime that looks the same everywhere and in every
+  direction (the cosmological principle). All of cosmic dynamics collapses
+  into one function, the scale factor $a(t)$, and one curvature constant $k$.
+  It is named for Friedmann, Lemaître, Robertson and Walker, who worked it out
+  in the 1920s and 1930s. Observations find $k$ consistent with zero: space is
+  flat to within current precision.
+tags: [cosmology, general-relativity]
+level: advanced
+references:
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Friedmann–Lemaître–Robertson–Walker_metric'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null
