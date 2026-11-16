@@ -4,7 +4,7 @@ latex: 'B_\nu(T) = \frac{2h\nu^3}{c^2}\,\frac{1}{e^{h\nu/k_B T} - 1}'
 variables:
   - symbol: 'B_\nu(T)'
     meaning: 'spectral radiance per unit frequency'
-  - symbol: '\nu'
+  - symbol: '\nu' 
     meaning: 'frequency'
   - symbol: 'T'
     meaning: 'temperature'
@@ -26,4 +26,4 @@ references:
 docs: 'https://en.wikipedia.org/wiki/Planck''s_law'
 added: '2026-11-16'
 author: claude-draft
-reviewed_by: null
+reviewed_by: Ryo Ide
