@@ -1,0 +1,53 @@
+name: Equation of the Day
+
+# Checks the equations (src/content/equations/) on every pull request that touches them or their
+# code, and on pushes to main. The site build in deploy.yml also stops on an entry that fails
+# the schema or KaTeX; this catches it in the pull request instead, plus repeats and dead links.
+# Actions are pinned to exact commits (the version is in the comment); Dependabot keeps them current.
+on:
+  pull_request:
+    paths: &paths
+      - 'src/content/equations/**'
+      - 'src/lib/equation-*.ts'
+      - 'src/content.config.ts'
+      - 'scripts/equations/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/equations.yml'
+  push:
+    branches: [main]
+    paths: *paths
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Schema, file names, pinned dates, and KaTeX rendering of all LaTeX.
+      - run: npm run equations:validate
+      # Two years of schedules with no repeats inside any month.
+      - run: npm run equations:preview -- --months 24 --include-unreviewed --quiet
+
+  # Separate job: it needs the internet, and a flaky site shouldn't hide the results above.
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run equations:check-links

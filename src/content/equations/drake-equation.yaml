@@ -1,0 +1,35 @@
+id: drake-equation
+title: 'Drake equation'
+latex: 'N = R_*\,f_p\,n_e\,f_l\,f_i\,f_c\,L'
+variables:
+  - symbol: 'N'
+    meaning: 'number of civilizations in the Milky Way we could detect'
+  - symbol: 'R_*'
+    meaning: 'rate of star formation in the galaxy'
+  - symbol: 'f_p'
+    meaning: 'fraction of stars with planets'
+  - symbol: 'n_e'
+    meaning: 'planets per system that could support life'
+  - symbol: 'f_l'
+    meaning: 'fraction of those where life appears'
+  - symbol: 'f_i'
+    meaning: 'fraction of those that develop intelligence'
+  - symbol: 'f_c'
+    meaning: 'fraction that release detectable signals'
+  - symbol: 'L'
+    meaning: 'how long such civilizations keep signaling'
+blurb: >-
+  Frank Drake wrote it as the agenda for the first SETI meeting, at Green Bank
+  in 1961: a way of organizing what we would need to know rather than a real
+  calculation. The early factors are now measured, and exoplanet surveys such
+  as Kepler show that most stars host planets. The last factors are unknown by
+  many orders of magnitude, so honest estimates of $N$ range from far below
+  one to millions.
+tags: [astrobiology, exoplanets]
+level: intro
+references:
+  - 'Drake & Sobel, Is Anyone Out There? (1992)'
+docs: 'https://en.wikipedia.org/wiki/Drake_equation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

@@ -295,6 +295,26 @@ a:hover { text-decoration-thickness: 2px; }
 .band--dark .apod__title { color: #fff; }
 .apod__date { margin: .2rem 0 1rem; font-style: italic; }
 
+/* ---------- Equation of the Day (Resources) ---------- */
+.eqotd[hidden], .eqotd__entry[hidden] { display: none; }
+.eqotd__date { max-width: 40rem; margin: -1rem auto 1.2rem; text-align: center; font-style: italic; }
+.eqotd__entry { max-width: 40rem; margin-inline: auto; }
+.eqotd__title { margin: 0; text-align: center; font-family: var(--heading); font-size: 1.5rem; line-height: 1.25; color: var(--blue); }
+.eqotd__meta { margin: .3rem 0 0; text-align: center; font-size: .95rem; }
+.eqotd__draft { color: #b3261e; }
+.eqotd__empty { max-width: 40rem; margin: 0 auto; padding: 1rem; border: 2px dashed #b3261e; }
+.eqotd__empty[hidden] { display: none; }
+/* Long equations (the FLRW metric, Einstein's equations) scroll sideways on phones instead of
+   widening the page. */
+.eqotd__equation { margin-block: 1.4rem; padding: .2rem 1rem; overflow-x: auto; overflow-y: hidden; border-block: 1px solid var(--rule); }
+.eqotd__blurb { margin: 0 0 1.4rem; font-size: 1.1rem; }
+.eqotd__where { margin: 0 0 .4rem; font-family: var(--heading); font-size: 1.1rem; color: var(--blue); }
+.eqotd__vars { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .4rem 1rem; margin: 0 0 1.4rem; }
+.eqotd__vars dt { text-align: right; }
+.eqotd__vars dd { margin: 0; }
+.eqotd__more { margin: 0; padding-top: 1rem; border-top: 3px solid var(--rule); }
+.eqotd__refs { font-size: .9rem; font-style: italic; }
+
 /* ---------- Observing forecast (Astrospheric embed) ---------- */
 .forecast__places { margin-bottom: 1.4rem; }
 /* Astrospheric's chart is 350 to 924px wide. Center it; on narrow phones let it use the full screen width. */

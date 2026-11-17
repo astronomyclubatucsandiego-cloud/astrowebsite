@@ -1,0 +1,28 @@
+id: vis-viva
+title: 'Vis-viva equation'
+latex: 'v^2 = G M \left(\frac{2}{r} - \frac{1}{a}\right)'
+variables:
+  - symbol: 'v'
+    meaning: 'orbital speed at the current position'
+  - symbol: 'r'
+    meaning: 'current distance from the central body'
+  - symbol: 'a'
+    meaning: 'semi-major axis of the orbit'
+  - symbol: 'M'
+    meaning: 'central mass (strictly, the total mass of both bodies)'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Energy conservation for a Keplerian orbit in one line: the speed at any
+  point depends only on the current distance and the semi-major axis, not on
+  the eccentricity. Set $a = r$ to get circular-orbit speed; let $a \to
+  \infty$ to get escape speed. Mission planners use it to size engine burns,
+  for example for a Hohmann transfer between two orbits.
+tags: [orbits, gravity]
+level: intermediate
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Vis-viva_equation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

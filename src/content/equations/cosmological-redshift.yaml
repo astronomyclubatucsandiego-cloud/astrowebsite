@@ -1,0 +1,25 @@
+id: cosmological-redshift
+title: 'Cosmological redshift'
+latex: '1 + z = \frac{\lambda_{\text{obs}}}{\lambda_{\text{emit}}} = \frac{a(t_{\text{obs}})}{a(t_{\text{emit}})}'
+variables:
+  - symbol: 'z'
+    meaning: 'redshift'
+  - symbol: '\lambda_{\text{obs}},\ \lambda_{\text{emit}}'
+    meaning: 'observed and emitted wavelengths'
+  - symbol: 'a(t)'
+    meaning: 'scale factor of the universe at time $t$'
+blurb: >-
+  Cosmological redshift is not a Doppler shift from motion through space:
+  light's wavelength is stretched by exactly the factor the universe expanded
+  while the light traveled. The cosmic microwave background was released at $z
+  \approx 1100$, so it has been stretched about 1100-fold and cooled from
+  roughly 3000 K to 2.7 K. JWST has found galaxies beyond $z = 14$, seen when
+  the universe was less than 1/15 of its current size.
+tags: [cosmology, observation]
+level: intro
+references:
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+docs: 'https://en.wikipedia.org/wiki/Redshift'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

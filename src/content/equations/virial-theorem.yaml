@@ -1,0 +1,25 @@
+id: virial-theorem
+title: 'Virial theorem'
+latex: '2\langle K\rangle + \langle U\rangle = 0'
+variables:
+  - symbol: '\langle K\rangle'
+    meaning: 'time-averaged total kinetic energy'
+  - symbol: '\langle U\rangle'
+    meaning: 'time-averaged gravitational potential energy'
+blurb: >-
+  For a self-gravitating system in equilibrium, the kinetic energy is half the
+  magnitude of the potential energy. In 1933 Fritz Zwicky applied it to the
+  Coma Cluster and found its galaxies moving far too fast to be held together
+  by the visible mass, the first dynamical case for "dunkle Materie": dark
+  matter. It also implies a total energy $E = -\langle K\rangle$, so a star
+  that radiates energy away contracts and gets hotter, a negative heat
+  capacity.
+tags: [gravity, dark-matter, stars]
+level: intermediate
+references:
+  - 'Zwicky (1933), Helv. Phys. Acta 6, 110'
+  - 'Binney & Tremaine, Galactic Dynamics, 2nd ed. (2008)'
+docs: 'https://en.wikipedia.org/wiki/Virial_theorem'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

@@ -1,0 +1,25 @@
+id: schwarzschild-radius
+title: 'Schwarzschild radius'
+latex: 'r_s = \frac{2GM}{c^2}'
+variables:
+  - symbol: 'r_s'
+    meaning: 'radius of the event horizon of a non-rotating black hole'
+  - symbol: 'M'
+    meaning: 'mass of the black hole'
+  - symbol: 'G,\ c'
+    meaning: 'gravitational constant and speed of light'
+blurb: >-
+  The radius of the event horizon of a non-rotating black hole: about 2.95 km
+  for one solar mass and about 9 mm for one Earth mass. Because $r_s \propto
+  M$, the average density (mass divided by $\tfrac43\pi r_s^3$) scales as
+  $M^{-2}$, so big black holes are not dense at all. Above roughly 140 million
+  solar masses, that average falls below the density of water.
+tags: [black-holes, general-relativity]
+level: intro
+references:
+  - 'Carroll, Spacetime and Geometry (2004)'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Schwarzschild_radius'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: Ryo Ide

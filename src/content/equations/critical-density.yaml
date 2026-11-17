@@ -1,0 +1,26 @@
+id: critical-density
+title: 'Critical density'
+latex: '\rho_c = \frac{3H^2}{8\pi G}'
+variables:
+  - symbol: '\rho_c'
+    meaning: 'density for which the universe is exactly spatially flat'
+  - symbol: 'H'
+    meaning: 'Hubble parameter'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Set $k = 0$ in the Friedmann equation (counting $\Lambda$ as part of the
+  density) and this is the density of a spatially flat universe. For $H_0 =
+  70$ km/s/Mpc it is about $9\times10^{-27}$ kg/m³, roughly five hydrogen
+  atoms per cubic meter. Cosmologists express every component as a fraction
+  $\Omega = \rho/\rho_c$: today's measurements give roughly 5% ordinary
+  matter, 27% dark matter and 68% dark energy, adding up to 1.
+tags: [cosmology, dark-matter, dark-energy]
+level: intermediate
+references:
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+  - 'Planck Collaboration (2020), A&A 641, A6'
+docs: 'https://en.wikipedia.org/wiki/Friedmann_equations'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

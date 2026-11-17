@@ -41,6 +41,7 @@ npm run dev      # open http://localhost:4321/astrowebsite/
 | Photo banner, Tonight panel, forecast, NASA picture | `src/components/` |
 | Tonight sky math: sun, moon, planets, meteor showers and other events | `src/lib/sky.ts`, `src/lib/planets.ts`, `src/lib/events.ts` |
 | Moon and planet photos (NASA, public domain) | `src/assets/sky/` |
+| Equation of the Day: entries, section on Resources, daily pick, checks | `src/content/equations/`, `src/components/EquationOfTheDay.astro`, `src/lib/equation-*.ts`, `scripts/equations/` |
 | Sponsor and supporter logos | `src/assets/supporters/` |
 | Home page banner video | `public/video/` |
 | Build and deploy setup | `.github/workflows/deploy.yml` |
@@ -100,7 +101,49 @@ Their bio, word for word from the board form.
 - **Tonight panel:** calculated in the browser every day, so there's nothing to update, except the meteor showers below.
 - **Meteor showers:** each January, compare the `SHOWERS` list in `src/lib/events.ts` with the International Meteor Organization's new calendar (imo.net) and update any changed peak or rate.
 - **NASA API key:** `nasaApiKey` in `src/config.ts`, registered to the club Gmail at api.nasa.gov. It's public by design. If it stops working, get a new one there.
+- **Equation of the Day:** see below.
 - **Events:** not on the website. Announce them on Discord and Instagram (each trip has its own sign-up form there), then add photos to the gallery.
+
+### Equation of the Day
+
+A section at the bottom of Resources. Each day shows one equation, the same for everyone, picked in
+the browser. Nothing to update day to day.
+
+- One YAML file per equation in `src/content/equations/`, named after its `id`:
+
+```yaml
+id: schwarzschild-radius            # must match the file name
+title: 'Schwarzschild radius'
+latex: 'r_s = \frac{2GM}{c^2}'      # KaTeX-compatible, no surrounding $
+variables:
+  - symbol: 'r_s'                   # LaTeX, no surrounding $
+    meaning: 'radius of the event horizon of a non-rotating black hole'
+blurb: >-                           # 2-4 sentences; inline math between $...$
+  The radius of the event horizon ...
+tags: [black-holes, general-relativity]
+level: intro                        # intro | intermediate | advanced
+references:
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Schwarzschild_radius'
+pinned: '03-14'                     # optional: show on this date every year
+added: '2026-11-16'
+author: your-name
+reviewed_by: null                   # the reviewer's name once checked
+```
+
+- Put LaTeX in single quotes so backslashes stay literal (write `''` for an apostrophe). In `blurb` and `meaning`, `$` always starts or ends math. Dates go in quotes too.
+- **Only reviewed entries go on the live site.** An entry shows once `reviewed_by` has a name. `npm run dev` also shows drafts, marked "Draft". To review one: open its `docs` link and compare the equation (signs, factors of 2, exponents), check every number, name and date in the blurb, read it as a first-year would, then set `reviewed_by` to your name.
+- The 37 starter entries were drafted by Claude (`author: claude-draft`) and none is reviewed yet, so the section stays hidden until they are. At least 31 reviewed, unpinned entries are needed so no equation repeats within a month. Splitting the review by tag keeps it to about eight each.
+- **How the pick works:** each month's entries are shuffled in a fixed order (seeded by the year and month), and day *d* shows the *d*-th. A new entry joins on the 1st of the month after its `added` date, so adding one never reshuffles the current month. `pinned` entries show on their date every year instead (the Einstein field equations on March 14, the chirp mass on September 14). "Today" is California time.
+- Add `?date=2027-03-14` to the Resources address to see any day.
+- Check your changes before pushing. A pull request that touches the equations runs the same checks automatically (`.github/workflows/equations.yml`):
+
+| Command | What it does |
+| --- | --- |
+| `npm run equations:validate` | Every field, file names, pinned dates, and that all LaTeX renders |
+| `npm run equations:preview -- 2026-12` | That month's schedule (add `--include-unreviewed` for drafts, `--months 12` for more) |
+| `npm run equations:check-links` | Opens every `docs` link |
+| `npm run equations:test` | `validate` plus a two-year no-repeats check |
 
 ## Rules for every change
 

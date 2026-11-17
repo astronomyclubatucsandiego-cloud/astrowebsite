@@ -1,0 +1,26 @@
+id: hawking-temperature
+title: 'Hawking temperature'
+latex: 'T_H = \frac{\hbar c^3}{8\pi G M k_B}'
+variables:
+  - symbol: 'T_H'
+    meaning: 'temperature of a black hole''s thermal radiation'
+  - symbol: 'M'
+    meaning: 'mass of the black hole'
+  - symbol: '\hbar,\ c,\ G,\ k_B'
+    meaning: 'reduced Planck constant, speed of light, gravitational constant, Boltzmann constant'
+blurb: >-
+  In 1974 Stephen Hawking showed that quantum effects near the horizon make
+  black holes radiate like blackbodies at this temperature. The formula
+  contains $\hbar$, $c$, $G$ and $k_B$ at once: quantum mechanics, relativity,
+  gravity and thermodynamics in one line. Since $T_H \propto 1/M$, black holes
+  get hotter as they lose mass. A solar-mass black hole sits at about 60
+  nanokelvin, far colder than the 2.7 K microwave background, so real black
+  holes absorb more than they emit.
+tags: [black-holes, quantum, thermodynamics]
+level: advanced
+references:
+  - 'Hawking (1975), Commun. Math. Phys. 43, 199'
+docs: 'https://en.wikipedia.org/wiki/Hawking_radiation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

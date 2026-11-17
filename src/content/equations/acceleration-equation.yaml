@@ -1,0 +1,29 @@
+id: acceleration-equation
+title: 'Friedmann acceleration equation'
+latex: '\frac{\ddot{a}}{a} = -\frac{4\pi G}{3}\left(\rho + \frac{3p}{c^2}\right) + \frac{\Lambda c^2}{3}'
+variables:
+  - symbol: '\ddot{a}'
+    meaning: 'second time derivative of the scale factor'
+  - symbol: '\rho'
+    meaning: 'mass density of matter and radiation'
+  - symbol: 'p'
+    meaning: 'pressure'
+  - symbol: '\Lambda'
+    meaning: 'cosmological constant'
+blurb: >-
+  The second Friedmann equation shows that in general relativity pressure
+  gravitates. Matter and radiation slow the expansion, but any component with
+  $p < -\rho c^2/3$ speeds it up, and a cosmological constant behaves like a
+  fluid with $p = -\rho c^2$. In 1998 two supernova teams found that the
+  expansion is accelerating, which earned Saul Perlmutter, Brian Schmidt and
+  Adam Riess the 2011 Nobel Prize.
+tags: [cosmology, dark-energy]
+level: intermediate
+references:
+  - 'Riess et al. (1998), AJ 116, 1009'
+  - 'Perlmutter et al. (1999), ApJ 517, 565'
+  - 'Ryden, Introduction to Cosmology, 2nd ed. (2016)'
+docs: 'https://en.wikipedia.org/wiki/Friedmann_equations'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

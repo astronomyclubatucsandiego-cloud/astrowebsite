@@ -1,0 +1,29 @@
+id: eddington-luminosity
+title: 'Eddington luminosity'
+latex: 'L_{\text{Edd}} = \frac{4\pi G M m_p c}{\sigma_T}'
+variables:
+  - symbol: 'L_{\text{Edd}}'
+    meaning: 'maximum luminosity of a source in equilibrium'
+  - symbol: 'M'
+    meaning: 'mass of the star or accreting object'
+  - symbol: 'm_p'
+    meaning: 'proton mass'
+  - symbol: '\sigma_T'
+    meaning: 'Thomson scattering cross-section of the electron'
+blurb: >-
+  Above this luminosity, radiation pressure on electrons (Thomson scattering)
+  outpushes gravity on the protons and blows ionized hydrogen away. This
+  assumes pure hydrogen and spherical symmetry; numerically it is about
+  $3.3\times10^4\,L_\odot$ per solar mass. It limits how massive stars can be
+  and how fast black holes can grow by accretion, which is why
+  billion-solar-mass quasars seen less than a billion years after the Big Bang
+  are a puzzle.
+tags: [stars, black-holes, radiation]
+level: intermediate
+references:
+  - 'Rybicki & Lightman, Radiative Processes in Astrophysics (1979)'
+  - 'Eddington, The Internal Constitution of the Stars (1926)'
+docs: 'https://en.wikipedia.org/wiki/Eddington_luminosity'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

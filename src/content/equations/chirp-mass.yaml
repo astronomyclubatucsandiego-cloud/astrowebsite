@@ -1,0 +1,29 @@
+id: chirp-mass
+title: 'Gravitational-wave chirp mass'
+latex: '\mathcal{M} = \frac{(m_1 m_2)^{3/5}}{(m_1 + m_2)^{1/5}} = \frac{c^3}{G}\left[\frac{5}{96}\,\pi^{-8/3} f^{-11/3}\,\dot{f}\right]^{3/5}'
+variables:
+  - symbol: '\mathcal{M}'
+    meaning: 'chirp mass'
+  - symbol: 'm_1,\ m_2'
+    meaning: 'masses of the two inspiraling objects'
+  - symbol: 'f'
+    meaning: 'gravitational-wave frequency'
+  - symbol: '\dot{f}'
+    meaning: 'rate at which that frequency increases'
+blurb: >-
+  As two compact objects spiral together, the gravitational-wave frequency and
+  its rate of increase are fixed, to leading order, by this single combination
+  of the masses. LIGO applied exactly this relation to its first detection,
+  GW150914, on September 14, 2015: the "chirp" gave $\mathcal{M} \approx
+  30\,M_\odot$ and a total mass of at least about $70\,M_\odot$. Nothing but
+  black holes could pack that much mass into an orbit tight enough to produce
+  the observed frequencies.
+tags: [gravitational-waves, black-holes]
+level: intermediate
+references:
+  - 'Abbott et al. (LIGO & Virgo) (2016), Phys. Rev. Lett. 116, 061102'
+docs: 'https://en.wikipedia.org/wiki/Chirp_mass'
+pinned: '09-14'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

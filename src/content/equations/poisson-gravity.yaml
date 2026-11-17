@@ -1,0 +1,25 @@
+id: poisson-gravity
+title: 'Poisson''s equation for gravity'
+latex: '\nabla^2 \Phi = 4\pi G \rho'
+variables:
+  - symbol: '\Phi'
+    meaning: 'gravitational potential; the acceleration is $\mathbf{g} = -\nabla\Phi$'
+  - symbol: '\rho'
+    meaning: 'mass density'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Newton's inverse-square law rewritten as a field equation: mass density
+  sources the potential, and the acceleration is its negative gradient. It is
+  the same equation as electrostatics with the sign flipped, because in
+  gravity like "charges" attract. Gravity solvers in galaxy and cosmological
+  simulations compute exactly this at every time step, and Einstein's field
+  equations reduce to it for weak fields and slow motions.
+tags: [gravity, simulation]
+level: intermediate
+references:
+  - 'Binney & Tremaine, Galactic Dynamics, 2nd ed. (2008)'
+docs: 'https://en.wikipedia.org/wiki/Poisson''s_equation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

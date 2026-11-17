@@ -1,0 +1,26 @@
+id: distance-modulus
+title: 'Distance modulus'
+latex: 'm - M = 5\log_{10}\!\left(\frac{d}{10\ \text{pc}}\right)'
+variables:
+  - symbol: 'm'
+    meaning: 'apparent magnitude'
+  - symbol: 'M'
+    meaning: 'absolute magnitude: the apparent magnitude the object would have at 10 parsecs'
+  - symbol: 'd'
+    meaning: 'distance'
+blurb: >-
+  It combines the inverse-square law $F = L/4\pi d^2$ with the logarithmic
+  magnitude scale $m_1 - m_2 = -2.5\log_{10}(F_1/F_2)$, which Norman Pogson
+  standardized in 1856 so that 5 magnitudes is exactly a factor of 100 in
+  flux. Find an object of known absolute magnitude, such as a Cepheid variable
+  or a Type Ia supernova, measure its apparent magnitude, and you have its
+  distance. Stacking these standard candles builds the cosmic distance ladder
+  (dust adds an extinction correction).
+tags: [observation, distance-ladder]
+level: intro
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Distance_modulus'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

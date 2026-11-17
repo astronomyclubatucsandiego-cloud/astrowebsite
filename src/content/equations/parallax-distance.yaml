@@ -1,0 +1,24 @@
+id: parallax-distance
+title: 'Stellar parallax'
+latex: 'd\,[\text{pc}] = \frac{1}{p\,[\text{arcsec}]}'
+variables:
+  - symbol: 'd'
+    meaning: 'distance in parsecs'
+  - symbol: 'p'
+    meaning: 'parallax angle in arcseconds'
+blurb: >-
+  As Earth orbits the Sun, nearby stars shift against distant ones; the
+  parallax $p$ is the angle that 1 AU subtends at the star. This defines the
+  parsec, the distance at which $p = 1''$, about 3.26 light-years. Friedrich
+  Bessel made the first measurement in 1838 (61 Cygni), and ESA's Gaia mission
+  has measured parallaxes for more than a billion stars: the bottom rung of
+  the cosmic distance ladder.
+tags: [observation, distance-ladder]
+level: intro
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+  - 'Gaia Collaboration (2023), A&A 674, A1'
+docs: 'https://en.wikipedia.org/wiki/Stellar_parallax'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

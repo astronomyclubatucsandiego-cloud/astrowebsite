@@ -1,0 +1,28 @@
+id: newton-gravitation
+title: 'Newton''s law of universal gravitation'
+latex: 'F = \frac{G\,m_1 m_2}{r^2}'
+variables:
+  - symbol: 'F'
+    meaning: 'magnitude of the attractive force between the two masses'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+  - symbol: 'm_1,\ m_2'
+    meaning: 'the two masses'
+  - symbol: 'r'
+    meaning: 'distance between their centers'
+blurb: >-
+  Newton's radical claim was that the force pulling an apple down is the same
+  one holding the Moon in orbit, so the heavens and the Earth obey one law.
+  Gravity is absurdly weak: between two protons it is about $10^{36}$ times
+  weaker than their electric repulsion. It still rules astrophysics because
+  mass comes in only one sign, so gravity never cancels out the way positive
+  and negative charges do.
+tags: [gravity, orbits]
+level: intro
+references:
+  - 'Newton, Philosophiæ Naturalis Principia Mathematica (1687)'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Newton''s_law_of_universal_gravitation'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: Ryo Ide

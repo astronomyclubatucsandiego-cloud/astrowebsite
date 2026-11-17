@@ -1,0 +1,31 @@
+id: hydrostatic-equilibrium
+title: 'Hydrostatic equilibrium'
+latex: '\frac{dP}{dr} = -\frac{G\,M(r)\,\rho(r)}{r^2}'
+variables:
+  - symbol: 'P'
+    meaning: 'pressure'
+  - symbol: 'r'
+    meaning: 'radius'
+  - symbol: 'M(r)'
+    meaning: 'mass enclosed within radius $r$'
+  - symbol: '\rho(r)'
+    meaning: 'density at radius $r$'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Each layer of a star is held up by the pressure difference across it, which
+  balances the layer's weight. Together with mass continuity $dM/dr = 4\pi
+  r^2\rho$, energy generation and energy transport, it is one of the four ODEs
+  of stellar structure. Replacing derivatives with ratios gives $P_c \sim
+  GM^2/R^4 \approx 10^{15}$ Pa for the Sun; the true central pressure is about
+  20 times higher (about $2\times10^{16}$ Pa) because the Sun's mass is
+  concentrated toward its center.
+tags: [stars, stellar-structure]
+level: intermediate
+references:
+  - 'Kippenhahn, Weigert & Weiss, Stellar Structure and Evolution, 2nd ed. (2012)'
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Hydrostatic_equilibrium'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

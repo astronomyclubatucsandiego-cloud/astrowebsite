@@ -1,0 +1,27 @@
+id: schwarzschild-metric
+title: 'Schwarzschild metric'
+latex: 'ds^2 = -\left(1 - \frac{r_s}{r}\right)c^2\,dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 + r^2\left(d\theta^2 + \sin^2\theta\,d\phi^2\right)'
+variables:
+  - symbol: 'ds^2'
+    meaning: 'spacetime interval between neighboring events'
+  - symbol: 'r_s'
+    meaning: 'Schwarzschild radius, $2GM/c^2$'
+  - symbol: 't,\ r,\ \theta,\ \phi'
+    meaning: 'Schwarzschild time and spherical coordinates'
+blurb: >-
+  The first exact solution of Einstein's equations, found by Karl
+  Schwarzschild within weeks of Einstein's 1915 paper, while he was serving in
+  the German army on the Russian front. It describes spacetime outside any
+  spherical, non-rotating mass, and Birkhoff's theorem says it is the only
+  spherically symmetric vacuum solution. The apparent blow-up at $r = r_s$ is
+  an artifact of the coordinates and marks the event horizon; $r = 0$ is a
+  true curvature singularity.
+tags: [general-relativity, black-holes]
+level: advanced
+references:
+  - 'Schwarzschild (1916), Sitzungsber. Preuss. Akad. Wiss., 189'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Schwarzschild_metric'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

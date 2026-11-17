@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { equationSchema } from './lib/equation-schema';
 
 /** Board members: one Markdown file each in src/content/board/<term>/ (e.g. 2026-27/).
  *  The body is the bio. CLUB.boardTerm in src/config.ts picks which term is shown. */
@@ -18,4 +19,11 @@ const board = defineCollection({
     }),
 });
 
-export const collections = { board };
+/** Equation of the Day: one YAML file each in src/content/equations/. Only entries with
+ *  `reviewed_by` set go on the live site (see EquationOfTheDay.astro). */
+const equations = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/equations' }),
+  schema: equationSchema,
+});
+
+export const collections = { board, equations };

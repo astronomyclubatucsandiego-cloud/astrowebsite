@@ -1,0 +1,29 @@
+id: radiative-transfer
+title: 'Radiative transfer equation'
+latex: '\frac{dI_\nu}{ds} = -\alpha_\nu I_\nu + j_\nu'
+variables:
+  - symbol: 'I_\nu'
+    meaning: 'specific intensity of the light along the ray'
+  - symbol: 's'
+    meaning: 'path length along the ray'
+  - symbol: '\alpha_\nu'
+    meaning: 'absorption coefficient'
+  - symbol: 'j_\nu'
+    meaning: 'emission coefficient'
+blurb: >-
+  Along a ray, absorption removes light in proportion to how much is there and
+  emission adds it. With optical depth $d\tau = \alpha_\nu\,ds$ and source
+  function $S = j_\nu/\alpha_\nu$, a uniform slab gives $I = I_0 e^{-\tau} +
+  S(1 - e^{-\tau})$. Look into optically thick gas ($\tau \gg 1$) and you see
+  only its source function, a blackbody in thermal equilibrium, which is why a
+  ball of gas like the Sun has a visible surface. Cooler gas in front of a
+  hotter background removes light at specific frequencies, which is how
+  absorption lines form.
+tags: [radiation, stars]
+level: intermediate
+references:
+  - 'Rybicki & Lightman, Radiative Processes in Astrophysics (1979)'
+docs: 'https://en.wikipedia.org/wiki/Radiative_transfer'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

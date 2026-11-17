@@ -1,0 +1,28 @@
+id: escape-velocity
+title: 'Escape velocity'
+latex: 'v_{\text{esc}} = \sqrt{\frac{2GM}{r}}'
+variables:
+  - symbol: 'v_{\text{esc}}'
+    meaning: 'minimum launch speed to coast away to infinity (ignoring air drag)'
+  - symbol: 'M'
+    meaning: 'mass of the body'
+  - symbol: 'r'
+    meaning: 'distance from its center'
+  - symbol: 'G'
+    meaning: 'gravitational constant, $6.674\times10^{-11}\ \text{N m}^2\,\text{kg}^{-2}$'
+blurb: >-
+  Escape speed is where kinetic energy exactly cancels gravitational binding
+  energy, $\tfrac12 mv^2 = GMm/r$: about 11.2 km/s from Earth's surface and
+  618 km/s from the Sun's. Set $v_{\text{esc}} = c$ and solve for $r$ and you
+  get $2GM/c^2$. John Michell used this argument in 1783 to imagine "dark
+  stars" whose light could not escape; the Newtonian reasoning is not right,
+  but the radius happens to match the Schwarzschild radius of general
+  relativity.
+tags: [gravity, orbits, black-holes]
+level: intro
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Escape_velocity'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: Ryo Ide

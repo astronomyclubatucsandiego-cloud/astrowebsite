@@ -1,0 +1,27 @@
+id: light-deflection
+title: 'Gravitational deflection of light'
+latex: '\alpha = \frac{4GM}{c^2 b}'
+variables:
+  - symbol: '\alpha'
+    meaning: 'deflection angle'
+  - symbol: 'b'
+    meaning: 'impact parameter: closest approach of the undeflected ray'
+  - symbol: 'M'
+    meaning: 'mass of the deflecting body'
+  - symbol: 'G,\ c'
+    meaning: 'gravitational constant and speed of light'
+blurb: >-
+  General relativity bends light by twice the angle a naive Newtonian argument
+  gives. For a ray grazing the Sun the deflection is 1.75 arcseconds.
+  Expeditions organized by Frank Dyson and Arthur Eddington measured it during
+  the 1919 solar eclipse, making Einstein world-famous almost overnight, and
+  the same physics underlies all gravitational lensing.
+tags: [general-relativity, lensing]
+level: intermediate
+references:
+  - 'Dyson, Eddington & Davidson (1920), Phil. Trans. R. Soc. A 220, 291'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Gravitational_lens'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null

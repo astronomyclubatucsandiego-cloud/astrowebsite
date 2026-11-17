@@ -1,0 +1,137 @@
+---
+/** Equation of the Day (Resources page). Entries are YAML files in src/content/equations/.
+ *  Every entry's LaTeX is turned into HTML here, at build time, so no KaTeX script runs in the
+ *  browser. The page carries all entries, hidden; the script below picks today's (America/Los_Angeles)
+ *  with src/lib/equation-of-the-day.ts and shows it. The day changes without a rebuild.
+ *
+ *  The live site only shows entries with `reviewed_by` set. `npm run dev` also shows drafts, marked
+ *  "Draft", so reviewers can see them in place. The section stays hidden when there's nothing to show.
+ *  Add ?date=2027-03-14 to the page address to see any day. */
+import { getCollection } from 'astro:content';
+import 'katex/dist/katex.min.css';
+import { displayMath, inlineMath, textWithMath } from '../lib/equation-render';
+
+const all = await getCollection('equations');
+
+// The schema checks each file; these checks need the file name or all the entries at once.
+const pinnedBy = new Map<string, string>();
+for (const { id, data } of all) {
+  if (data.id !== id) throw new Error(`src/content/equations/${id}.yaml: id "${data.id}" must match the file name`);
+  if (data.pinned) {
+    if (pinnedBy.has(data.pinned)) throw new Error(`Equations "${pinnedBy.get(data.pinned)}" and "${id}" are both pinned to ${data.pinned}`);
+    pinnedBy.set(data.pinned, id);
+  }
+}
+
+/** Run a KaTeX render, naming the file and field if it fails. */
+const render = (id: string, field: string, fn: () => string) => {
+  try {
+    return fn();
+  } catch (err) {
+    throw new Error(`src/content/equations/${id}.yaml, ${field}: ${(err as Error).message}`);
+  }
+};
+
+const LEVEL = { intro: 'Introductory', intermediate: 'Intermediate', advanced: 'Advanced' };
+
+const entries = all
+  .map((e) => e.data)
+  .filter((e) => e.reviewed_by || import.meta.env.DEV)
+  .sort((a, b) => (a.id < b.id ? -1 : 1))
+  .map((e) => ({
+    ...e,
+    draft: !e.reviewed_by,
+    equationHtml: render(e.id, 'latex', () => displayMath(e.latex)),
+    blurbHtml: render(e.id, 'blurb', () => textWithMath(e.blurb)),
+    variablesHtml: e.variables.map((v, i) => ({
+      symbol: render(e.id, `variables[${i}].symbol`, () => inlineMath(v.symbol)),
+      meaning: render(e.id, `variables[${i}].meaning`, () => textWithMath(v.meaning)),
+    })),
+  }));
+---
+
+{entries.length > 0 && (
+  <section class="band eqotd" id="equation-of-the-day" aria-labelledby="eqotd-heading" hidden>
+    <div class="wrap">
+      <h2 class="rule-title" id="eqotd-heading">Equation of the Day</h2>
+      <p class="eqotd__date" data-eq-date></p>
+      {/* `npm run dev` only: say why the section would be hidden, instead of showing nothing. */}
+      {import.meta.env.DEV && (
+        <p class="eqotd__empty" data-eq-empty hidden>
+          <strong>Shown in <code>npm run dev</code> only:</strong> nothing is scheduled for this day, so the live
+          site hides this section. Entries join the rotation on the 1st of the month after their <code>added</code>
+          date. <a data-eq-try href="">Try the 1st of next month</a>.
+        </p>
+      )}
+      {entries.map((e) => (
+        <article class="eqotd__entry" data-eq={e.id} data-pinned={e.pinned} data-added={e.added} hidden>
+          <h3 class="eqotd__title">{e.title}</h3>
+          <p class="eqotd__meta">
+            {LEVEL[e.level]} · {e.tags.map((t) => t.replaceAll('-', ' ')).join(', ')}
+            {e.draft && <strong class="eqotd__draft"> · Draft: not yet reviewed</strong>}
+          </p>
+          <div class="eqotd__equation" set:html={e.equationHtml} />
+          <p class="eqotd__blurb" set:html={e.blurbHtml} />
+          <h4 class="eqotd__where">Where</h4>
+          <dl class="eqotd__vars">
+            {e.variablesHtml.map((v) => (
+              <>
+                <dt set:html={v.symbol} />
+                <dd set:html={v.meaning} />
+              </>
+            ))}
+          </dl>
+          <p class="eqotd__more">
+            <a href={e.docs} rel="noopener">Read more: {e.title}</a>
+            <br />
+            <span class="eqotd__refs">Further reading: {e.references.join('; ')}</span>
+          </p>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
+
+<script>
+  import { equationForDate, dateInTimeZone } from '../lib/equation-of-the-day';
+
+  const section = document.getElementById('equation-of-the-day');
+  if (section) {
+    const entries = [...section.querySelectorAll<HTMLElement>('[data-eq]')].map((el) => ({
+      id: el.dataset.eq!,
+      pinned: el.dataset.pinned || undefined,
+      added: el.dataset.added!,
+      el,
+    }));
+
+    // ?date=YYYY-MM-DD shows any day, for checking the schedule.
+    const asked = /^(\d{4})-(\d{2})-(\d{2})$/.exec(new URLSearchParams(location.search).get('date') ?? '');
+    const today = dateInTimeZone(); // in the club's time zone, so every visitor sees the same one
+    const [year, month, day] = asked ? asked.slice(1).map(Number) : [today.year, today.month, today.day];
+    const pick = equationForDate(entries, year, month, day);
+
+    const showDate = () => {
+      section.querySelector('[data-eq-date]')!.textContent = new Date(Date.UTC(year, month - 1, day, 12)).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      });
+      section.hidden = false;
+    };
+
+    const empty = section.querySelector<HTMLElement>('[data-eq-empty]'); // only in `npm run dev`
+    if (pick) {
+      pick.el.hidden = false;
+      showDate();
+    } else if (empty) {
+      const next = month === 12 ? `${year + 1}-01-01` : `${year}-${String(month + 1).padStart(2, '0')}-01`;
+      const link = empty.querySelector<HTMLAnchorElement>('[data-eq-try]')!;
+      link.href = `?date=${next}#equation-of-the-day`;
+      link.textContent = `Try ${next}`;
+      empty.hidden = false;
+      showDate();
+    }
+  }
+</script>

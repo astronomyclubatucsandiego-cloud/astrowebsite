@@ -5,12 +5,20 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "equations:validate": "node scripts/equations/validate.mjs",
+    "equations:preview": "node scripts/equations/preview.mjs",
+    "equations:check-links": "node scripts/equations/check-links.mjs",
+    "equations:test": "node scripts/equations/validate.mjs && node scripts/equations/preview.mjs --months 24 --include-unreviewed --quiet"
   },
   "dependencies": {
     "@fontsource/lato": "^5.3.0",
     "@fontsource/playfair-display": "^5.3.0",
     "astro": "^7.0.6",
-    "astronomy-engine": "^2.1.19"
+    "astronomy-engine": "^2.1.19",
+    "katex": "^0.19.1"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.1"
   }
 }

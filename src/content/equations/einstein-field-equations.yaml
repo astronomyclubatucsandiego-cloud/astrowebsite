@@ -1,0 +1,31 @@
+id: einstein-field-equations
+title: 'Einstein field equations'
+latex: 'G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu}'
+variables:
+  - symbol: 'G_{\mu\nu}'
+    meaning: 'Einstein tensor, built from the curvature of the metric'
+  - symbol: 'g_{\mu\nu}'
+    meaning: 'spacetime metric'
+  - symbol: '\Lambda'
+    meaning: 'cosmological constant'
+  - symbol: 'T_{\mu\nu}'
+    meaning: 'stress–energy tensor of matter and radiation'
+  - symbol: 'G,\ c'
+    meaning: 'gravitational constant and speed of light'
+blurb: >-
+  Geometry on the left, matter and energy on the right. John Wheeler's
+  summary: spacetime tells matter how to move; matter tells spacetime how to
+  curve. Because the tensors are symmetric $4\times4$ objects, this is really
+  ten coupled nonlinear PDEs for the metric. Einstein added $\Lambda$ in 1917
+  to allow a static universe and later abandoned it; today it is the simplest
+  model of dark energy.
+tags: [general-relativity, cosmology]
+level: advanced
+references:
+  - 'Einstein (1915), Sitzungsber. Preuss. Akad. Wiss., 844'
+  - 'Carroll, Spacetime and Geometry (2004)'
+docs: 'https://en.wikipedia.org/wiki/Einstein_field_equations'
+pinned: '03-14'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: Ryo Ide (Low Confidence)

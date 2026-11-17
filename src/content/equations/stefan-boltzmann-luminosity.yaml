@@ -1,0 +1,28 @@
+id: stefan-boltzmann-luminosity
+title: 'Stefan–Boltzmann law for stars'
+latex: 'L = 4\pi R^2 \sigma T_{\text{eff}}^4'
+variables:
+  - symbol: 'L'
+    meaning: 'luminosity, the total power radiated'
+  - symbol: 'R'
+    meaning: 'stellar radius'
+  - symbol: 'T_{\text{eff}}'
+    meaning: 'effective surface temperature'
+  - symbol: '\sigma'
+    meaning: 'Stefan–Boltzmann constant, $5.670\times10^{-8}\ \text{W m}^{-2}\,\text{K}^{-4}$'
+blurb: >-
+  Luminosity equals surface area times blackbody flux $\sigma T^4$. This is
+  the logic of the Hertzsprung–Russell diagram: at a fixed temperature, a more
+  luminous star must be bigger (a giant) and a dimmer one smaller (a dwarf).
+  For the Sun, $R = 6.96\times10^8$ m and $T_{\text{eff}} = 5772$ K give $L
+  \approx 3.8\times10^{26}$ W. Strictly, the equation defines
+  $T_{\text{eff}}$: the temperature of a blackbody with the star's radius and
+  luminosity.
+tags: [stars, radiation]
+level: intro
+references:
+  - 'Carroll & Ostlie, An Introduction to Modern Astrophysics, 2nd ed. (2007)'
+docs: 'https://en.wikipedia.org/wiki/Stefan–Boltzmann_law'
+added: '2026-11-16'
+author: claude-draft
+reviewed_by: null
